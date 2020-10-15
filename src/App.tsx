@@ -40,6 +40,14 @@ const App = () => {
             Direction.WEST,
           ]}
         />
+        <Room
+          loc={{ gridX: 3, gridY: 3 }}
+          doorDirections={[Direction.EAST, Direction.SOUTH]}
+        />
+        <Room
+          loc={{ gridX: 4, gridY: 4 }}
+          doorDirections={[Direction.NORTH, Direction.SOUTH]}
+        />
       </Layer>
     </Stage>
   );
