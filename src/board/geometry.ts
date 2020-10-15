@@ -24,13 +24,6 @@ export const translate: (p: Point, dx: number, dy: number) => Point = (
   };
 };
 
-export const translateByPoint: (p: Point, delta: Point) => Point = (
-  p,
-  delta
-) => {
-  return translate(p, delta.x, delta.y);
-};
-
 export const rotate: (p: Point, center: Point, rotation: number) => Point = (
   p,
   center,

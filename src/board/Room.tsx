@@ -1,10 +1,10 @@
 import React, { FunctionComponent } from 'react';
 import { Group, Rect, Shape } from 'react-konva';
-import { Point, rotate, translate, translateByPoint } from './geometry';
+import { Point, rotate, translate } from './geometry';
+import { GridLoc, gridSize, gridToCenter, gridToTopLeft } from './grid';
 
-const roomSize = 100;
-const doorWidth = roomSize / 2.5;
-const doorHeight = roomSize / 8;
+const doorWidth = gridSize / 2.5;
+const doorHeight = gridSize / 8;
 
 export enum Direction {
   NORTH = 90,
@@ -14,31 +14,30 @@ export enum Direction {
 }
 
 interface DoorProps {
-  roomLoc: Point;
+  roomLoc: GridLoc;
   doorDirection: Direction;
 }
 
 const Door: FunctionComponent<DoorProps> = ({ roomLoc, doorDirection }) => {
-  const baseTopLeft = {
-    x: roomSize / 2 - doorHeight,
-    y: -doorWidth / 2,
-  };
+  const roomCenter = gridToCenter(roomLoc);
+
+  const baseTopLeft = translate(
+    roomCenter,
+    gridSize / 2 - doorHeight,
+    -doorWidth / 2
+  );
   const baseTopRight = translate(baseTopLeft, doorHeight, 0);
   const baseBottomLeft = translate(baseTopLeft, 0, doorWidth);
   const baseBottomRight = translate(baseTopRight, 0, doorWidth);
-
-  const roomCenter = translate(roomLoc, roomSize / 2, roomSize / 2);
 
   const corners: Point[] = [
     baseTopLeft,
     baseTopRight,
     baseBottomRight,
     baseBottomLeft,
-  ]
-    .map((corner) => translateByPoint(corner, roomCenter))
-    .map((corner) => {
-      return rotate(corner, roomCenter, doorDirection);
-    });
+  ].map((corner) => {
+    return rotate(corner, roomCenter, doorDirection);
+  });
 
   return (
     <Shape
@@ -61,7 +60,7 @@ const Door: FunctionComponent<DoorProps> = ({ roomLoc, doorDirection }) => {
 };
 
 interface RoomProps {
-  loc: Point;
+  loc: GridLoc;
   doorDirections: Direction[];
 }
 
@@ -70,12 +69,12 @@ const Room: FunctionComponent<RoomProps> = ({ loc, doorDirections }) => {
     return <Door key={direction} roomLoc={loc} doorDirection={direction} />;
   });
 
-  const { x, y } = loc;
+  const { x, y } = gridToTopLeft(loc);
   return (
     <Group>
-      <Rect x={x} y={y} width={roomSize} height={roomSize} fill="black" />
+      <Rect x={x} y={y} width={gridSize} height={gridSize} fill="black" />
       {doors}
-      <Rect x={x} y={y} width={roomSize} height={roomSize} stroke="black" />
+      <Rect x={x} y={y} width={gridSize} height={gridSize} stroke="black" />
     </Group>
   );
 };
