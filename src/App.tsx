@@ -29,7 +29,7 @@ const App = () => {
   const inset = 1;
 
   return (
-    <Stage width={width} height={height}>
+    <Stage width={width} height={height} draggable>
       <Layer>
         <Rect
           x={inset}
