@@ -1,14 +1,10 @@
 import React, { FunctionComponent } from 'react';
 import { Group, Rect, Shape } from 'react-konva';
+import { Point, rotate, translate, translateByPoint } from './geometry';
 
 const roomSize = 100;
 const doorWidth = roomSize / 2.5;
 const doorHeight = roomSize / 8;
-
-interface Point {
-  x: number;
-  y: number;
-}
 
 export enum Direction {
   NORTH = 90,
@@ -18,42 +14,31 @@ export enum Direction {
 }
 
 interface DoorProps {
-  roomX: number;
-  roomY: number;
+  roomLoc: Point;
   doorDirection: Direction;
 }
 
-const Door: FunctionComponent<DoorProps> = ({
-  roomX,
-  roomY,
-  doorDirection,
-}) => {
-  const roomCenterX = roomX + roomSize / 2;
-  const roomCenterY = roomY + roomSize / 2;
+const Door: FunctionComponent<DoorProps> = ({ roomLoc, doorDirection }) => {
+  const baseTopLeft = {
+    x: roomSize / 2 - doorHeight,
+    y: -doorWidth / 2,
+  };
+  const baseTopRight = translate(baseTopLeft, doorHeight, 0);
+  const baseBottomLeft = translate(baseTopLeft, 0, doorWidth);
+  const baseBottomRight = translate(baseTopRight, 0, doorWidth);
 
-  const baseCorners = [
-    {
-      x: roomSize / 2 - doorHeight,
-      y: doorWidth / 2,
-    },
-    { x: roomSize / 2, y: doorWidth / 2 },
-    { x: roomSize / 2, y: -doorWidth / 2 },
-    {
-      x: roomSize / 2 - doorHeight,
-      y: -doorWidth / 2,
-    },
-  ];
+  const roomCenter = translate(roomLoc, roomSize / 2, roomSize / 2);
 
-  const rotationRad = doorDirection * (Math.PI / 180);
-  const sin = Math.sin(-rotationRad);
-  const cos = Math.cos(rotationRad);
-
-  const corners = baseCorners.map(({ x: baseX, y: baseY }) => {
-    return {
-      x: baseX * cos + baseY * sin + roomCenterX,
-      y: baseX * sin - baseY * cos + roomCenterY,
-    };
-  });
+  const corners: Point[] = [
+    baseTopLeft,
+    baseTopRight,
+    baseBottomRight,
+    baseBottomLeft,
+  ]
+    .map((corner) => translateByPoint(corner, roomCenter))
+    .map((corner) => {
+      return rotate(corner, roomCenter, doorDirection);
+    });
 
   return (
     <Shape
@@ -76,18 +61,16 @@ const Door: FunctionComponent<DoorProps> = ({
 };
 
 interface RoomProps {
-  x: number;
-  y: number;
+  loc: Point;
   doorDirections: Direction[];
 }
 
-const Room: FunctionComponent<RoomProps> = ({ x, y, doorDirections }) => {
+const Room: FunctionComponent<RoomProps> = ({ loc, doorDirections }) => {
   const doors = doorDirections.map((direction) => {
-    return (
-      <Door key={direction} roomX={x} roomY={y} doorDirection={direction} />
-    );
+    return <Door key={direction} roomLoc={loc} doorDirection={direction} />;
   });
 
+  const { x, y } = loc;
   return (
     <Group>
       <Rect x={x} y={y} width={roomSize} height={roomSize} fill="black" />

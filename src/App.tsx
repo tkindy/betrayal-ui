@@ -32,8 +32,7 @@ const App = () => {
     <Stage width={width} height={height} draggable>
       <Layer>
         <Room
-          x={150}
-          y={200}
+          loc={{ x: 150, y: 200 }}
           doorDirections={[
             Direction.SOUTH,
             Direction.EAST,
