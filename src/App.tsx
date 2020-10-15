@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
-import { Layer, Rect, Stage } from 'react-konva';
+import { Layer, Stage } from 'react-konva';
+import Room, { Direction } from './board/Room';
 
 const getWindowDimensions = () => {
   const { innerWidth: width, innerHeight: height } = window;
@@ -26,17 +27,19 @@ const useWindowDimensions = () => {
 
 const App = () => {
   const { width, height } = useWindowDimensions();
-  const inset = 1;
 
   return (
     <Stage width={width} height={height} draggable>
       <Layer>
-        <Rect
-          x={inset}
-          y={inset}
-          width={width - 2 * inset}
-          height={height - 2 * inset}
-          stroke="red"
+        <Room
+          x={150}
+          y={200}
+          doorDirections={[
+            Direction.SOUTH,
+            Direction.EAST,
+            Direction.NORTH,
+            Direction.WEST,
+          ]}
         />
       </Layer>
     </Stage>
