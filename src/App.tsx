@@ -1,26 +1,46 @@
-import React from 'react';
-import logo from './logo.svg';
+import React, { useEffect, useState } from 'react';
 import './App.css';
+import { Layer, Rect, Stage } from 'react-konva';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+const getWindowDimensions = () => {
+  const { innerWidth: width, innerHeight: height } = window;
+  return { width, height };
+};
+
+const useWindowDimensions = () => {
+  const [windowDimensions, setWindowDimensions] = useState(
+    getWindowDimensions()
   );
-}
+
+  useEffect(() => {
+    const handleResize = () => {
+      setWindowDimensions(getWindowDimensions());
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  return windowDimensions;
+};
+
+const App = () => {
+  const { width, height } = useWindowDimensions();
+  const inset = 1;
+
+  return (
+    <Stage width={width} height={height}>
+      <Layer>
+        <Rect
+          x={inset}
+          y={inset}
+          width={width - 2 * inset}
+          height={height - 2 * inset}
+          stroke="red"
+        />
+      </Layer>
+    </Stage>
+  );
+};
 
 export default App;
