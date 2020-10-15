@@ -1,6 +1,6 @@
 import { Point } from './geometry';
 
-export const gridSize = 100;
+export const gridSize = 200;
 
 // (0, 0) is top-left square on first render
 export interface GridLoc {

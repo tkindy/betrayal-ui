@@ -32,7 +32,7 @@ const App = () => {
     <Stage width={width} height={height} draggable>
       <Layer>
         <Room
-          loc={{ gridX: 4, gridY: 3 }}
+          loc={{ gridX: 2, gridY: 2 }}
           doorDirections={[
             Direction.SOUTH,
             Direction.EAST,
@@ -41,11 +41,11 @@ const App = () => {
           ]}
         />
         <Room
-          loc={{ gridX: 3, gridY: 3 }}
+          loc={{ gridX: 1, gridY: 2 }}
           doorDirections={[Direction.EAST, Direction.SOUTH]}
         />
         <Room
-          loc={{ gridX: 4, gridY: 4 }}
+          loc={{ gridX: 2, gridY: 3 }}
           doorDirections={[Direction.NORTH, Direction.SOUTH]}
         />
       </Layer>
