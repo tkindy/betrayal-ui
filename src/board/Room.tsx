@@ -74,7 +74,7 @@ const Room: FunctionComponent<RoomProps> = ({ loc, doorDirections }) => {
     <Group>
       <Rect x={x} y={y} width={gridSize} height={gridSize} fill="black" />
       {doors}
-      <Rect x={x} y={y} width={gridSize} height={gridSize} stroke="black" />
+      <Rect x={x} y={y} width={gridSize} height={gridSize} stroke="teal" />
     </Group>
   );
 };
