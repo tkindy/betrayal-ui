@@ -36,7 +36,7 @@ export const rotate: (p: Point, center: Point, rotation: number) => Point = (
   const cos = Math.cos(rotationRad);
 
   return {
-    x: x * cos + y * sin + center.x,
-    y: x * sin - y * cos + center.y,
+    x: -x * cos + y * sin + center.x,
+    y: -x * sin - y * cos + center.y,
   };
 };
