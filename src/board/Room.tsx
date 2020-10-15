@@ -59,7 +59,8 @@ const Door: FunctionComponent<DoorProps> = ({ roomLoc, doorDirection }) => {
   );
 };
 
-interface RoomProps {
+export interface RoomProps {
+  name: string;
   loc: GridLoc;
   doorDirections: Direction[];
 }

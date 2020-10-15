@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import './App.css';
 import { Layer, Stage } from 'react-konva';
-import Room, { Direction } from './board/Room';
+import { Direction } from './board/Room';
+import Board from './board/Board';
 
 const getWindowDimensions = () => {
   const { innerWidth: width, innerHeight: height } = window;
@@ -31,22 +32,29 @@ const App = () => {
   return (
     <Stage width={width} height={height} draggable>
       <Layer>
-        <Room
-          loc={{ gridX: 2, gridY: 2 }}
-          doorDirections={[
-            Direction.SOUTH,
-            Direction.EAST,
-            Direction.NORTH,
-            Direction.WEST,
+        <Board
+          rooms={[
+            {
+              name: 'Bloody Room',
+              loc: { gridX: 2, gridY: 2 },
+              doorDirections: [
+                Direction.SOUTH,
+                Direction.EAST,
+                Direction.NORTH,
+                Direction.WEST,
+              ],
+            },
+            {
+              name: 'Statuary Corridor',
+              loc: { gridX: 1, gridY: 2 },
+              doorDirections: [Direction.EAST, Direction.SOUTH],
+            },
+            {
+              name: 'Master Bedroom',
+              loc: { gridX: 2, gridY: 3 },
+              doorDirections: [Direction.NORTH, Direction.SOUTH],
+            },
           ]}
-        />
-        <Room
-          loc={{ gridX: 1, gridY: 2 }}
-          doorDirections={[Direction.EAST, Direction.SOUTH]}
-        />
-        <Room
-          loc={{ gridX: 2, gridY: 3 }}
-          doorDirections={[Direction.NORTH, Direction.SOUTH]}
         />
       </Layer>
     </Stage>
