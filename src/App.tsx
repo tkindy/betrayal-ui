@@ -54,6 +54,11 @@ const App = () => {
               loc: { gridX: 2, gridY: 3 },
               doorDirections: [Direction.NORTH, Direction.SOUTH],
             },
+            {
+              name: 'Crypt',
+              loc: { gridX: 2, gridY: 1 },
+              doorDirections: [Direction.SOUTH],
+            },
           ]}
         />
       </Layer>
