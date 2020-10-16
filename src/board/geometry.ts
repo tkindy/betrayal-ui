@@ -3,14 +3,19 @@ export interface Point {
   y: number;
 }
 
-export const subtract: (p1: Point, p2: Point) => Point = (
+export const add: (p1: Point, p2: Point) => Point = (
   { x: x1, y: y1 },
   { x: x2, y: y2 }
 ) => {
-  return {
-    x: x1 - x2,
-    y: y1 - y2,
-  };
+  return { x: x1 + x2, y: y1 + y2 };
+};
+
+export const multiply: (p1: Point, c: number) => Point = ({ x, y }, c) => {
+  return { x: x * c, y: y * c };
+};
+
+export const subtract: (p1: Point, p2: Point) => Point = (p1, p2) => {
+  return add(p1, multiply(p2, -1));
 };
 
 export const translate: (p: Point, dx: number, dy: number) => Point = (
@@ -35,8 +40,8 @@ export const rotate: (p: Point, center: Point, rotation: number) => Point = (
   const sin = -Math.sin(rotationRad);
   const cos = Math.cos(rotationRad);
 
-  return {
-    x: -x * cos + y * sin + center.x,
-    y: -x * sin - y * cos + center.y,
-  };
+  return add(center, {
+    x: -x * cos + y * sin,
+    y: -x * sin - y * cos,
+  });
 };
