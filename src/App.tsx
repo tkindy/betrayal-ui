@@ -3,6 +3,7 @@ import './App.css';
 import { Layer, Stage } from 'react-konva';
 import { Direction } from './board/Room';
 import Board from './board/Board';
+import { PlayerColor } from './board/Players';
 
 const getWindowDimensions = () => {
   const { innerWidth: width, innerHeight: height } = window;
@@ -49,7 +50,7 @@ const App = () => {
               name: 'Statuary Corridor',
               loc: { gridX: 1, gridY: 2 },
               doorDirections: [Direction.EAST, Direction.SOUTH],
-              players: [],
+              players: [{ color: PlayerColor.YELLOW }],
             },
             {
               name: 'Master Bedroom',
@@ -61,7 +62,10 @@ const App = () => {
               name: 'Crypt',
               loc: { gridX: 2, gridY: 1 },
               doorDirections: [Direction.SOUTH],
-              players: [],
+              players: [
+                { color: PlayerColor.BLUE },
+                { color: PlayerColor.RED },
+              ],
             },
           ]}
         />
