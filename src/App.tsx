@@ -43,21 +43,25 @@ const App = () => {
                 Direction.NORTH,
                 Direction.WEST,
               ],
+              players: [],
             },
             {
               name: 'Statuary Corridor',
               loc: { gridX: 1, gridY: 2 },
               doorDirections: [Direction.EAST, Direction.SOUTH],
+              players: [],
             },
             {
               name: 'Master Bedroom',
               loc: { gridX: 2, gridY: 3 },
               doorDirections: [Direction.NORTH, Direction.SOUTH],
+              players: [],
             },
             {
               name: 'Crypt',
               loc: { gridX: 2, gridY: 1 },
               doorDirections: [Direction.SOUTH],
+              players: [],
             },
           ]}
         />
