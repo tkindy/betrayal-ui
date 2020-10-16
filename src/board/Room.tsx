@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { Group, Rect, Shape } from 'react-konva';
+import { Group, Rect, Shape, Text } from 'react-konva';
 import { Point, rotate, translate } from './geometry';
 import { GridLoc, gridSize, gridToCenter, gridToTopLeft } from './grid';
 
@@ -65,17 +65,28 @@ export interface RoomProps {
   doorDirections: Direction[];
 }
 
-const Room: FunctionComponent<RoomProps> = ({ loc, doorDirections }) => {
+const Room: FunctionComponent<RoomProps> = ({ name, loc, doorDirections }) => {
   const doors = doorDirections.map((direction) => {
     return <Door key={direction} roomLoc={loc} doorDirection={direction} />;
   });
 
   const { x, y } = gridToTopLeft(loc);
+
   return (
     <Group>
       <Rect x={x} y={y} width={gridSize} height={gridSize} fill="black" />
       {doors}
       <Rect x={x} y={y} width={gridSize} height={gridSize} stroke="teal" />
+      <Text
+        x={x}
+        y={y}
+        width={gridSize}
+        height={gridSize}
+        text={name}
+        fill="red"
+        align="center"
+        verticalAlign="middle"
+      />
     </Group>
   );
 };
