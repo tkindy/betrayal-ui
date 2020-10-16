@@ -25,10 +25,17 @@ export interface PlayerModel {
   color: PlayerColor;
 }
 
-export interface PlayerProps extends PlayerModel {}
+export interface PlayerProps extends PlayerModel {
+  center: Point;
+}
 
-const Player: FunctionComponent<PlayerProps> = ({ color }) => {
-  return <Circle fill={color} radius={playerRadius} />;
+const Player: FunctionComponent<PlayerProps> = ({
+  center: { x, y },
+  color,
+}) => {
+  return (
+    <Circle x={x} y={y} radius={playerRadius} fill={color} stroke="white" />
+  );
 };
 
 interface PlayersRowProps {
@@ -44,8 +51,19 @@ const PlayersRow: FunctionComponent<PlayersRowProps> = ({
   width,
   height,
 }) => {
-  // TODO:
-  return null;
+  const segmentOffset = width / (players.length + 1);
+  const middleLeft: Point = translate(topLeft, 0, height / 2);
+
+  return (
+    <Group>
+      {players.map((player, i) => (
+        <Player
+          center={translate(middleLeft, (i + 1) * segmentOffset, 0)}
+          {...player}
+        />
+      ))}
+    </Group>
+  );
 };
 
 export interface PlayersProps {

@@ -50,7 +50,7 @@ const App = () => {
               name: 'Statuary Corridor',
               loc: { gridX: 1, gridY: 2 },
               doorDirections: [Direction.EAST, Direction.SOUTH],
-              players: [{ color: PlayerColor.YELLOW }],
+              players: [{ color: PlayerColor.BLUE }],
             },
             {
               name: 'Master Bedroom',
@@ -63,8 +63,11 @@ const App = () => {
               loc: { gridX: 2, gridY: 1 },
               doorDirections: [Direction.SOUTH],
               players: [
-                { color: PlayerColor.BLUE },
+                { color: PlayerColor.YELLOW },
                 { color: PlayerColor.RED },
+                { color: PlayerColor.GREEN },
+                { color: PlayerColor.WHITE },
+                { color: PlayerColor.PURPLE },
               ],
             },
           ]}

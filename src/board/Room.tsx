@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react';
 import { Group, Rect, Shape, Text } from 'react-konva';
 import { Point, rotate, translate } from './geometry';
 import { GridLoc, gridSize, gridToCenter, gridToTopLeft } from './grid';
-import Players, { PlayerProps } from './Players';
+import Players, { PlayerModel, PlayerProps } from './Players';
 
 const doorWidth = gridSize / 2.5;
 const doorHeight = gridSize / 8;
@@ -64,7 +64,7 @@ export interface RoomProps {
   name: string;
   loc: GridLoc;
   doorDirections: Direction[];
-  players: PlayerProps[];
+  players: PlayerModel[];
 }
 
 const Room: FunctionComponent<RoomProps> = ({
