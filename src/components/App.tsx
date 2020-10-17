@@ -29,6 +29,44 @@ const useWindowDimensions = () => {
   return windowDimensions;
 };
 
+const rooms = [
+  {
+    name: 'Bloody Room',
+    loc: { gridX: 2, gridY: 2 },
+    doorDirections: [
+      Direction.SOUTH,
+      Direction.EAST,
+      Direction.NORTH,
+      Direction.WEST,
+    ],
+    players: [],
+  },
+  {
+    name: 'Statuary Corridor',
+    loc: { gridX: 1, gridY: 2 },
+    doorDirections: [Direction.EAST, Direction.SOUTH],
+    players: [{ color: PlayerColor.BLUE }],
+  },
+  {
+    name: 'Master Bedroom',
+    loc: { gridX: 2, gridY: 3 },
+    doorDirections: [Direction.NORTH, Direction.SOUTH],
+    players: [],
+  },
+  {
+    name: 'Crypt',
+    loc: { gridX: 2, gridY: 1 },
+    doorDirections: [Direction.SOUTH],
+    players: [
+      { color: PlayerColor.YELLOW },
+      { color: PlayerColor.RED },
+      { color: PlayerColor.GREEN },
+      { color: PlayerColor.WHITE },
+      { color: PlayerColor.PURPLE },
+    ],
+  },
+];
+
 const App = () => {
   const { width, height } = useWindowDimensions();
 
@@ -40,45 +78,7 @@ const App = () => {
           <Stage width={width} height={height} draggable>
             <ReactReduxContext.Provider value={reduxContext}>
               <Layer>
-                <Board
-                  rooms={[
-                    {
-                      name: 'Bloody Room',
-                      loc: { gridX: 2, gridY: 2 },
-                      doorDirections: [
-                        Direction.SOUTH,
-                        Direction.EAST,
-                        Direction.NORTH,
-                        Direction.WEST,
-                      ],
-                      players: [],
-                    },
-                    {
-                      name: 'Statuary Corridor',
-                      loc: { gridX: 1, gridY: 2 },
-                      doorDirections: [Direction.EAST, Direction.SOUTH],
-                      players: [{ color: PlayerColor.BLUE }],
-                    },
-                    {
-                      name: 'Master Bedroom',
-                      loc: { gridX: 2, gridY: 3 },
-                      doorDirections: [Direction.NORTH, Direction.SOUTH],
-                      players: [],
-                    },
-                    {
-                      name: 'Crypt',
-                      loc: { gridX: 2, gridY: 1 },
-                      doorDirections: [Direction.SOUTH],
-                      players: [
-                        { color: PlayerColor.YELLOW },
-                        { color: PlayerColor.RED },
-                        { color: PlayerColor.GREEN },
-                        { color: PlayerColor.WHITE },
-                        { color: PlayerColor.PURPLE },
-                      ],
-                    },
-                  ]}
-                />
+                <Board rooms={rooms} />
               </Layer>
             </ReactReduxContext.Provider>
           </Stage>
