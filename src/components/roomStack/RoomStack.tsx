@@ -118,7 +118,12 @@ const StackRoom: FunctionComponent<StackRoomProps> = ({
   );
 };
 
-const RoomStack: FunctionComponent<RoomStackState> = ({ nextRoom }) => {
+interface StackDimensions {
+  topLeft: Point;
+  dimensions: Dimensions;
+}
+
+export const useStackDimensions: () => StackDimensions = () => {
   const windowDimensions = useWindowDimensions();
   const width = Math.min(maxWidth, windowDimensions.width / 3);
   const height = width * aspectRatio;
@@ -126,6 +131,15 @@ const RoomStack: FunctionComponent<RoomStackState> = ({ nextRoom }) => {
     x: windowDimensions.width - width,
     y: windowDimensions.height - height,
   };
+
+  return { topLeft, dimensions: { width, height } };
+};
+
+const RoomStack: FunctionComponent<RoomStackState> = ({ nextRoom }) => {
+  const {
+    topLeft,
+    dimensions: { width, height },
+  } = useStackDimensions();
 
   return (
     <Group>
