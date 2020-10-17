@@ -65,6 +65,7 @@ const PlayersRow: FunctionComponent<PlayersRowProps> = ({
     <Group>
       {players.map((player, i) => (
         <Player
+          key={player.color}
           center={translate(
             firstMiddleLeft,
             playerRadius + i * (playerWidth + interPlayerDistance),
@@ -91,6 +92,7 @@ const Players: FunctionComponent<PlayersProps> = ({ players, roomLoc }) => {
     <Group>
       {byRow.map((row, i) => (
         <PlayersRow
+          key={i}
           players={row}
           topLeft={translate(
             add(roomTopLeft, playersTopLeft),

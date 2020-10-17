@@ -10,7 +10,7 @@ const Board: FunctionComponent<BoardProps> = ({ rooms }) => {
   return (
     <Group>
       {rooms.map((room) => (
-        <Room {...room} />
+        <Room key={room.name} {...room} />
       ))}
     </Group>
   );
