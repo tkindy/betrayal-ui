@@ -16,9 +16,8 @@ const houseTopInset = 20;
 const getHousePoints: (
   topLeft: Point,
   width: number,
-  height: number
-) => number[] = (topLeft, width, height) => {
-  const floorHeight = height / 4;
+  floorHeight: number
+) => number[] = (topLeft, width, floorHeight) => {
   const peak = translate(topLeft, width / 2, 0);
   const upperLeft = translate(topLeft, 0, floorHeight);
   const lowerLeft = translate(upperLeft, 0, 3 * floorHeight);
@@ -46,10 +45,11 @@ const StackRoom: FunctionComponent<StackRoomProps> = ({
   const houseSidesInset = (width - houseWidth) / 2;
   const houseTopLeft = translate(stackTopLeft, houseSidesInset, houseTopInset);
   const outlineStyle = nextRoom ? {} : { dash: [20, 10] };
+  const floorHeight = houseHeight / 4;
 
   return (
     <Line
-      points={getHousePoints(houseTopLeft, houseWidth, houseHeight)}
+      points={getHousePoints(houseTopLeft, houseWidth, floorHeight)}
       stroke="black"
       closed={true}
       {...outlineStyle}
