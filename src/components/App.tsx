@@ -6,6 +6,7 @@ import Board from './board/Board';
 import { PlayerColor } from './board/Players';
 import Controls from './controls/Controls';
 import { ReactReduxContext } from 'react-redux';
+import RoomStack from './roomStack/RoomStack';
 import { useWindowDimensions } from './windowDimensions';
 
 const rooms = [
@@ -54,10 +55,13 @@ const App = () => {
       <Controls />
       <ReactReduxContext.Consumer>
         {(reduxContext) => (
-          <Stage width={width} height={height} draggable>
+          <Stage width={width} height={height}>
             <ReactReduxContext.Provider value={reduxContext}>
-              <Layer>
+              <Layer draggable>
                 <Board rooms={rooms} />
+              </Layer>
+              <Layer>
+                <RoomStack />
               </Layer>
             </ReactReduxContext.Provider>
           </Stage>
