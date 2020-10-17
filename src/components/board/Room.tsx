@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react';
 import { Group, Rect, Shape, Text } from 'react-konva';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../rootReducer';
-import { Point, rotate, translate } from './geometry';
+import { Point, rotate, translate } from '../geometry';
 import { GridLoc, useGridSize, useGridCenter, useGridTopLeft } from './grid';
 import Players, { PlayerModel } from './Players';
 

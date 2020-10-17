@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { Circle, Group } from 'react-konva';
 import { partition } from '../../utils';
-import { add, Point, translate } from './geometry';
+import { add, Point, translate } from '../geometry';
 import { GridLoc, useGridSize, useGridTopLeft } from './grid';
 
 const usePlayerRadius: () => number = () => {

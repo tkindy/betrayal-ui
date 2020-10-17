@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
+import { Dimensions } from './geometry';
 
-const getWindowDimensions = () => {
+const getWindowDimensions: () => Dimensions = () => {
   const { innerWidth: width, innerHeight: height } = window;
   return { width, height };
 };

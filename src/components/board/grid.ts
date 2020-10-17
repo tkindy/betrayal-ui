@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { RootState } from '../../rootReducer';
-import { Point } from './geometry';
+import { Point } from '../geometry';
 
 // (0, 0) is top-left square on first render
 export interface GridLoc {
