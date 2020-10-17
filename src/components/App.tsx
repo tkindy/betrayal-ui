@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import './App.css';
 import { Layer, Stage } from 'react-konva';
 import { Direction } from './board/Room';
@@ -6,28 +6,7 @@ import Board from './board/Board';
 import { PlayerColor } from './board/Players';
 import Controls from './controls/Controls';
 import { ReactReduxContext } from 'react-redux';
-
-const getWindowDimensions = () => {
-  const { innerWidth: width, innerHeight: height } = window;
-  return { width, height };
-};
-
-const useWindowDimensions = () => {
-  const [windowDimensions, setWindowDimensions] = useState(
-    getWindowDimensions()
-  );
-
-  useEffect(() => {
-    const handleResize = () => {
-      setWindowDimensions(getWindowDimensions());
-    };
-
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, []);
-
-  return windowDimensions;
-};
+import { useWindowDimensions } from './windowDimensions';
 
 const rooms = [
   {
