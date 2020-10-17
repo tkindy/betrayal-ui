@@ -7,11 +7,11 @@ enum Floor {
   ROOF,
 }
 
-interface StackRoom {
+export interface StackRoom {
   possibleFloors: Floor[];
 }
 
-interface RoomStackState {
+export interface RoomStackState {
   nextRoom?: StackRoom;
 }
 
