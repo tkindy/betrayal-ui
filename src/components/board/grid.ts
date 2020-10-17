@@ -9,7 +9,6 @@ export interface GridLoc {
 }
 
 export const useGridSize = () => {
-  console.log('using grid size');
   return useSelector((state: RootState) => state.zoom.gridSize);
 };
 

@@ -11,8 +11,6 @@ const store = configureStore({
   reducer: rootReducer,
 });
 
-console.log('store', store);
-
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
