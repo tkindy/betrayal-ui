@@ -1,3 +1,4 @@
+import { LineConfig } from 'konva/types/shapes/Line';
 import React, { FunctionComponent } from 'react';
 import { Group, Line, Rect } from 'react-konva';
 import {
@@ -44,8 +45,8 @@ const StackRoom: FunctionComponent<StackRoomProps> = ({
   const houseHeight = height * houseYProp;
   const houseSidesInset = (width - houseWidth) / 2;
   const houseTopLeft = translate(stackTopLeft, houseSidesInset, houseTopInset);
-  const outlineStyle = nextRoom ? {} : { dash: [20, 10] };
   const floorHeight = houseHeight / 4;
+  const outlineStyle = nextRoom ? { fill: 'black' } : { dash: [20, 10] };
 
   return (
     <Line

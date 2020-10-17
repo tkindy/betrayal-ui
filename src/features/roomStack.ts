@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-enum Floor {
+export enum Floor {
   BASEMENT,
   GROUND,
   UPPER,

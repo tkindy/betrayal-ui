@@ -8,6 +8,7 @@ import Controls from './controls/Controls';
 import { ReactReduxContext } from 'react-redux';
 import RoomStack from './roomStack/RoomStack';
 import { useWindowDimensions } from './windowDimensions';
+import { Floor } from '../features/roomStack';
 
 const rooms = [
   {
@@ -67,7 +68,16 @@ const App = () => {
                 <Board rooms={rooms} />
               </Layer>
               <Layer>
-                <RoomStack />
+                <RoomStack
+                  nextRoom={{
+                    possibleFloors: [
+                      Floor.BASEMENT,
+                      Floor.GROUND,
+                      Floor.UPPER,
+                      Floor.ROOF,
+                    ],
+                  }}
+                />
               </Layer>
             </ReactReduxContext.Provider>
           </Stage>
