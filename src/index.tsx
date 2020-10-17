@@ -1,15 +1,17 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { configureStore } from '@reduxjs/toolkit';
 import { Provider } from 'react-redux';
-import zoomReducer from './features/zoom';
 import './index.css';
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
+import { configureStore } from '@reduxjs/toolkit';
+import { rootReducer } from './rootReducer';
 
 const store = configureStore({
-  reducer: { zoom: zoomReducer },
+  reducer: rootReducer,
 });
+
+console.log('store', store);
 
 ReactDOM.render(
   <React.StrictMode>

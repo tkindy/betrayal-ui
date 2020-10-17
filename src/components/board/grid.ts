@@ -1,6 +1,6 @@
+import { useSelector } from 'react-redux';
+import { RootState } from '../../rootReducer';
 import { Point } from './geometry';
-
-export const gridSize = 200;
 
 // (0, 0) is top-left square on first render
 export interface GridLoc {
@@ -8,10 +8,17 @@ export interface GridLoc {
   gridY: number;
 }
 
-export const gridToTopLeft: (loc: GridLoc) => Point = ({ gridX, gridY }) => {
+export const useGridSize = () => {
+  console.log('using grid size');
+  return useSelector((state: RootState) => state.zoom.gridSize);
+};
+
+export const useGridTopLeft: (loc: GridLoc) => Point = ({ gridX, gridY }) => {
+  const gridSize = useGridSize();
   return { x: gridX * gridSize, y: gridY * gridSize };
 };
 
-export const gridToCenter: (loc: GridLoc) => Point = ({ gridX, gridY }) => {
+export const useGridCenter: (loc: GridLoc) => Point = ({ gridX, gridY }) => {
+  const gridSize = useGridSize();
   return { x: (gridX + 0.5) * gridSize, y: (gridY + 0.5) * gridSize };
 };

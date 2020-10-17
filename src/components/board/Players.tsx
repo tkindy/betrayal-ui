@@ -2,17 +2,30 @@ import React, { FunctionComponent } from 'react';
 import { Circle, Group } from 'react-konva';
 import { partition } from '../../utils';
 import { add, Point, translate } from './geometry';
-import { GridLoc, gridSize, gridToTopLeft } from './grid';
+import { GridLoc, useGridSize, useGridTopLeft } from './grid';
 
-const playerRadius = gridSize / 15;
-const playerWidth = playerRadius * 2;
-const playersTopLeft: Point = {
-  x: 0,
-  y: gridSize / 3,
+const usePlayerRadius: () => number = () => {
+  return useGridSize() / 15;
 };
-const playersWidth = gridSize;
-const playersHeight = gridSize / 3;
-const interPlayerDistance = playerRadius;
+
+interface PlayersDimensions {
+  width: number;
+  height: number;
+  topLeft: Point;
+  playerSpacing: number;
+}
+
+const usePlayersDimensions: () => PlayersDimensions = () => {
+  const gridSize = useGridSize();
+  const playerRadius = usePlayerRadius();
+
+  return {
+    width: gridSize,
+    height: gridSize / 3,
+    topLeft: { x: 0, y: gridSize / 3 },
+    playerSpacing: playerRadius,
+  };
+};
 
 export enum PlayerColor {
   WHITE = 'white',
@@ -36,7 +49,13 @@ const Player: FunctionComponent<PlayerProps> = ({
   color,
 }) => {
   return (
-    <Circle x={x} y={y} radius={playerRadius} fill={color} stroke="white" />
+    <Circle
+      x={x}
+      y={y}
+      radius={usePlayerRadius()}
+      fill={color}
+      stroke="white"
+    />
   );
 };
 
@@ -53,8 +72,10 @@ const PlayersRow: FunctionComponent<PlayersRowProps> = ({
   width,
   height,
 }) => {
-  const totalPlayersWidth = players.length * playerWidth;
-  const totalInterPlayerDistance = (players.length - 1) * interPlayerDistance;
+  const playerRadius = usePlayerRadius();
+  const { playerSpacing } = usePlayersDimensions();
+  const totalPlayersWidth = players.length * playerRadius * 2;
+  const totalInterPlayerDistance = (players.length - 1) * playerSpacing;
   const firstMiddleLeft = translate(
     topLeft,
     (width - (totalPlayersWidth + totalInterPlayerDistance)) / 2,
@@ -68,7 +89,7 @@ const PlayersRow: FunctionComponent<PlayersRowProps> = ({
           key={player.color}
           center={translate(
             firstMiddleLeft,
-            playerRadius + i * (playerWidth + interPlayerDistance),
+            playerRadius + i * (playerRadius * 2 + playerSpacing),
             0
           )}
           {...player}
@@ -84,9 +105,11 @@ export interface PlayersProps {
 }
 
 const Players: FunctionComponent<PlayersProps> = ({ players, roomLoc }) => {
+  const { width, height, topLeft } = usePlayersDimensions();
+
   const byRow = partition(players, 3);
-  const rowHeight = playersHeight / byRow.length;
-  const roomTopLeft = gridToTopLeft(roomLoc);
+  const rowHeight = height / byRow.length;
+  const roomTopLeft = useGridTopLeft(roomLoc);
 
   return (
     <Group>
@@ -94,12 +117,8 @@ const Players: FunctionComponent<PlayersProps> = ({ players, roomLoc }) => {
         <PlayersRow
           key={i}
           players={row}
-          topLeft={translate(
-            add(roomTopLeft, playersTopLeft),
-            0,
-            i * rowHeight
-          )}
-          width={playersWidth}
+          topLeft={translate(add(roomTopLeft, topLeft), 0, i * rowHeight)}
+          width={width}
           height={rowHeight}
         />
       ))}

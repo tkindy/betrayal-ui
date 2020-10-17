@@ -1,11 +1,17 @@
 import React, { FunctionComponent } from 'react';
 import { Group, Rect, Shape, Text } from 'react-konva';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../rootReducer';
 import { Point, rotate, translate } from './geometry';
-import { GridLoc, gridSize, gridToCenter, gridToTopLeft } from './grid';
+import { GridLoc, useGridSize, useGridCenter, useGridTopLeft } from './grid';
 import Players, { PlayerModel } from './Players';
 
-const doorWidth = gridSize / 2.5;
-const doorHeight = gridSize / 8;
+const useDoorWidth = () => {
+  return useGridSize() / 2.5;
+};
+const useDoorHeight = () => {
+  return useGridSize() / 8;
+};
 
 export enum Direction {
   NORTH = 90,
@@ -20,7 +26,10 @@ interface DoorProps {
 }
 
 const Door: FunctionComponent<DoorProps> = ({ roomLoc, doorDirection }) => {
-  const roomCenter = gridToCenter(roomLoc);
+  const gridSize = useGridSize();
+  const doorWidth = useDoorWidth();
+  const doorHeight = useDoorHeight();
+  const roomCenter = useGridCenter(roomLoc);
 
   const baseTopLeft = translate(
     roomCenter,
@@ -77,7 +86,10 @@ const Room: FunctionComponent<RoomProps> = ({
     return <Door key={direction} roomLoc={loc} doorDirection={direction} />;
   });
 
-  const { x, y } = gridToTopLeft(loc);
+  useSelector((state: RootState) => state.zoom.gridSize);
+
+  const { x, y } = useGridTopLeft(loc);
+  const gridSize = useGridSize();
 
   return (
     <Group>
