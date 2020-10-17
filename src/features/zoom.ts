@@ -1,5 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 
+const minGridSize = 50;
+const maxGridSize = 300;
 const zoomStep = 50;
 
 interface ZoomState {
@@ -13,10 +15,10 @@ const zoomSlice = createSlice({
   initialState,
   reducers: {
     zoomIn(state) {
-      state.gridSize += zoomStep;
+      state.gridSize = Math.min(maxGridSize, state.gridSize + zoomStep);
     },
     zoomOut(state) {
-      state.gridSize -= zoomStep;
+      state.gridSize = Math.max(minGridSize, state.gridSize - zoomStep);
     },
   },
 });
