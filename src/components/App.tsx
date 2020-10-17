@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { Layer, Stage } from 'react-konva';
+import { Layer, Rect, Stage } from 'react-konva';
 import { Direction } from './board/Room';
 import Board from './board/Board';
 import { PlayerColor } from './board/Players';
@@ -58,6 +58,7 @@ const App = () => {
           <Stage width={width} height={height}>
             <ReactReduxContext.Provider value={reduxContext}>
               <Layer draggable>
+                <Rect width={width} height={height} />
                 <Board rooms={rooms} />
               </Layer>
               <Layer>
