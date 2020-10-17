@@ -1,7 +1,7 @@
-import { LineConfig } from 'konva/types/shapes/Line';
 import React, { FunctionComponent } from 'react';
 import { Group, Line, Rect } from 'react-konva';
 import {
+  Floor,
   RoomStackState,
   StackRoom as StackRoomModel,
 } from '../../features/roomStack';
@@ -14,6 +14,10 @@ const houseXProp = 0.5;
 const houseYProp = 0.4;
 const houseTopInset = 20;
 
+const pointsToArray: (points: Point[]) => number[] = (points) => {
+  return points.map(({ x, y }) => [x, y]).flat();
+};
+
 const getHousePoints: (
   topLeft: Point,
   width: number,
@@ -25,9 +29,7 @@ const getHousePoints: (
   const upperRight = translate(upperLeft, width, 0);
   const lowerRight = translate(lowerLeft, width, 0);
 
-  return [peak, upperRight, lowerRight, lowerLeft, upperLeft]
-    .map(({ x, y }) => [x, y])
-    .flat();
+  return pointsToArray([peak, upperRight, lowerRight, lowerLeft, upperLeft]);
 };
 
 interface StackRoomProps {
@@ -35,6 +37,47 @@ interface StackRoomProps {
   stackDimensions: Dimensions;
   nextRoom?: StackRoomModel;
 }
+
+const drawFloor = (
+  floor: Floor,
+  possibleFloors: Floor[],
+  topLeft: Point,
+  width: number,
+  height: number
+) => {
+  const windowWidth = width * 0.9;
+  const windowHeight = height * 0.8;
+  const windowXInset = (width - windowWidth) / 2;
+  const windowYInset = (height - windowHeight) / 2;
+  const fill = possibleFloors.includes(floor) ? 'gold' : 'gray';
+
+  if ([Floor.UPPER, Floor.GROUND, Floor.BASEMENT].includes(floor)) {
+    const { x, y } = translate(topLeft, windowXInset, windowYInset);
+
+    return (
+      <Rect
+        key={floor}
+        x={x}
+        y={y}
+        width={windowWidth}
+        height={windowHeight}
+        fill={fill}
+      />
+    );
+  }
+
+  const top = translate(topLeft, width / 2, windowYInset);
+  const left = translate(topLeft, windowXInset, windowHeight + windowYInset);
+  const right = translate(left, windowWidth, 0);
+  return (
+    <Line
+      key={floor}
+      points={pointsToArray([top, right, left])}
+      closed={true}
+      fill={fill}
+    />
+  );
+};
 
 const StackRoom: FunctionComponent<StackRoomProps> = ({
   stackTopLeft,
@@ -49,12 +92,29 @@ const StackRoom: FunctionComponent<StackRoomProps> = ({
   const outlineStyle = nextRoom ? { fill: 'black' } : { dash: [20, 10] };
 
   return (
-    <Line
-      points={getHousePoints(houseTopLeft, houseWidth, floorHeight)}
-      stroke="black"
-      closed={true}
-      {...outlineStyle}
-    />
+    <Group>
+      <Line
+        points={getHousePoints(houseTopLeft, houseWidth, floorHeight)}
+        stroke="black"
+        closed={true}
+        {...outlineStyle}
+      />
+      {nextRoom &&
+        [
+          Floor.ROOF,
+          Floor.UPPER,
+          Floor.GROUND,
+          Floor.BASEMENT,
+        ].map((floor, i) =>
+          drawFloor(
+            floor,
+            nextRoom.possibleFloors,
+            translate(houseTopLeft, 0, i * floorHeight),
+            houseWidth,
+            floorHeight
+          )
+        )}
+    </Group>
   );
 };
 

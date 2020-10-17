@@ -70,12 +70,7 @@ const App = () => {
               <Layer>
                 <RoomStack
                   nextRoom={{
-                    possibleFloors: [
-                      Floor.BASEMENT,
-                      Floor.GROUND,
-                      Floor.UPPER,
-                      Floor.ROOF,
-                    ],
+                    possibleFloors: [Floor.GROUND, Floor.ROOF],
                   }}
                 />
               </Layer>
