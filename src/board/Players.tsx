@@ -4,7 +4,7 @@ import { partition } from '../utils';
 import { add, Point, translate } from './geometry';
 import { GridLoc, gridSize, gridToTopLeft } from './grid';
 
-const playerRadius = 15;
+const playerRadius = gridSize / 15;
 const playerWidth = playerRadius * 2;
 const playersTopLeft: Point = {
   x: 0,
