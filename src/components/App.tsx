@@ -58,7 +58,12 @@ const App = () => {
           <Stage width={width} height={height}>
             <ReactReduxContext.Provider value={reduxContext}>
               <Layer draggable>
-                <Rect width={width} height={height} />
+                <Rect
+                  x={-1000}
+                  y={-1000}
+                  width={width + 2000}
+                  height={height + 2000}
+                />
                 <Board rooms={rooms} />
               </Layer>
               <Layer>
