@@ -4,13 +4,15 @@ import { partition } from '../utils';
 import { add, Point, translate } from './geometry';
 import { GridLoc, gridSize, gridToTopLeft } from './grid';
 
-const playerRadius = 10;
+const playerRadius = 15;
+const playerWidth = playerRadius * 2;
 const playersTopLeft: Point = {
   x: 0,
   y: gridSize / 3,
 };
 const playersWidth = gridSize;
 const playersHeight = gridSize / 3;
+const interPlayerDistance = playerRadius;
 
 export enum PlayerColor {
   WHITE = 'white',
@@ -51,14 +53,23 @@ const PlayersRow: FunctionComponent<PlayersRowProps> = ({
   width,
   height,
 }) => {
-  const segmentOffset = width / (players.length + 1);
-  const middleLeft: Point = translate(topLeft, 0, height / 2);
+  const totalPlayersWidth = players.length * playerWidth;
+  const totalInterPlayerDistance = (players.length - 1) * interPlayerDistance;
+  const firstMiddleLeft = translate(
+    topLeft,
+    (width - (totalPlayersWidth + totalInterPlayerDistance)) / 2,
+    height / 2
+  );
 
   return (
     <Group>
       {players.map((player, i) => (
         <Player
-          center={translate(middleLeft, (i + 1) * segmentOffset, 0)}
+          center={translate(
+            firstMiddleLeft,
+            playerRadius + i * (playerWidth + interPlayerDistance),
+            0
+          )}
           {...player}
         />
       ))}
