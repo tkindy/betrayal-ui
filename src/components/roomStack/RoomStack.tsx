@@ -33,8 +33,6 @@ const getHousePoints: (
 };
 
 interface StackRoomProps {
-  stackTopLeft: Point;
-  stackDimensions: Dimensions;
   nextRoom?: StackRoomModel;
 }
 
@@ -79,15 +77,36 @@ const drawFloor = (
   );
 };
 
-const StackRoom: FunctionComponent<StackRoomProps> = ({
-  stackTopLeft,
-  stackDimensions: { width, height },
-  nextRoom,
-}) => {
+interface StackRoomDimensions {
+  houseTopLeft: Point;
+  houseDimensions: Dimensions;
+}
+
+export const useStackRoomDimensions: () => StackRoomDimensions = () => {
+  const {
+    topLeft: stackTopLeft,
+    dimensions: { width, height },
+  } = useStackDimensions();
+
   const houseWidth = width * houseXProp;
   const houseHeight = height * houseYProp;
   const houseSidesInset = (width - houseWidth) / 2;
   const houseTopLeft = translate(stackTopLeft, houseSidesInset, houseTopInset);
+
+  return {
+    houseTopLeft,
+    houseDimensions: {
+      width: houseWidth,
+      height: houseHeight,
+    },
+  };
+};
+
+const StackRoom: FunctionComponent<StackRoomProps> = ({ nextRoom }) => {
+  const {
+    houseTopLeft,
+    houseDimensions: { width: houseWidth, height: houseHeight },
+  } = useStackRoomDimensions();
   const floorHeight = houseHeight / 4;
   const outlineStyle = nextRoom ? { fill: 'black' } : { dash: [20, 10] };
 
@@ -151,11 +170,7 @@ const RoomStack: FunctionComponent<RoomStackState> = ({ nextRoom }) => {
         fill="grey"
         cornerRadius={10}
       />
-      <StackRoom
-        stackTopLeft={topLeft}
-        stackDimensions={{ width, height }}
-        nextRoom={nextRoom}
-      />
+      <StackRoom nextRoom={nextRoom} />
     </Group>
   );
 };
