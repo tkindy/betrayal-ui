@@ -8,11 +8,26 @@ import {
 import { Dimensions, Point, translate } from '../geometry';
 import { useWindowDimensions } from '../windowDimensions';
 
-const aspectRatio = 1.25;
-const maxWidth = 200;
-const houseXProp = 0.5;
-const houseYProp = 0.4;
-const houseTopInset = 20;
+const aspectRatio = 1;
+const maxWidth = 250;
+
+const yUnits = {
+  spacing: 1,
+  room: 8,
+  button: 2,
+};
+
+const totalYUnits =
+  yUnits.spacing +
+  yUnits.room +
+  yUnits.spacing +
+  yUnits.button +
+  yUnits.spacing;
+
+const totalXUnits = yUnits.spacing + yUnits.room + yUnits.spacing;
+
+const calcUnitsLength = (areaHeight: number, units: number) =>
+  areaHeight * (units / totalYUnits);
 
 const pointsToArray: (points: Point[]) => number[] = (points) => {
   return points.map(({ x, y }) => [x, y]).flat();
@@ -34,6 +49,7 @@ const getHousePoints: (
 
 interface StackRoomProps {
   nextRoom?: StackRoomModel;
+  areaBox: BoundingBox;
 }
 
 const drawFloor = (
@@ -80,44 +96,91 @@ const drawFloor = (
   );
 };
 
-interface StackRoomDimensions {
-  houseTopLeft: Point;
-  houseDimensions: Dimensions;
+interface BoundingBox {
+  topLeft: Point;
+  dimensions: Dimensions;
 }
 
-export const useStackRoomDimensions: () => StackRoomDimensions = () => {
+const getHouseBoundingBox: (roomBox: BoundingBox) => BoundingBox = (
+  roomBox
+) => {
   const {
-    topLeft: stackTopLeft,
-    dimensions: { width, height },
-  } = useStackDimensions();
+    topLeft: roomTopLeft,
+    dimensions: { width: roomWidth, height: roomHeight },
+  } = roomBox;
 
-  const houseWidth = width * houseXProp;
-  const houseHeight = height * houseYProp;
-  const houseSidesInset = (width - houseWidth) / 2;
-  const houseTopLeft = translate(stackTopLeft, houseSidesInset, houseTopInset);
+  const houseWidth = roomWidth * 0.8;
+  const houseHeight = roomHeight * 0.8;
 
   return {
-    houseTopLeft,
-    houseDimensions: {
+    topLeft: translate(
+      roomTopLeft,
+      (roomWidth - houseWidth) / 2,
+      (roomHeight - houseHeight) / 2
+    ),
+    dimensions: {
       width: houseWidth,
       height: houseHeight,
     },
   };
 };
 
-const StackRoom: FunctionComponent<StackRoomProps> = ({ nextRoom }) => {
+const getRoomBoundingBox: (areaBox: BoundingBox) => BoundingBox = (areaBox) => {
   const {
-    houseTopLeft,
-    houseDimensions: { width: houseWidth, height: houseHeight },
-  } = useStackRoomDimensions();
-  const floorHeight = houseHeight / 4;
+    topLeft: areaTopLeft,
+    dimensions: { height: areaHeight },
+  } = areaBox;
+
+  const roomSize = calcUnitsLength(areaHeight, yUnits.room);
+  const spacing = calcUnitsLength(areaHeight, yUnits.spacing);
+
+  return {
+    topLeft: translate(areaTopLeft, spacing, spacing),
+    dimensions: {
+      width: roomSize,
+      height: roomSize,
+    },
+  };
+};
+
+export const getAreaBoundingBox: (
+  windowDimensions: Dimensions
+) => BoundingBox = (windowDimensions) => {
+  const { width: windowWidth, height: windowHeight } = windowDimensions;
+
+  const height = windowHeight / 3;
+  const width = calcUnitsLength(height, totalXUnits);
+
+  return {
+    topLeft: {
+      x: windowWidth - width,
+      y: windowHeight - height,
+    },
+    dimensions: {
+      width,
+      height,
+    },
+  };
+};
+
+interface HouseProps {
+  roomBox: BoundingBox;
+  nextRoom?: StackRoomModel;
+}
+
+const House: FunctionComponent<HouseProps> = ({ roomBox, nextRoom }) => {
+  const {
+    topLeft,
+    dimensions: { width, height },
+  } = getHouseBoundingBox(roomBox);
+  const floorHeight = height / 4;
   const outlineStyle = nextRoom ? { fill: 'black' } : { dash: [20, 10] };
 
   return (
     <Group>
       <Line
-        points={getHousePoints(houseTopLeft, houseWidth, floorHeight)}
-        stroke="black"
+        points={getHousePoints(topLeft, width, floorHeight)}
+        stroke="gray"
         closed={true}
         {...outlineStyle}
       />
@@ -131,11 +194,29 @@ const StackRoom: FunctionComponent<StackRoomProps> = ({ nextRoom }) => {
           drawFloor(
             floor,
             nextRoom.possibleFloors,
-            translate(houseTopLeft, 0, i * floorHeight),
-            houseWidth,
+            translate(topLeft, 0, i * floorHeight),
+            width,
             floorHeight
           )
         )}
+    </Group>
+  );
+};
+
+const StackRoom: FunctionComponent<StackRoomProps> = ({
+  areaBox,
+  nextRoom,
+}) => {
+  const roomBox = getRoomBoundingBox(areaBox);
+  const {
+    topLeft: { x, y },
+    dimensions: { width, height },
+  } = roomBox;
+
+  return (
+    <Group>
+      <Rect x={x} y={y} width={width} height={height} fill="black" />
+      <House roomBox={roomBox} nextRoom={nextRoom} />
     </Group>
   );
 };
@@ -158,10 +239,11 @@ export const useStackDimensions: () => StackDimensions = () => {
 };
 
 const RoomStack: FunctionComponent<RoomStackState> = ({ nextRoom }) => {
+  const areaBox = getAreaBoundingBox(useWindowDimensions());
   const {
     topLeft,
     dimensions: { width, height },
-  } = useStackDimensions();
+  } = areaBox;
 
   return (
     <Group>
@@ -173,7 +255,7 @@ const RoomStack: FunctionComponent<RoomStackState> = ({ nextRoom }) => {
         fill="grey"
         cornerRadius={10}
       />
-      <StackRoom nextRoom={nextRoom} />
+      <StackRoom nextRoom={nextRoom} areaBox={areaBox} />
     </Group>
   );
 };
