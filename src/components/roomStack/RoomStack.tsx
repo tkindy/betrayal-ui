@@ -43,13 +43,14 @@ const drawFloor = (
   width: number,
   height: number
 ) => {
-  const windowWidth = width * 0.9;
-  const windowHeight = height * 0.8;
-  const windowXInset = (width - windowWidth) / 2;
-  const windowYInset = (height - windowHeight) / 2;
   const fill = possibleFloors.includes(floor) ? 'gold' : 'gray';
 
   if ([Floor.UPPER, Floor.GROUND, Floor.BASEMENT].includes(floor)) {
+    const windowWidth = width * 0.9;
+    const windowHeight = height * 0.8;
+    const windowXInset = (width - windowWidth) / 2;
+    const windowYInset = (height - windowHeight) / 2;
+
     const { x, y } = translate(topLeft, windowXInset, windowYInset);
 
     return (
@@ -64,15 +65,17 @@ const drawFloor = (
     );
   }
 
-  const top = translate(topLeft, width / 2, windowYInset);
-  const left = translate(topLeft, windowXInset, windowHeight + windowYInset);
-  const right = translate(left, windowWidth, 0);
+  const top = translate(topLeft, width / 2, 0);
+  const left = translate(topLeft, 0, height);
+  const right = translate(left, width, 0);
   return (
     <Line
       key={floor}
       points={pointsToArray([top, right, left])}
       closed={true}
       fill={fill}
+      stroke="black"
+      strokeWidth={5}
     />
   );
 };
