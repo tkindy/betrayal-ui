@@ -7,8 +7,8 @@ interface RoomStackControlProps {}
 const RoomStackControl: FunctionComponent<RoomStackControlProps> = () => {
   const { height } = useWindowDimensions();
   const {
-    topLeft: { x: stackX, y: stackY },
-    dimensions: { width: stackWidth, height: stackHeight },
+    topLeft: { x: stackX },
+    dimensions: { width: stackWidth },
   } = useStackDimensions();
 
   return (
