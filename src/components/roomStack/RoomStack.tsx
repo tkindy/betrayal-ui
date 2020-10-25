@@ -149,7 +149,7 @@ export const getAreaBoundingBox: (
 ) => BoundingBox = (windowDimensions) => {
   const { width: windowWidth, height: windowHeight } = windowDimensions;
 
-  const height = windowHeight / 3;
+  const height = Math.max(windowHeight / 3, 250);
   const width = calcUnitsLength(height, totalXUnits);
 
   return {
