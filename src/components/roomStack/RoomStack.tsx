@@ -171,16 +171,9 @@ const House: FunctionComponent<HouseProps> = ({ roomBox, nextRoom }) => {
     dimensions: { width, height },
   } = getHouseBoundingBox(roomBox);
   const floorHeight = height / 4;
-  const outlineStyle = nextRoom ? { fill: 'black' } : { dash: [20, 10] };
 
   return (
     <Group>
-      <Line
-        points={getHousePoints(topLeft, width, floorHeight)}
-        stroke="gray"
-        closed={true}
-        {...outlineStyle}
-      />
       {nextRoom &&
         [
           Floor.ROOF,
@@ -196,6 +189,13 @@ const House: FunctionComponent<HouseProps> = ({ roomBox, nextRoom }) => {
             floorHeight
           )
         )}
+
+      <Line
+        points={getHousePoints(topLeft, width, floorHeight)}
+        closed={true}
+        stroke="gray"
+        strokeWidth={3}
+      />
     </Group>
   );
 };
