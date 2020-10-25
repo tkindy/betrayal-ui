@@ -28,6 +28,19 @@ export const flipRoomStack = createAsyncThunk(
   }
 );
 
+const rotateDirection = (dir: Direction) => {
+  switch (dir) {
+    case Direction.NORTH:
+      return Direction.EAST;
+    case Direction.EAST:
+      return Direction.SOUTH;
+    case Direction.SOUTH:
+      return Direction.WEST;
+    case Direction.WEST:
+      return Direction.NORTH;
+  }
+};
+
 export const rotateFlipped = createAsyncThunk<
   FlippedRoom | undefined,
   void,
@@ -42,9 +55,7 @@ export const rotateFlipped = createAsyncThunk<
   const { name, doorDirections } = room;
   return {
     name,
-    doorDirections: doorDirections.map((dir) => {
-      return dir - 90;
-    }),
+    doorDirections: doorDirections.map(rotateDirection),
   };
 });
 
