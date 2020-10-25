@@ -71,6 +71,10 @@ const roomStackSlice = createSlice({
       })
       .addCase(rotateFlipped.fulfilled, (state, { payload: flippedRoom }) => {
         state.flippedRoom = flippedRoom;
+      })
+      .addCase(placeRoom.fulfilled, (state, { payload: { nextRoom } }) => {
+        delete state.flippedRoom;
+        state.nextRoom = nextRoom;
       });
   },
 });

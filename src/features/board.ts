@@ -31,19 +31,27 @@ interface PlaceRoomPayload {
   loc: GridLoc;
 }
 
+interface PlaceRoomResult {
+  rooms: Room[];
+  nextRoom?: StackRoom;
+}
+
 export const placeRoom = createAsyncThunk<
-  Room[],
+  PlaceRoomResult,
   PlaceRoomPayload,
   { state: RootState }
 >('board/placeRoomStatus', async ({ loc }, { getState }) => {
   const { name, doorDirections } = getState().roomStack.flippedRoom!!;
   const state = getState().board;
-  return state.rooms.concat({
-    name,
-    doorDirections,
-    loc,
-    players: [],
-  });
+  return {
+    rooms: state.rooms.concat({
+      name,
+      doorDirections,
+      loc,
+      players: [],
+    }),
+    nextRoom: { possibleFloors: [Floor.BASEMENT] },
+  };
 });
 
 export const openSpotClicked: (
@@ -114,7 +122,7 @@ const boardSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(placeRoom.fulfilled, (state, { payload: rooms }) => {
+    builder.addCase(placeRoom.fulfilled, (state, { payload: { rooms } }) => {
       state.rooms = rooms;
     });
   },
