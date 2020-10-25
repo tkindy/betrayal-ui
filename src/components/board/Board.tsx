@@ -1,16 +1,16 @@
 import React, { FunctionComponent } from 'react';
-import Room, { RoomProps } from './BoardRoom';
+import BoardRoom, { BoardRoomProps } from './BoardRoom';
 import { Group } from 'react-konva';
 
 interface BoardProps {
-  rooms: RoomProps[];
+  rooms: BoardRoomProps[];
 }
 
 const Board: FunctionComponent<BoardProps> = ({ rooms }) => {
   return (
     <Group>
       {rooms.map((room) => (
-        <Room key={room.name} {...room} />
+        <BoardRoom key={room.name} {...room} />
       ))}
     </Group>
   );
