@@ -17,3 +17,15 @@ export const unique: <T>(ts: T[]) => T[] = <T>(ts: T[]) => {
     [] as T[]
   );
 };
+
+export const index: <T, K>(ts: T[], by: (t: T) => K) => Map<K, T[]> = <T, K>(
+  ts: T[],
+  by: (t: T) => K
+) => {
+  return ts.reduce((map, t) => {
+    const key = by(t);
+    const group = map.get(key) || [];
+
+    return new Map(map).set(key, group.concat(t));
+  }, new Map());
+};

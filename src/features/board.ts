@@ -5,6 +5,7 @@ import {
   ThunkAction,
 } from '@reduxjs/toolkit';
 import { GridLoc } from '../components/board/grid';
+import { Direction } from '../components/room/Room';
 import { RootState } from '../rootReducer';
 
 interface PlaceRoomPayload {
@@ -14,7 +15,8 @@ interface PlaceRoomPayload {
 export const placeRoom = createAction<PlaceRoomPayload>('board/placeRoom');
 
 export const openSpotClicked: (
-  loc: GridLoc
+  loc: GridLoc,
+  from: Direction[]
 ) => ThunkAction<void, RootState, unknown, Action<string>> = (loc) => (
   dispatch,
   getState

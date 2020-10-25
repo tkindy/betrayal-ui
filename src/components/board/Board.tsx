@@ -3,7 +3,7 @@ import BoardRoom, { BoardRoomProps } from './BoardRoom';
 import { Group } from 'react-konva';
 import { GridLoc } from './grid';
 import OpenSpot from './OpenSpot';
-import { unique } from '../../utils';
+import { index } from '../../utils';
 import { Direction } from '../room/Room';
 
 interface BoardProps {
@@ -40,13 +40,23 @@ const getDelta: (dir: Direction) => [number, number] = (dir) => {
   }
 };
 
-const getNeighboringLocs: (room: BoardRoomProps) => GridLoc[] = (room) => {
+interface Neighbor {
+  loc: GridLoc;
+  from: Direction[];
+}
+
+const getNeighbors: (room: BoardRoomProps) => Neighbor[] = (room) => {
   const { gridX: x, gridY: y } = room.loc;
 
-  return room.doorDirections.map(getDelta).map(([dx, dy]) => {
+  return room.doorDirections.map((dir) => {
+    const [dx, dy] = getDelta(dir);
+
     return {
-      gridX: x + dx,
-      gridY: y + dy,
+      loc: {
+        gridX: x + dx,
+        gridY: y + dy,
+      },
+      from: [dir],
     };
   });
 };
@@ -56,26 +66,33 @@ const isOpen: (loc: GridLoc, map: BoardMap) => boolean = (loc, map) => {
   return !(map[x] && map[x][y]);
 };
 
-const findOpenLocs: (map: BoardMap) => GridLoc[] = (map) => {
-  const neighboringLocs = unique(
-    Object.values(map).flatMap(Object.values).flatMap(getNeighboringLocs)
-  );
+const findOpenNeighbors: (map: BoardMap) => Neighbor[] = (map) => {
+  const openNeighbors = Object.values(map)
+    .flatMap(Object.values)
+    .flatMap(getNeighbors)
+    .filter(({ loc }) => isOpen(loc, map));
 
-  return neighboringLocs.filter((loc) => isOpen(loc, map));
+  const locIndex = index(openNeighbors, (neighbor) => neighbor.loc);
+
+  return Array.from(locIndex.values()).map((neighbors) =>
+    neighbors.reduce(({ loc, from }, cur) => {
+      return { loc, from: from.concat(cur.from) };
+    })
+  );
 };
 
 const Board: FunctionComponent<BoardProps> = ({ rooms }) => {
   const map = buildBoardMap(rooms);
-  const openLocs = findOpenLocs(map);
+  const openNeighbors = findOpenNeighbors(map);
 
   return (
     <Group>
       {rooms.map((room) => (
         <BoardRoom key={room.name} {...room} />
       ))}
-      {openLocs.map((openLoc) => {
-        const { gridX, gridY } = openLoc;
-        return <OpenSpot key={`(${gridX}, ${gridY})`} loc={openLoc} />;
+      {openNeighbors.map(({ loc, from }) => {
+        const { gridX, gridY } = loc;
+        return <OpenSpot key={`(${gridX}, ${gridY})`} loc={loc} from={from} />;
       })}
     </Group>
   );
