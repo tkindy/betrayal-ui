@@ -8,10 +8,7 @@ import {
 import { Dimensions, Point, translate } from '../geometry';
 import { useWindowDimensions } from '../windowDimensions';
 
-const aspectRatio = 1;
-const maxWidth = 250;
-
-const yUnits = {
+export const yUnits = {
   spacing: 1,
   room: 8,
   button: 2,
@@ -24,9 +21,13 @@ const totalYUnits =
   yUnits.button +
   yUnits.spacing;
 
+export const xUnits = {
+  button: (yUnits.room - yUnits.spacing) / 2,
+};
+
 const totalXUnits = yUnits.spacing + yUnits.room + yUnits.spacing;
 
-const calcUnitsLength = (areaHeight: number, units: number) =>
+export const calcUnitsLength = (areaHeight: number, units: number) =>
   areaHeight * (units / totalYUnits);
 
 const pointsToArray: (points: Point[]) => number[] = (points) => {
@@ -219,23 +220,6 @@ const StackRoom: FunctionComponent<StackRoomProps> = ({
       <House roomBox={roomBox} nextRoom={nextRoom} />
     </Group>
   );
-};
-
-interface StackDimensions {
-  topLeft: Point;
-  dimensions: Dimensions;
-}
-
-export const useStackDimensions: () => StackDimensions = () => {
-  const windowDimensions = useWindowDimensions();
-  const width = Math.min(maxWidth, windowDimensions.width / 3);
-  const height = width * aspectRatio;
-  const topLeft = {
-    x: windowDimensions.width - width,
-    y: windowDimensions.height - height,
-  };
-
-  return { topLeft, dimensions: { width, height } };
 };
 
 const RoomStack: FunctionComponent<RoomStackState> = ({ nextRoom }) => {

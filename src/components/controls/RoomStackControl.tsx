@@ -1,30 +1,49 @@
-import React, { FunctionComponent } from 'react';
-import { useStackDimensions } from '../roomStack/RoomStack';
+import React, { CSSProperties, FunctionComponent } from 'react';
+import { translate } from '../geometry';
+import {
+  calcUnitsLength,
+  getAreaBoundingBox,
+  xUnits,
+  yUnits,
+} from '../roomStack/RoomStack';
 import { useWindowDimensions } from '../windowDimensions';
 
 interface RoomStackControlProps {}
 
 const RoomStackControl: FunctionComponent<RoomStackControlProps> = () => {
-  const { height } = useWindowDimensions();
   const {
-    topLeft: { x: stackX },
-    dimensions: { width: stackWidth },
-  } = useStackDimensions();
+    topLeft: areaTopLeft,
+    dimensions: { height: areaHeight },
+  } = getAreaBoundingBox(useWindowDimensions());
+  const { x, y } = translate(
+    areaTopLeft,
+    calcUnitsLength(areaHeight, yUnits.spacing),
+    calcUnitsLength(areaHeight, yUnits.spacing + yUnits.room + yUnits.spacing)
+  );
+  const spacing = calcUnitsLength(areaHeight, yUnits.spacing);
+  const buttonWidth = calcUnitsLength(areaHeight, xUnits.button);
+  const buttonHeight = calcUnitsLength(areaHeight, yUnits.button);
+  const buttonStyle: CSSProperties = {
+    position: 'absolute',
+    top: 0,
+    width: buttonWidth,
+    height: buttonHeight,
+  };
 
   return (
     <div
       className="room-stack-control"
       style={{
         position: 'absolute',
-        top: height - 50,
-        left: stackX,
-        width: stackWidth,
-        display: 'flex',
-        justifyContent: 'space-around',
+        top: y,
+        left: x,
+        width: buttonWidth + spacing + buttonWidth,
       }}
     >
-      <button>Use</button>
-      <button>Next</button>
+      <button style={{ left: 0, ...buttonStyle }}>Use</button>
+      <button style={{ left: buttonWidth + spacing, ...buttonStyle }}>
+        Next
+      </button>
     </div>
   );
 };
