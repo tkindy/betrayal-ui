@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from 'react';
-import { Group, Text } from 'react-konva';
+import { Group } from 'react-konva';
 import Room, { Direction } from '../room/Room';
+import RoomName from '../room/RoomName';
 import { GridLoc, useGridSize, useGridTopLeft } from './grid';
 import Players, { PlayerModel } from './Players';
 
@@ -26,16 +27,9 @@ const BoardRoom: FunctionComponent<BoardRoomProps> = ({
         box={{ topLeft, dimensions: { width: gridSize, height: gridSize } }}
         doorDirections={doorDirections}
       />
-      <Text
-        x={topLeft.x}
-        y={topLeft.y}
-        width={gridSize}
-        height={gridSize / 2}
-        text={name}
-        fontSize={16}
-        fill="red"
-        align="center"
-        verticalAlign="middle"
+      <RoomName
+        box={{ topLeft, dimensions: { width: gridSize, height: gridSize / 2 } }}
+        name={name}
       />
       <Players players={players} roomLoc={loc} />
     </Group>
