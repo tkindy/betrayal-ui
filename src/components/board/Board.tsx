@@ -2,6 +2,7 @@ import React, { FunctionComponent } from 'react';
 import BoardRoom, { BoardRoomProps } from './BoardRoom';
 import { Group } from 'react-konva';
 import { GridLoc } from './grid';
+import OpenSpot from './OpenSpot';
 
 interface BoardProps {
   rooms: BoardRoomProps[];
@@ -53,11 +54,19 @@ const findOpenLocs: (map: BoardMap) => GridLoc[] = (map) => {
 };
 
 const Board: FunctionComponent<BoardProps> = ({ rooms }) => {
+  const map = buildBoardMap(rooms);
+  const openLocs = findOpenLocs(map);
+  console.log(openLocs);
+
   return (
     <Group>
       {rooms.map((room) => (
         <BoardRoom key={room.name} {...room} />
       ))}
+      {openLocs.map((openLoc) => {
+        const { gridX, gridY } = openLoc;
+        return <OpenSpot key={`(${gridX}, ${gridY})`} loc={openLoc} />;
+      })}
     </Group>
   );
 };
