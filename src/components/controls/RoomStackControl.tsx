@@ -29,6 +29,7 @@ const RoomStackControl: FunctionComponent<RoomStackControlProps> = () => {
     top: 0,
     width: buttonWidth,
     height: buttonHeight,
+    padding: 0,
   };
 
   return (
@@ -39,6 +40,7 @@ const RoomStackControl: FunctionComponent<RoomStackControlProps> = () => {
         top: y,
         left: x,
         width: buttonWidth + spacing + buttonWidth,
+        height: buttonHeight,
       }}
     >
       <button style={{ left: 0, ...buttonStyle }}>Use</button>
