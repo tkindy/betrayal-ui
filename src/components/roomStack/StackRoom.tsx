@@ -130,22 +130,18 @@ const House: FunctionComponent<HouseProps> = ({ roomBox, nextRoom }) => {
 };
 
 interface StackRoomProps {
-  nextRoom?: StackRoomModel;
   areaBox: BoundingBox;
 }
 
-const StackRoom: FunctionComponent<StackRoomProps> = ({
-  areaBox,
-  nextRoom,
-}) => {
+const StackRoom: FunctionComponent<StackRoomProps> = ({ areaBox }) => {
   const roomBox = getRoomBoundingBox(areaBox);
   const {
     topLeft: { x, y },
     dimensions: { width, height },
   } = roomBox;
 
-  const flippedRoom = useSelector(
-    (state: RootState) => state.roomStack.flippedRoom
+  const { nextRoom, flippedRoom } = useSelector(
+    (state: RootState) => state.roomStack
   );
 
   if (flippedRoom) {

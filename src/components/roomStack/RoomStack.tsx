@@ -1,11 +1,10 @@
 import React, { FunctionComponent } from 'react';
 import { Group, Rect } from 'react-konva';
-import { RoomStackState } from '../../features/roomStack';
 import { useWindowDimensions } from '../windowDimensions';
 import { getAreaBoundingBox } from './shared';
 import StackRoom from './StackRoom';
 
-const RoomStack: FunctionComponent<RoomStackState> = ({ nextRoom }) => {
+const RoomStack: FunctionComponent<{}> = () => {
   const areaBox = getAreaBoundingBox(useWindowDimensions());
   const {
     topLeft,
@@ -22,7 +21,7 @@ const RoomStack: FunctionComponent<RoomStackState> = ({ nextRoom }) => {
         fill="grey"
         cornerRadius={10}
       />
-      <StackRoom nextRoom={nextRoom} areaBox={areaBox} />
+      <StackRoom areaBox={areaBox} />
     </Group>
   );
 };

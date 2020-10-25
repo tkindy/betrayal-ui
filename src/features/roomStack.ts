@@ -64,7 +64,11 @@ export interface RoomStackState {
   flippedRoom?: FlippedRoom;
 }
 
-const initialState: RoomStackState = {};
+const initialState: RoomStackState = {
+  nextRoom: {
+    possibleFloors: [Floor.GROUND, Floor.ROOF],
+  },
+};
 
 const roomStackSlice = createSlice({
   name: 'roomStack',
