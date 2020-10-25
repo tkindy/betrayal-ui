@@ -67,7 +67,6 @@ const findOpenLocs: (map: BoardMap) => GridLoc[] = (map) => {
 const Board: FunctionComponent<BoardProps> = ({ rooms }) => {
   const map = buildBoardMap(rooms);
   const openLocs = findOpenLocs(map);
-  console.log(openLocs);
 
   return (
     <Group>
