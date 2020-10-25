@@ -127,7 +127,16 @@ const initialState: BoardState = {
   ],
 };
 
-const boardSlice = createSlice({ name: 'board', initialState, reducers: {} });
+const boardSlice = createSlice({
+  name: 'board',
+  initialState,
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(placeRoom.fulfilled, (state, { payload: rooms }) => {
+      state.rooms = rooms;
+    });
+  },
+});
 
 export const {} = boardSlice.actions;
 export default boardSlice.reducer;
