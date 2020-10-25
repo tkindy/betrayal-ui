@@ -8,6 +8,8 @@ export const getStackRoom = createAsyncThunk(
   api.getStackRoom
 );
 
+export const skipRoom = createAsyncThunk('roomStack/skipStatus', api.skipRoom);
+
 export const flipRoomStack = createAsyncThunk(
   'roomStack/flipStatus',
   api.flipRoom
@@ -47,6 +49,9 @@ const roomStackSlice = createSlice({
       })
       .addCase(placeRoom.fulfilled, (state, { payload: { nextRoom } }) => {
         delete state.flippedRoom;
+        state.nextRoom = nextRoom;
+      })
+      .addCase(skipRoom.fulfilled, (state, { payload: nextRoom }) => {
         state.nextRoom = nextRoom;
       });
   },

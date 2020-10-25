@@ -1,6 +1,10 @@
 import React, { CSSProperties, FunctionComponent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { flipRoomStack, rotateFlipped } from '../../features/roomStack';
+import {
+  flipRoomStack,
+  rotateFlipped,
+  skipRoom,
+} from '../../features/roomStack';
 import { RootState } from '../../rootReducer';
 import { translate } from '../geometry';
 import { BoundingBox } from '../layout';
@@ -69,7 +73,10 @@ const StackButtons: FunctionComponent<{}> = () => {
       >
         Use
       </button>
-      <button style={{ left: buttonWidth + spacing, ...buttonStyle }}>
+      <button
+        onClick={() => dispatch(skipRoom())}
+        style={{ left: buttonWidth + spacing, ...buttonStyle }}
+      >
         Next
       </button>
     </div>

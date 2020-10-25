@@ -30,12 +30,41 @@ const mockStack: { stackRoom: StackRoom; flipped: FlippedRoom }[] = [
 
 let mockStackIndex = 0;
 
+const fixStackIndex = () => {
+  if (mockStackIndex >= mockStack.length) {
+    mockStackIndex = 0;
+  }
+};
+
+const advanceStack = () => {
+  if (mockStack.every((x) => x === undefined)) {
+    return;
+  }
+
+  do {
+    mockStackIndex += 1;
+    fixStackIndex();
+  } while (mockStack[mockStackIndex] === undefined);
+};
+
+export const getStackRoom = async () => {
+  return mockStack[mockStackIndex]
+    ? mockStack[mockStackIndex].stackRoom
+    : undefined;
+};
+
+export const skipRoom = async () => {
+  advanceStack();
+  return getStackRoom();
+};
+
 let flippedRoom: FlippedRoom | undefined = undefined;
 
 export const flipRoom = async () => {
   const { flipped } = mockStack[mockStackIndex];
   flippedRoom = flipped;
   delete mockStack[mockStackIndex];
+  advanceStack();
   return flipped;
 };
 
@@ -108,7 +137,6 @@ export interface PlaceRoomResponse {
   rooms: Room[];
   nextRoom?: StackRoom;
 }
-
 export const placeRoom = async (loc: GridLoc) => {
   if (!flippedRoom) {
     throw new Error("can't place room since there isn't one flipped");
@@ -121,17 +149,11 @@ export const placeRoom = async (loc: GridLoc) => {
     loc,
     players: [],
   });
-  mockStackIndex =
-    mockStackIndex >= mockStack.length - 1 ? 0 : mockStackIndex + 1;
 
   return {
     rooms,
-    nextRoom: mockStack[mockStackIndex].stackRoom,
+    nextRoom: await getStackRoom(),
   } as PlaceRoomResponse;
-};
-
-export const getStackRoom = async () => {
-  return mockStack[mockStackIndex].stackRoom;
 };
 
 export const getRooms = async () => {
