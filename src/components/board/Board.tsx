@@ -30,9 +30,9 @@ const buildBoardMap: (rooms: BoardRoomProps[]) => BoardMap = (rooms) => {
 const getDelta: (dir: Direction) => [number, number] = (dir) => {
   switch (dir) {
     case Direction.NORTH:
-      return [0, 1];
-    case Direction.SOUTH:
       return [0, -1];
+    case Direction.SOUTH:
+      return [0, 1];
     case Direction.EAST:
       return [-1, 0];
     case Direction.WEST:
