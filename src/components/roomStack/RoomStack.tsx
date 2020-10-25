@@ -49,10 +49,29 @@ const getHousePoints: (
   return pointsToArray([peak, upperRight, lowerRight, lowerLeft, upperLeft]);
 };
 
-interface StackRoomProps {
-  nextRoom?: StackRoomModel;
-  areaBox: BoundingBox;
-}
+const getHouseBoundingBox: (roomBox: BoundingBox) => BoundingBox = (
+  roomBox
+) => {
+  const {
+    topLeft: roomTopLeft,
+    dimensions: { width: roomWidth, height: roomHeight },
+  } = roomBox;
+
+  const houseWidth = roomWidth * 0.8;
+  const houseHeight = roomHeight * 0.8;
+
+  return {
+    topLeft: translate(
+      roomTopLeft,
+      (roomWidth - houseWidth) / 2,
+      (roomHeight - houseHeight) / 2
+    ),
+    dimensions: {
+      width: houseWidth,
+      height: houseHeight,
+    },
+  };
+};
 
 const drawFloor = (
   floor: Floor,
@@ -98,68 +117,6 @@ const drawFloor = (
   );
 };
 
-const getHouseBoundingBox: (roomBox: BoundingBox) => BoundingBox = (
-  roomBox
-) => {
-  const {
-    topLeft: roomTopLeft,
-    dimensions: { width: roomWidth, height: roomHeight },
-  } = roomBox;
-
-  const houseWidth = roomWidth * 0.8;
-  const houseHeight = roomHeight * 0.8;
-
-  return {
-    topLeft: translate(
-      roomTopLeft,
-      (roomWidth - houseWidth) / 2,
-      (roomHeight - houseHeight) / 2
-    ),
-    dimensions: {
-      width: houseWidth,
-      height: houseHeight,
-    },
-  };
-};
-
-const getRoomBoundingBox: (areaBox: BoundingBox) => BoundingBox = (areaBox) => {
-  const {
-    topLeft: areaTopLeft,
-    dimensions: { height: areaHeight },
-  } = areaBox;
-
-  const roomSize = calcUnitsLength(areaHeight, yUnits.room);
-  const spacing = calcUnitsLength(areaHeight, yUnits.spacing);
-
-  return {
-    topLeft: translate(areaTopLeft, spacing, spacing),
-    dimensions: {
-      width: roomSize,
-      height: roomSize,
-    },
-  };
-};
-
-export const getAreaBoundingBox: (
-  windowDimensions: Dimensions
-) => BoundingBox = (windowDimensions) => {
-  const { width: windowWidth, height: windowHeight } = windowDimensions;
-
-  const height = Math.max(windowHeight / 3, 250);
-  const width = calcUnitsLength(height, totalXUnits);
-
-  return {
-    topLeft: {
-      x: windowWidth - width,
-      y: windowHeight - height,
-    },
-    dimensions: {
-      width,
-      height,
-    },
-  };
-};
-
 interface HouseProps {
   roomBox: BoundingBox;
   nextRoom: StackRoomModel;
@@ -194,6 +151,29 @@ const House: FunctionComponent<HouseProps> = ({ roomBox, nextRoom }) => {
   );
 };
 
+const getRoomBoundingBox: (areaBox: BoundingBox) => BoundingBox = (areaBox) => {
+  const {
+    topLeft: areaTopLeft,
+    dimensions: { height: areaHeight },
+  } = areaBox;
+
+  const roomSize = calcUnitsLength(areaHeight, yUnits.room);
+  const spacing = calcUnitsLength(areaHeight, yUnits.spacing);
+
+  return {
+    topLeft: translate(areaTopLeft, spacing, spacing),
+    dimensions: {
+      width: roomSize,
+      height: roomSize,
+    },
+  };
+};
+
+interface StackRoomProps {
+  nextRoom?: StackRoomModel;
+  areaBox: BoundingBox;
+}
+
 const StackRoom: FunctionComponent<StackRoomProps> = ({
   areaBox,
   nextRoom,
@@ -221,6 +201,26 @@ const StackRoom: FunctionComponent<StackRoomProps> = ({
       text="Empty"
     />
   );
+};
+
+export const getAreaBoundingBox: (
+  windowDimensions: Dimensions
+) => BoundingBox = (windowDimensions) => {
+  const { width: windowWidth, height: windowHeight } = windowDimensions;
+
+  const height = Math.max(windowHeight / 3, 250);
+  const width = calcUnitsLength(height, totalXUnits);
+
+  return {
+    topLeft: {
+      x: windowWidth - width,
+      y: windowHeight - height,
+    },
+    dimensions: {
+      width,
+      height,
+    },
+  };
 };
 
 const RoomStack: FunctionComponent<RoomStackState> = ({ nextRoom }) => {
