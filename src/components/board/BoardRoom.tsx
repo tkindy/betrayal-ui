@@ -1,18 +1,12 @@
 import React, { FunctionComponent } from 'react';
 import { Group } from 'react-konva';
-import Room, { Direction } from '../room/Room';
+import Room from '../room/Room';
 import RoomName from '../room/RoomName';
-import { GridLoc, useGridSize, useGridTopLeft } from './grid';
-import Players, { PlayerModel } from './Players';
+import { useGridSize, useGridTopLeft } from './grid';
+import Players from './Players';
+import { Room as RoomModel } from '../../features/board';
 
-export interface BoardRoomProps {
-  name: string;
-  loc: GridLoc;
-  doorDirections: Direction[];
-  players: PlayerModel[];
-}
-
-const BoardRoom: FunctionComponent<BoardRoomProps> = ({
+const BoardRoom: FunctionComponent<RoomModel> = ({
   name,
   loc,
   doorDirections,

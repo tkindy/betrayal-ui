@@ -1,18 +1,19 @@
 import React, { FunctionComponent } from 'react';
-import BoardRoom, { BoardRoomProps } from './BoardRoom';
+import BoardRoom from './BoardRoom';
 import { Group } from 'react-konva';
 import { GridLoc } from './grid';
 import OpenSpot from './OpenSpot';
 import { index } from '../../utils';
 import { Direction } from '../room/Room';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../rootReducer';
+import { Room as RoomModel } from '../../features/board';
 
-interface BoardProps {
-  rooms: BoardRoomProps[];
-}
+interface BoardProps {}
 
-type BoardMap = Record<number, Record<number, BoardRoomProps>>;
+type BoardMap = Record<number, Record<number, RoomModel>>;
 
-const buildBoardMap: (rooms: BoardRoomProps[]) => BoardMap = (rooms) => {
+const buildBoardMap: (rooms: RoomModel[]) => BoardMap = (rooms) => {
   const map = {} as BoardMap;
 
   for (const room of rooms) {
@@ -45,7 +46,7 @@ interface Neighbor {
   from: Direction[];
 }
 
-const getNeighbors: (room: BoardRoomProps) => Neighbor[] = (room) => {
+const getNeighbors: (room: RoomModel) => Neighbor[] = (room) => {
   const { gridX: x, gridY: y } = room.loc;
 
   return room.doorDirections.map((dir) => {
@@ -81,7 +82,8 @@ const findOpenNeighbors: (map: BoardMap) => Neighbor[] = (map) => {
   );
 };
 
-const Board: FunctionComponent<BoardProps> = ({ rooms }) => {
+const Board: FunctionComponent<BoardProps> = () => {
+  const rooms = useSelector((state: RootState) => state.board.rooms);
   const map = buildBoardMap(rooms);
   const openNeighbors = findOpenNeighbors(map);
 
