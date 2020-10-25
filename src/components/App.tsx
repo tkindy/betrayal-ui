@@ -1,7 +1,7 @@
 import React from 'react';
 import './App.css';
 import { Layer, Rect, Stage } from 'react-konva';
-import { Direction } from './board/Room';
+import { Direction } from './board/BoardRoom';
 import Board from './board/Board';
 import { PlayerColor } from './board/Players';
 import Controls from './controls/Controls';

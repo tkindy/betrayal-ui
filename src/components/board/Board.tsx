@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import Room, { RoomProps } from './Room';
+import Room, { RoomProps } from './BoardRoom';
 import { Group } from 'react-konva';
 
 interface BoardProps {
