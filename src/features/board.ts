@@ -7,8 +7,11 @@ import {
 import { GridLoc } from '../components/board/grid';
 import { Direction } from '../components/room/Room';
 import { RootState } from '../rootReducer';
-import { PlayerColor, Room } from './models';
-import { Floor, StackRoom } from './models';
+import * as api from '../api/api';
+import { PlaceRoomResponse } from '../api/api';
+import { Room } from './models';
+
+export const getRooms = createAsyncThunk('board/getStatus', api.getRooms);
 
 interface BoardState {
   rooms: Room[];
@@ -27,32 +30,11 @@ const getMatchingDoor: (dir: Direction) => Direction = (dir) => {
   }
 };
 
-interface PlaceRoomPayload {
-  loc: GridLoc;
-}
-
-interface PlaceRoomResult {
-  rooms: Room[];
-  nextRoom?: StackRoom;
-}
-
 export const placeRoom = createAsyncThunk<
-  PlaceRoomResult,
-  PlaceRoomPayload,
+  PlaceRoomResponse,
+  GridLoc,
   { state: RootState }
->('board/placeRoomStatus', async ({ loc }, { getState }) => {
-  const { name, doorDirections } = getState().roomStack.flippedRoom!!;
-  const state = getState().board;
-  return {
-    rooms: state.rooms.concat({
-      name,
-      doorDirections,
-      loc,
-      players: [],
-    }),
-    nextRoom: { possibleFloors: [Floor.BASEMENT] },
-  };
-});
+>('board/placeRoomStatus', api.placeRoom);
 
 export const openSpotClicked: (
   loc: GridLoc,
@@ -74,47 +56,11 @@ export const openSpotClicked: (
     return;
   }
 
-  dispatch(placeRoom({ loc }));
+  dispatch(placeRoom(loc));
 };
 
 const initialState: BoardState = {
-  rooms: [
-    {
-      name: 'Bloody Room',
-      loc: { gridX: 2, gridY: 2 },
-      doorDirections: [
-        Direction.SOUTH,
-        Direction.EAST,
-        Direction.NORTH,
-        Direction.WEST,
-      ],
-      players: [],
-    },
-    {
-      name: 'Statuary Corridor',
-      loc: { gridX: 1, gridY: 2 },
-      doorDirections: [Direction.EAST, Direction.SOUTH],
-      players: [{ color: PlayerColor.BLUE }],
-    },
-    {
-      name: 'Master Bedroom',
-      loc: { gridX: 2, gridY: 3 },
-      doorDirections: [Direction.NORTH, Direction.SOUTH],
-      players: [],
-    },
-    {
-      name: 'Crypt',
-      loc: { gridX: 2, gridY: 1 },
-      doorDirections: [Direction.SOUTH],
-      players: [
-        { color: PlayerColor.YELLOW },
-        { color: PlayerColor.RED },
-        { color: PlayerColor.GREEN },
-        { color: PlayerColor.WHITE },
-        { color: PlayerColor.PURPLE },
-      ],
-    },
-  ],
+  rooms: [],
 };
 
 const boardSlice = createSlice({
@@ -122,9 +68,13 @@ const boardSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(placeRoom.fulfilled, (state, { payload: { rooms } }) => {
-      state.rooms = rooms;
-    });
+    builder
+      .addCase(getRooms.fulfilled, (state, { payload: rooms }) => {
+        state.rooms = rooms;
+      })
+      .addCase(placeRoom.fulfilled, (state, { payload: { rooms } }) => {
+        state.rooms = rooms;
+      });
   },
 });
 
