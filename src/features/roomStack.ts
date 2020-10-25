@@ -1,10 +1,4 @@
-import {
-  createAction,
-  createAsyncThunk,
-  createSlice,
-  PayloadAction,
-} from '@reduxjs/toolkit';
-import { GridLoc } from '../components/board/grid';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Direction } from '../components/room/Room';
 import { RootState } from '../rootReducer';
 
@@ -53,10 +47,6 @@ export const rotateFlipped = createAsyncThunk<
     }),
   };
 });
-
-export const openSpotClicked = createAction<GridLoc>(
-  'roomStack/openSpotClicked'
-);
 
 export interface RoomStackState {
   nextRoom?: StackRoom;

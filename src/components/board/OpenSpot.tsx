@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { Rect } from 'react-konva';
 import { useDispatch } from 'react-redux';
-import { openSpotClicked } from '../../features/roomStack';
+import { openSpotClicked } from '../../features/board';
 import { GridLoc, useGridSize, useGridTopLeft } from './grid';
 
 interface OpenSpotProps {

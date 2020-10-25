@@ -1,4 +1,7 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createAction, createSlice } from '@reduxjs/toolkit';
+import { GridLoc } from '../components/board/grid';
+
+export const openSpotClicked = createAction<GridLoc>('board/openSpotClicked');
 
 interface BoardState {}
 
