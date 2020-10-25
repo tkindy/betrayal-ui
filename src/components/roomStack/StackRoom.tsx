@@ -6,8 +6,7 @@ import { Group, Line, Rect, Text } from 'react-konva';
 import { getRoomBoundingBox } from './shared';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../rootReducer';
-import Room from '../room/Room';
-import RoomName from '../room/RoomName';
+import FlippedStackRoom from './FlippedStackRoom';
 
 const pointsToArray: (points: Point[]) => number[] = (points) => {
   return points.map(({ x, y }) => [x, y]).flat();
@@ -147,10 +146,11 @@ const StackRoom: FunctionComponent<StackRoomProps> = ({ areaBox }) => {
   if (flippedRoom) {
     const { name, doorDirections } = flippedRoom;
     return (
-      <Group>
-        <Room box={roomBox} doorDirections={doorDirections} />
-        <RoomName box={roomBox} name={name} />
-      </Group>
+      <FlippedStackRoom
+        areaBox={areaBox}
+        name={name}
+        doorDirections={doorDirections}
+      />
     );
   }
 
