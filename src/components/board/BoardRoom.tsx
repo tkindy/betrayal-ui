@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { Group, Text } from 'react-konva';
-import Room, { Direction } from '../Room';
+import Room, { Direction } from '../room/Room';
 import { GridLoc, useGridSize, useGridTopLeft } from './grid';
 import Players, { PlayerModel } from './Players';
 

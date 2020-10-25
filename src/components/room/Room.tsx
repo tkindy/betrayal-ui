@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { Group, Rect, Shape } from 'react-konva';
-import { Point, rotate, translate } from './geometry';
-import { BoundingBox } from './layout';
+import { Point, rotate, translate } from '../geometry';
+import { BoundingBox } from '../layout';
 
 export enum Direction {
   NORTH = 90,
