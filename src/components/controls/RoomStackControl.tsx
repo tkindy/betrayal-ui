@@ -5,7 +5,8 @@ import {
   getAreaBoundingBox,
   xUnits,
   yUnits,
-} from '../roomStack/RoomStack';
+} from '../roomStack/shared';
+
 import { useWindowDimensions } from '../windowDimensions';
 
 interface RoomStackControlProps {}
