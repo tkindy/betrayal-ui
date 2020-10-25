@@ -7,26 +7,8 @@ import {
 import { GridLoc } from '../components/board/grid';
 import { Direction } from '../components/room/Room';
 import { RootState } from '../rootReducer';
-
-export enum PlayerColor {
-  WHITE = 'white',
-  BLUE = 'blue',
-  GREEN = 'green',
-  YELLOW = 'yellow',
-  RED = 'red',
-  PURPLE = 'purple',
-}
-
-export interface Player {
-  color: PlayerColor;
-}
-
-export interface Room {
-  name: string;
-  loc: GridLoc;
-  doorDirections: Direction[];
-  players: Player[];
-}
+import { PlayerColor, Room } from './models';
+import { Floor, StackRoom } from './models';
 
 interface BoardState {
   rooms: Room[];

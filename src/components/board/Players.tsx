@@ -3,7 +3,7 @@ import { Circle, Group } from 'react-konva';
 import { partition } from '../../utils';
 import { add, Point, translate } from '../geometry';
 import { GridLoc, useGridSize, useGridTopLeft } from './grid';
-import { Player as PlayerModel } from '../../features/board';
+import { Player as PlayerModel } from '../../features/models';
 
 const usePlayerRadius: () => number = () => {
   return useGridSize() / 15;

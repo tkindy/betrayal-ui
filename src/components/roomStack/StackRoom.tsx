@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { BoundingBox } from '../layout';
-import { Floor, StackRoom as StackRoomModel } from '../../features/roomStack';
+import { Floor, StackRoom as StackRoomModel } from '../../features/models';
 import { Point, translate } from '../geometry';
 import { Group, Line, Rect, Text } from 'react-konva';
 import { getRoomBoundingBox } from './shared';

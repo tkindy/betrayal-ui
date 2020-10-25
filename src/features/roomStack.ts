@@ -1,22 +1,8 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { Direction } from '../components/room/Room';
 import { RootState } from '../rootReducer';
-
-export enum Floor {
-  BASEMENT,
-  GROUND,
-  UPPER,
-  ROOF,
-}
-
-export interface StackRoom {
-  possibleFloors: Floor[];
-}
-
-export interface FlippedRoom {
-  name: string;
-  doorDirections: Direction[];
-}
+import { placeRoom } from './board';
+import { FlippedRoom, Floor, StackRoom } from './models';
 
 export const flipRoomStack = createAsyncThunk(
   'roomStack/flipStatus',

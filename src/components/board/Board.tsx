@@ -7,7 +7,7 @@ import { index } from '../../utils';
 import { Direction } from '../room/Room';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../rootReducer';
-import { Room as RoomModel } from '../../features/board';
+import { Room as RoomModel } from '../../features/models';
 
 interface BoardProps {}
 

@@ -4,7 +4,7 @@ import Room from '../room/Room';
 import RoomName from '../room/RoomName';
 import { useGridSize, useGridTopLeft } from './grid';
 import Players from './Players';
-import { Room as RoomModel } from '../../features/board';
+import { Room as RoomModel } from '../../features/models';
 
 const BoardRoom: FunctionComponent<RoomModel> = ({
   name,
