@@ -1,34 +1,119 @@
 import React, { CSSProperties, FunctionComponent } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { flipRoomStack, rotateFlipped } from '../../features/roomStack';
+import { RootState } from '../../rootReducer';
 import { translate } from '../geometry';
+import { BoundingBox } from '../layout';
 import {
   calcUnitsLength,
   getAreaBoundingBox,
   xUnits,
   yUnits,
-} from '../roomStack/RoomStack';
+} from '../roomStack/shared';
+
 import { useWindowDimensions } from '../windowDimensions';
 
-interface RoomStackControlProps {}
+const getSpacing = (areaHeight: number) =>
+  calcUnitsLength(areaHeight, yUnits.spacing);
+const getButtonWidth = (areaHeight: number) =>
+  calcUnitsLength(areaHeight, xUnits.button);
+const getButtonHeight = (areaHeight: number) =>
+  calcUnitsLength(areaHeight, yUnits.button);
 
-const RoomStackControl: FunctionComponent<RoomStackControlProps> = () => {
-  const {
-    topLeft: areaTopLeft,
-    dimensions: { height: areaHeight },
-  } = getAreaBoundingBox(useWindowDimensions());
-  const { x, y } = translate(
+const getControlBoundingBox: (areaBox: BoundingBox) => BoundingBox = ({
+  topLeft: areaTopLeft,
+  dimensions: { height: areaHeight },
+}) => {
+  const topLeft = translate(
     areaTopLeft,
     calcUnitsLength(areaHeight, yUnits.spacing),
     calcUnitsLength(areaHeight, yUnits.spacing + yUnits.room + yUnits.spacing)
   );
-  const spacing = calcUnitsLength(areaHeight, yUnits.spacing);
-  const buttonWidth = calcUnitsLength(areaHeight, xUnits.button);
-  const buttonHeight = calcUnitsLength(areaHeight, yUnits.button);
+  const spacing = getSpacing(areaHeight);
+  const buttonWidth = getButtonWidth(areaHeight);
+  const buttonHeight = getButtonHeight(areaHeight);
+
+  return {
+    topLeft,
+    dimensions: {
+      width: buttonWidth + spacing + buttonWidth,
+      height: buttonHeight,
+    },
+  };
+};
+
+const StackButtons: FunctionComponent<{}> = () => {
+  const dispatch = useDispatch();
+
+  const areaBox = getAreaBoundingBox(useWindowDimensions());
+  const {
+    dimensions: { height: areaHeight },
+  } = areaBox;
+
+  const spacing = getSpacing(areaHeight);
+  const buttonWidth = getButtonWidth(areaHeight);
+  const buttonHeight = getButtonHeight(areaHeight);
   const buttonStyle: CSSProperties = {
     position: 'absolute',
     top: 0,
     width: buttonWidth,
     height: buttonHeight,
+    padding: 0,
   };
+
+  return (
+    <div>
+      <button
+        onClick={() => dispatch(flipRoomStack())}
+        style={{ left: 0, ...buttonStyle }}
+      >
+        Use
+      </button>
+      <button style={{ left: buttonWidth + spacing, ...buttonStyle }}>
+        Next
+      </button>
+    </div>
+  );
+};
+
+const FlippedRoomButtons: FunctionComponent<{}> = () => {
+  const dispatch = useDispatch();
+
+  const areaBox = getAreaBoundingBox(useWindowDimensions());
+  const {
+    dimensions: { height: areaHeight },
+  } = areaBox;
+  const buttonHeight = getButtonHeight(areaHeight);
+
+  return (
+    <div>
+      <button
+        onClick={() => dispatch(rotateFlipped())}
+        style={{
+          position: 'absolute',
+          width: '100%',
+          height: buttonHeight,
+          padding: 0,
+        }}
+      >
+        Rotate
+      </button>
+    </div>
+  );
+};
+
+interface RoomStackControlProps {}
+
+const RoomStackControl: FunctionComponent<RoomStackControlProps> = () => {
+  const flippedRoom = useSelector(
+    (state: RootState) => state.roomStack.flippedRoom
+  );
+
+  const areaBox = getAreaBoundingBox(useWindowDimensions());
+  const {
+    topLeft: { x, y },
+    dimensions: { width, height },
+  } = getControlBoundingBox(areaBox);
 
   return (
     <div
@@ -37,13 +122,11 @@ const RoomStackControl: FunctionComponent<RoomStackControlProps> = () => {
         position: 'absolute',
         top: y,
         left: x,
-        width: buttonWidth + spacing + buttonWidth,
+        width,
+        height,
       }}
     >
-      <button style={{ left: 0, ...buttonStyle }}>Use</button>
-      <button style={{ left: buttonWidth + spacing, ...buttonStyle }}>
-        Next
-      </button>
+      {flippedRoom ? <FlippedRoomButtons /> : <StackButtons />}
     </div>
   );
 };

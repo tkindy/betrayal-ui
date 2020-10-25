@@ -3,6 +3,7 @@ import { Circle, Group } from 'react-konva';
 import { partition } from '../../utils';
 import { add, Point, translate } from '../geometry';
 import { GridLoc, useGridSize, useGridTopLeft } from './grid';
+import { Player as PlayerModel } from '../../features/models';
 
 const usePlayerRadius: () => number = () => {
   return useGridSize() / 15;
@@ -26,19 +27,6 @@ const usePlayersDimensions: () => PlayersDimensions = () => {
     playerSpacing: playerRadius,
   };
 };
-
-export enum PlayerColor {
-  WHITE = 'white',
-  BLUE = 'blue',
-  GREEN = 'green',
-  YELLOW = 'yellow',
-  RED = 'red',
-  PURPLE = 'purple',
-}
-
-export interface PlayerModel {
-  color: PlayerColor;
-}
 
 export interface PlayerProps extends PlayerModel {
   center: Point;
