@@ -50,20 +50,18 @@ interface PlaceRoomPayload {
 }
 
 export const placeRoom = createAsyncThunk<
-  BoardState,
+  Room[],
   PlaceRoomPayload,
   { state: RootState }
->('board/placeRoomStatus', async ({ loc }: PlaceRoomPayload, { getState }) => {
+>('board/placeRoomStatus', async ({ loc }, { getState }) => {
   const { name, doorDirections } = getState().roomStack.flippedRoom!!;
   const state = getState().board;
-  const rooms = state.rooms.concat({
+  return state.rooms.concat({
     name,
     doorDirections,
     loc,
     players: [],
   });
-
-  return { ...state, rooms };
 });
 
 export const openSpotClicked: (
