@@ -11,13 +11,6 @@ export const partition: <T>(ts: T[], size: number) => T[][] = <T>(
   }, [] as T[][]);
 };
 
-export const unique: <T>(ts: T[]) => T[] = <T>(ts: T[]) => {
-  return ts.reduce(
-    (acc, t) => (acc.includes(t) ? acc : acc.concat(t)),
-    [] as T[]
-  );
-};
-
 export const index: <T, K>(ts: T[], by: (t: T) => K) => Map<K, T[]> = <T, K>(
   ts: T[],
   by: (t: T) => K
