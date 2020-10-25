@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { Group, Line, Rect } from 'react-konva';
+import { Group, Line, Rect, Text } from 'react-konva';
 import {
   Floor,
   RoomStackState,
@@ -162,7 +162,7 @@ export const getAreaBoundingBox: (
 
 interface HouseProps {
   roomBox: BoundingBox;
-  nextRoom?: StackRoomModel;
+  nextRoom: StackRoomModel;
 }
 
 const House: FunctionComponent<HouseProps> = ({ roomBox, nextRoom }) => {
@@ -174,21 +174,15 @@ const House: FunctionComponent<HouseProps> = ({ roomBox, nextRoom }) => {
 
   return (
     <Group>
-      {nextRoom &&
-        [
-          Floor.ROOF,
-          Floor.UPPER,
-          Floor.GROUND,
-          Floor.BASEMENT,
-        ].map((floor, i) =>
-          drawFloor(
-            floor,
-            nextRoom.possibleFloors,
-            translate(topLeft, 0, i * floorHeight),
-            width,
-            floorHeight
-          )
-        )}
+      {[Floor.ROOF, Floor.UPPER, Floor.GROUND, Floor.BASEMENT].map((floor, i) =>
+        drawFloor(
+          floor,
+          nextRoom.possibleFloors,
+          translate(topLeft, 0, i * floorHeight),
+          width,
+          floorHeight
+        )
+      )}
 
       <Line
         points={getHousePoints(topLeft, width, floorHeight)}
@@ -210,11 +204,22 @@ const StackRoom: FunctionComponent<StackRoomProps> = ({
     dimensions: { width, height },
   } = roomBox;
 
-  return (
+  return nextRoom ? (
     <Group>
       <Rect x={x} y={y} width={width} height={height} fill="black" />
       <House roomBox={roomBox} nextRoom={nextRoom} />
     </Group>
+  ) : (
+    <Text
+      x={x}
+      y={y}
+      width={width}
+      height={height}
+      align="center"
+      verticalAlign="middle"
+      fontSize={16}
+      text="Empty"
+    />
   );
 };
 
