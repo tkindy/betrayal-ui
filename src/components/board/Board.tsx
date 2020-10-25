@@ -4,6 +4,7 @@ import { Group } from 'react-konva';
 import { GridLoc } from './grid';
 import OpenSpot from './OpenSpot';
 import { unique } from '../../utils';
+import { Direction } from '../room/Room';
 
 interface BoardProps {
   rooms: BoardRoomProps[];
@@ -26,15 +27,23 @@ const buildBoardMap: (rooms: BoardRoomProps[]) => BoardMap = (rooms) => {
   return map;
 };
 
+const getDelta: (dir: Direction) => [number, number] = (dir) => {
+  switch (dir) {
+    case Direction.NORTH:
+      return [0, 1];
+    case Direction.SOUTH:
+      return [0, -1];
+    case Direction.EAST:
+      return [-1, 0];
+    case Direction.WEST:
+      return [1, 0];
+  }
+};
+
 const getNeighboringLocs: (room: BoardRoomProps) => GridLoc[] = (room) => {
   const { gridX: x, gridY: y } = room.loc;
 
-  return [
-    [0, 1],
-    [0, -1],
-    [-1, 0],
-    [1, 0],
-  ].map(([dx, dy]) => {
+  return room.doorDirections.map(getDelta).map(([dx, dy]) => {
     return {
       gridX: x + dx,
       gridY: y + dy,
