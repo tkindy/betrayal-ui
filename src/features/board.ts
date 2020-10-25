@@ -1,7 +1,31 @@
-import { createAction, createSlice } from '@reduxjs/toolkit';
+import {
+  Action,
+  createAction,
+  createSlice,
+  ThunkAction,
+} from '@reduxjs/toolkit';
 import { GridLoc } from '../components/board/grid';
+import { RootState } from '../rootReducer';
 
-export const openSpotClicked = createAction<GridLoc>('board/openSpotClicked');
+interface PlaceRoomPayload {
+  loc: GridLoc;
+}
+
+export const placeRoom = createAction<PlaceRoomPayload>('board/placeRoom');
+
+export const openSpotClicked: (
+  loc: GridLoc
+) => ThunkAction<void, RootState, unknown, Action<string>> = (loc) => (
+  dispatch,
+  getState
+) => {
+  const flippedRoom = getState().roomStack.flippedRoom;
+  if (!flippedRoom) {
+    return;
+  }
+
+  dispatch(placeRoom({ loc }));
+};
 
 interface BoardState {}
 
