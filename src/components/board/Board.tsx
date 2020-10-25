@@ -3,6 +3,7 @@ import BoardRoom, { BoardRoomProps } from './BoardRoom';
 import { Group } from 'react-konva';
 import { GridLoc } from './grid';
 import OpenSpot from './OpenSpot';
+import { unique } from '../../utils';
 
 interface BoardProps {
   rooms: BoardRoomProps[];
@@ -47,10 +48,11 @@ const isOpen: (loc: GridLoc, map: BoardMap) => boolean = (loc, map) => {
 };
 
 const findOpenLocs: (map: BoardMap) => GridLoc[] = (map) => {
-  return Object.values(map)
-    .flatMap(Object.values)
-    .flatMap(getNeighboringLocs)
-    .filter((loc) => isOpen(loc, map));
+  const neighboringLocs = unique(
+    Object.values(map).flatMap(Object.values).flatMap(getNeighboringLocs)
+  );
+
+  return neighboringLocs.filter((loc) => isOpen(loc, map));
 };
 
 const Board: FunctionComponent<BoardProps> = ({ rooms }) => {

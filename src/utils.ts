@@ -10,3 +10,10 @@ export const partition: <T>(ts: T[], size: number) => T[][] = <T>(
     return donePartitions.concat([curPartition.concat([t])]);
   }, [] as T[][]);
 };
+
+export const unique: <T>(ts: T[]) => T[] = <T>(ts: T[]) => {
+  return ts.reduce(
+    (acc, t) => (acc.includes(t) ? acc : acc.concat(t)),
+    [] as T[]
+  );
+};
