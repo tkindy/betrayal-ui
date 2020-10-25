@@ -4,6 +4,10 @@ import { Floor, StackRoom as StackRoomModel } from '../../features/roomStack';
 import { Point, translate } from '../geometry';
 import { Group, Line, Rect, Text } from 'react-konva';
 import { getRoomBoundingBox } from './shared';
+import { useSelector } from 'react-redux';
+import { RootState } from '../../rootReducer';
+import Room from '../room/Room';
+import RoomName from '../room/RoomName';
 
 const pointsToArray: (points: Point[]) => number[] = (points) => {
   return points.map(({ x, y }) => [x, y]).flat();
@@ -139,6 +143,20 @@ const StackRoom: FunctionComponent<StackRoomProps> = ({
     topLeft: { x, y },
     dimensions: { width, height },
   } = roomBox;
+
+  const flippedRoom = useSelector(
+    (state: RootState) => state.roomStack.flippedRoom
+  );
+
+  if (flippedRoom) {
+    const { name, doorDirections } = flippedRoom;
+    return (
+      <Group>
+        <Room box={roomBox} doorDirections={doorDirections} />
+        <RoomName box={roomBox} name={name} />
+      </Group>
+    );
+  }
 
   return nextRoom ? (
     <Group>
