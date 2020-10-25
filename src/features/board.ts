@@ -14,7 +14,7 @@ import { Room } from './models';
 export const getRooms = createAsyncThunk('board/getStatus', api.getRooms);
 
 interface BoardState {
-  rooms: Room[];
+  rooms?: Room[];
 }
 
 const getMatchingDoor: (dir: Direction) => Direction = (dir) => {
@@ -59,9 +59,7 @@ export const openSpotClicked: (
   dispatch(placeRoom(loc));
 };
 
-const initialState: BoardState = {
-  rooms: [],
-};
+const initialState: BoardState = {};
 
 const boardSlice = createSlice({
   name: 'board',

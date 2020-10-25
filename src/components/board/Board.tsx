@@ -84,6 +84,11 @@ const findOpenNeighbors: (map: BoardMap) => Neighbor[] = (map) => {
 
 const Board: FunctionComponent<BoardProps> = () => {
   const rooms = useSelector((state: RootState) => state.board.rooms);
+
+  if (!rooms) {
+    return null;
+  }
+
   const map = buildBoardMap(rooms);
   const openNeighbors = findOpenNeighbors(map);
 
