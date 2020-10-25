@@ -43,16 +43,7 @@ export const rotateFlipped = createAsyncThunk<
   return {
     name,
     doorDirections: doorDirections.map((dir) => {
-      switch (dir) {
-        case Direction.NORTH:
-          return Direction.EAST;
-        case Direction.EAST:
-          return Direction.SOUTH;
-        case Direction.SOUTH:
-          return Direction.WEST;
-        case Direction.WEST:
-          return Direction.NORTH;
-      }
+      return dir - 90;
     }),
   };
 });
