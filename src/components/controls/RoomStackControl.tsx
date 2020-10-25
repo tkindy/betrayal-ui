@@ -1,4 +1,6 @@
 import React, { CSSProperties, FunctionComponent } from 'react';
+import { useDispatch } from 'react-redux';
+import { flipRoomStack } from '../../features/roomStack';
 import { translate } from '../geometry';
 import {
   calcUnitsLength,
@@ -31,6 +33,7 @@ const RoomStackControl: FunctionComponent<RoomStackControlProps> = () => {
     height: buttonHeight,
     padding: 0,
   };
+  const dispatch = useDispatch();
 
   return (
     <div
@@ -43,7 +46,12 @@ const RoomStackControl: FunctionComponent<RoomStackControlProps> = () => {
         height: buttonHeight,
       }}
     >
-      <button style={{ left: 0, ...buttonStyle }}>Use</button>
+      <button
+        onClick={() => dispatch(flipRoomStack())}
+        style={{ left: 0, ...buttonStyle }}
+      >
+        Use
+      </button>
       <button style={{ left: buttonWidth + spacing, ...buttonStyle }}>
         Next
       </button>

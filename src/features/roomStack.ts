@@ -17,12 +17,15 @@ export interface FlippedRoom {
   doorDirections: Direction[];
 }
 
-const flipRoomStack = createAsyncThunk('roomStack/flipStatus', async () => {
-  return {
-    name: 'Graveyard',
-    doorDirections: [Direction.NORTH, Direction.EAST],
-  } as FlippedRoom;
-});
+export const flipRoomStack = createAsyncThunk(
+  'roomStack/flipStatus',
+  async () => {
+    return {
+      name: 'Graveyard',
+      doorDirections: [Direction.NORTH, Direction.EAST],
+    } as FlippedRoom;
+  }
+);
 
 export interface RoomStackState {
   nextRoom?: StackRoom;
