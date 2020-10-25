@@ -15,6 +15,7 @@ const OpenSpot: FunctionComponent<OpenSpotProps> = ({ loc, from }) => {
   const { x, y } = useGridTopLeft(loc);
 
   const dispatch = useDispatch();
+  const onClick = () => dispatch(openSpotClicked(loc, from));
 
   return (
     <Rect
@@ -22,7 +23,8 @@ const OpenSpot: FunctionComponent<OpenSpotProps> = ({ loc, from }) => {
       y={y}
       width={gridSize}
       height={gridSize}
-      onClick={() => dispatch(openSpotClicked(loc, from))}
+      onClick={onClick}
+      onTap={onClick}
     />
   );
 };
