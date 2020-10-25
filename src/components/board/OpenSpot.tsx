@@ -1,5 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { Rect } from 'react-konva';
+import { useDispatch } from 'react-redux';
+import { openSpotClicked } from '../../features/roomStack';
 import { GridLoc, useGridSize, useGridTopLeft } from './grid';
 
 interface OpenSpotProps {
@@ -10,7 +12,17 @@ const OpenSpot: FunctionComponent<OpenSpotProps> = ({ loc }) => {
   const gridSize = useGridSize();
   const { x, y } = useGridTopLeft(loc);
 
-  return <Rect x={x} y={y} width={gridSize} height={gridSize} />;
+  const dispatch = useDispatch();
+
+  return (
+    <Rect
+      x={x}
+      y={y}
+      width={gridSize}
+      height={gridSize}
+      onClick={() => dispatch(openSpotClicked(loc))}
+    />
+  );
 };
 
 export default OpenSpot;
