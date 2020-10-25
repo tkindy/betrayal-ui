@@ -1,6 +1,6 @@
 import {
   Action,
-  createAction,
+  createAsyncThunk,
   createSlice,
   ThunkAction,
 } from '@reduxjs/toolkit';
@@ -49,7 +49,22 @@ interface PlaceRoomPayload {
   loc: GridLoc;
 }
 
-export const placeRoom = createAction<PlaceRoomPayload>('board/placeRoom');
+export const placeRoom = createAsyncThunk<
+  BoardState,
+  PlaceRoomPayload,
+  { state: RootState }
+>('board/placeRoomStatus', async ({ loc }: PlaceRoomPayload, { getState }) => {
+  const { name, doorDirections } = getState().roomStack.flippedRoom!!;
+  const state = getState().board;
+  const rooms = state.rooms.concat({
+    name,
+    doorDirections,
+    loc,
+    players: [],
+  });
+
+  return { ...state, rooms };
+});
 
 export const openSpotClicked: (
   loc: GridLoc,
