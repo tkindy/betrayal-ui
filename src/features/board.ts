@@ -128,5 +128,4 @@ const boardSlice = createSlice({
   },
 });
 
-export const {} = boardSlice.actions;
 export default boardSlice.reducer;
