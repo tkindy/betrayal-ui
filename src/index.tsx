@@ -6,10 +6,15 @@ import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 import { configureStore } from '@reduxjs/toolkit';
 import { rootReducer } from './rootReducer';
+import { getRooms } from './features/board';
+import { getStackRoom } from './features/roomStack';
 
 const store = configureStore({
   reducer: rootReducer,
 });
+
+store.dispatch(getRooms());
+store.dispatch(getStackRoom());
 
 ReactDOM.render(
   <React.StrictMode>

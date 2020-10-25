@@ -1,60 +1,29 @@
 import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { Direction } from '../components/room/Room';
-import { RootState } from '../rootReducer';
 import { placeRoom } from './board';
-import { FlippedRoom, Floor, StackRoom } from './models';
+import { FlippedRoom, StackRoom } from './models';
+import * as api from '../api/api';
+
+export const getStackRoom = createAsyncThunk(
+  'roomStack/getStatus',
+  api.getStackRoom
+);
 
 export const flipRoomStack = createAsyncThunk(
   'roomStack/flipStatus',
-  async () => {
-    return {
-      name: 'Graveyard',
-      doorDirections: [Direction.NORTH, Direction.EAST],
-    } as FlippedRoom;
-  }
+  api.flipRoom
 );
 
-const rotateDirection = (dir: Direction) => {
-  switch (dir) {
-    case Direction.NORTH:
-      return Direction.EAST;
-    case Direction.EAST:
-      return Direction.SOUTH;
-    case Direction.SOUTH:
-      return Direction.WEST;
-    case Direction.WEST:
-      return Direction.NORTH;
-  }
-};
-
-export const rotateFlipped = createAsyncThunk<
-  FlippedRoom | undefined,
-  void,
-  { state: RootState }
->('roomStack/rotateStatus', async (_, thunkAPI) => {
-  const room = thunkAPI.getState().roomStack.flippedRoom;
-
-  if (!room) {
-    return;
-  }
-
-  const { name, doorDirections } = room;
-  return {
-    name,
-    doorDirections: doorDirections.map(rotateDirection),
-  };
-});
+export const rotateFlipped = createAsyncThunk(
+  'roomStack/rotateStatus',
+  api.rotateFlipped
+);
 
 export interface RoomStackState {
   nextRoom?: StackRoom;
   flippedRoom?: FlippedRoom;
 }
 
-const initialState: RoomStackState = {
-  nextRoom: {
-    possibleFloors: [Floor.GROUND, Floor.ROOF],
-  },
-};
+const initialState: RoomStackState = {};
 
 const roomStackSlice = createSlice({
   name: 'roomStack',
@@ -66,7 +35,11 @@ const roomStackSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
+      .addCase(getStackRoom.fulfilled, (state, { payload: room }) => {
+        state.nextRoom = room;
+      })
       .addCase(flipRoomStack.fulfilled, (state, { payload: flippedRoom }) => {
+        delete state.nextRoom;
         state.flippedRoom = flippedRoom;
       })
       .addCase(rotateFlipped.fulfilled, (state, { payload: flippedRoom }) => {
