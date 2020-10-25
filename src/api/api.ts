@@ -95,7 +95,23 @@ export const rotateFlipped = async () => {
   return flippedRoom;
 };
 
-let rooms: Room[] = [
+interface PlayerModel {
+  loc: GridLoc;
+  color: PlayerColor;
+}
+
+let players: PlayerModel[] = [
+  { loc: { gridX: 2, gridY: 1 }, color: PlayerColor.YELLOW },
+  { loc: { gridX: 2, gridY: 1 }, color: PlayerColor.RED },
+  { loc: { gridX: 2, gridY: 1 }, color: PlayerColor.GREEN },
+  { loc: { gridX: 2, gridY: 1 }, color: PlayerColor.WHITE },
+  { loc: { gridX: 2, gridY: 1 }, color: PlayerColor.PURPLE },
+  { loc: { gridX: 1, gridY: 2 }, color: PlayerColor.BLUE },
+];
+
+type RoomWithoutPlayers = Omit<Room, 'players'>;
+
+let rooms: RoomWithoutPlayers[] = [
   {
     name: 'Bloody Room',
     loc: { gridX: 2, gridY: 2 },
@@ -105,31 +121,21 @@ let rooms: Room[] = [
       Direction.NORTH,
       Direction.WEST,
     ],
-    players: [],
   },
   {
     name: 'Statuary Corridor',
     loc: { gridX: 1, gridY: 2 },
     doorDirections: [Direction.EAST, Direction.SOUTH],
-    players: [{ color: PlayerColor.BLUE }],
   },
   {
     name: 'Master Bedroom',
     loc: { gridX: 2, gridY: 3 },
     doorDirections: [Direction.NORTH, Direction.SOUTH],
-    players: [],
   },
   {
     name: 'Crypt',
     loc: { gridX: 2, gridY: 1 },
     doorDirections: [Direction.SOUTH],
-    players: [
-      { color: PlayerColor.YELLOW },
-      { color: PlayerColor.RED },
-      { color: PlayerColor.GREEN },
-      { color: PlayerColor.WHITE },
-      { color: PlayerColor.PURPLE },
-    ],
   },
 ];
 
@@ -147,7 +153,6 @@ export const placeRoom = async (loc: GridLoc) => {
     name,
     doorDirections,
     loc,
-    players: [],
   });
 
   return {
@@ -156,6 +161,15 @@ export const placeRoom = async (loc: GridLoc) => {
   } as PlaceRoomResponse;
 };
 
-export const getRooms = async () => {
-  return rooms;
+const equal: (l1: GridLoc, l2: GridLoc) => boolean = (l1, l2) => {
+  return l1.gridX === l2.gridX && l1.gridY === l2.gridY;
+};
+
+export const getRooms: () => Promise<Room[]> = async () => {
+  return rooms.map((room) => {
+    return {
+      ...room,
+      players: players.filter((player) => equal(player.loc, room.loc)),
+    };
+  });
 };
