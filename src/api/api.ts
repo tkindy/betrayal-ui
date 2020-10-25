@@ -30,6 +30,12 @@ const mockStack: { stackRoom: StackRoom; flipped: FlippedRoom }[] = [
 
 let mockStackIndex = 0;
 
+export const skipRoom = async () => {
+  mockStackIndex =
+    mockStackIndex >= mockStack.length - 1 ? 0 : mockStackIndex + 1;
+  return mockStack[mockStackIndex].stackRoom;
+};
+
 let flippedRoom: FlippedRoom | undefined = undefined;
 
 export const flipRoom = async () => {
