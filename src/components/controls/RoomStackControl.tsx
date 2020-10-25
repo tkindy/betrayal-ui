@@ -1,6 +1,7 @@
 import React, { CSSProperties, FunctionComponent } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { flipRoomStack } from '../../features/roomStack';
+import { RootState } from '../../rootReducer';
 import { translate } from '../geometry';
 import { BoundingBox } from '../layout';
 import {
@@ -41,18 +42,14 @@ const getControlBoundingBox: (areaBox: BoundingBox) => BoundingBox = ({
   };
 };
 
-interface RoomStackControlProps {}
+const StackButtons: FunctionComponent<{}> = () => {
+  const dispatch = useDispatch();
 
-const RoomStackControl: FunctionComponent<RoomStackControlProps> = () => {
   const areaBox = getAreaBoundingBox(useWindowDimensions());
-  const {
-    topLeft: { x, y },
-    dimensions: { width, height },
-  } = getControlBoundingBox(areaBox);
-
   const {
     dimensions: { height: areaHeight },
   } = areaBox;
+
   const spacing = getSpacing(areaHeight);
   const buttonWidth = getButtonWidth(areaHeight);
   const buttonHeight = getButtonHeight(areaHeight);
@@ -63,7 +60,57 @@ const RoomStackControl: FunctionComponent<RoomStackControlProps> = () => {
     height: buttonHeight,
     padding: 0,
   };
-  const dispatch = useDispatch();
+
+  return (
+    <div>
+      <button
+        onClick={() => dispatch(flipRoomStack())}
+        style={{ left: 0, ...buttonStyle }}
+      >
+        Use
+      </button>
+      <button style={{ left: buttonWidth + spacing, ...buttonStyle }}>
+        Next
+      </button>
+    </div>
+  );
+};
+
+const FlippedRoomButtons: FunctionComponent<{}> = () => {
+  const areaBox = getAreaBoundingBox(useWindowDimensions());
+  const {
+    dimensions: { height: areaHeight },
+  } = areaBox;
+  const buttonHeight = getButtonHeight(areaHeight);
+
+  return (
+    <div>
+      <button
+        style={{
+          position: 'absolute',
+          width: '100%',
+          height: buttonHeight,
+          padding: 0,
+        }}
+      >
+        Rotate
+      </button>
+    </div>
+  );
+};
+
+interface RoomStackControlProps {}
+
+const RoomStackControl: FunctionComponent<RoomStackControlProps> = () => {
+  const flippedRoom = useSelector(
+    (state: RootState) => state.roomStack.flippedRoom
+  );
+
+  const areaBox = getAreaBoundingBox(useWindowDimensions());
+  const {
+    topLeft: { x, y },
+    dimensions: { width, height },
+  } = getControlBoundingBox(areaBox);
 
   return (
     <div
@@ -76,15 +123,7 @@ const RoomStackControl: FunctionComponent<RoomStackControlProps> = () => {
         height,
       }}
     >
-      <button
-        onClick={() => dispatch(flipRoomStack())}
-        style={{ left: 0, ...buttonStyle }}
-      >
-        Use
-      </button>
-      <button style={{ left: buttonWidth + spacing, ...buttonStyle }}>
-        Next
-      </button>
+      {flippedRoom ? <FlippedRoomButtons /> : <StackButtons />}
     </div>
   );
 };
