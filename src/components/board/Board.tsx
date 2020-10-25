@@ -34,9 +34,9 @@ const getDelta: (dir: Direction) => [number, number] = (dir) => {
     case Direction.SOUTH:
       return [0, 1];
     case Direction.EAST:
-      return [-1, 0];
-    case Direction.WEST:
       return [1, 0];
+    case Direction.WEST:
+      return [-1, 0];
   }
 };
 
