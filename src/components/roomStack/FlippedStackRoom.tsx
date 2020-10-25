@@ -18,7 +18,7 @@ const FlippedStackRoom: FunctionComponent<FlippedStackRoomProps> = ({
 }) => {
   const roomBox = getRoomBoundingBox(areaBox);
   return (
-    <Group>
+    <Group draggable>
       <Room box={roomBox} doorDirections={doorDirections} />
       <RoomName box={roomBox} name={name} />
     </Group>
