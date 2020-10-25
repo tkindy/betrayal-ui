@@ -45,8 +45,3 @@ export const rotate: (p: Point, center: Point, rotation: number) => Point = (
     y: -x * sin - y * cos,
   });
 };
-
-export interface Dimensions {
-  width: number;
-  height: number;
-}

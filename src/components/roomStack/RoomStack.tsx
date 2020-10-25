@@ -5,7 +5,8 @@ import {
   RoomStackState,
   StackRoom as StackRoomModel,
 } from '../../features/roomStack';
-import { Dimensions, Point, translate } from '../geometry';
+import { Point, translate } from '../geometry';
+import { BoundingBox, Dimensions } from '../layout';
 import { useWindowDimensions } from '../windowDimensions';
 
 export const yUnits = {
@@ -96,11 +97,6 @@ const drawFloor = (
     />
   );
 };
-
-interface BoundingBox {
-  topLeft: Point;
-  dimensions: Dimensions;
-}
 
 const getHouseBoundingBox: (roomBox: BoundingBox) => BoundingBox = (
   roomBox
