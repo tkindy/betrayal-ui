@@ -26,13 +26,13 @@ const App = () => {
                 onDragEnd={(e) => {
                   dispatch(
                     moveBoard({
-                      x: e.target.x(),
-                      y: e.target.y(),
+                      x: -e.target.x(),
+                      y: -e.target.y(),
                     })
                   );
                 }}
               >
-                <Rect x={-x} y={-y} width={width} height={height} />
+                <Rect x={x} y={y} width={width} height={height} />
                 <Board />
               </Layer>
               <Layer>
