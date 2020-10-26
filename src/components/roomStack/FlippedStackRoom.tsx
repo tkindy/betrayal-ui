@@ -31,7 +31,6 @@ const FlippedStackRoom: FunctionComponent<FlippedStackRoomProps> = ({
       draggable
       onDragEnd={(e) => {
         const droppedOn = droppedOnGrid(e, roomBox, gridSize, boardTopLeft);
-        console.log(`dropped on (${droppedOn.gridX}, ${droppedOn.gridY})`);
         setGroupTopLeft({ x: e.target.x(), y: e.target.y() });
         setGroupTopLeft({ x: 0, y: 0 });
       }}
