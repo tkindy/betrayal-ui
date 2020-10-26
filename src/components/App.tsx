@@ -3,12 +3,16 @@ import './App.css';
 import { Layer, Rect, Stage } from 'react-konva';
 import Board from './board/Board';
 import Controls from './controls/Controls';
-import { ReactReduxContext } from 'react-redux';
+import { ReactReduxContext, useDispatch, useSelector } from 'react-redux';
 import RoomStack from './roomStack/RoomStack';
 import { useWindowDimensions } from './windowDimensions';
+import { moveBoard } from '../features/board';
+import { RootState } from '../rootReducer';
 
 const App = () => {
   const { width, height } = useWindowDimensions();
+  const dispatch = useDispatch();
+  const { x, y } = useSelector((state: RootState) => state.board.topLeft);
 
   return (
     <div>
@@ -17,13 +21,18 @@ const App = () => {
         {(reduxContext) => (
           <Stage width={width} height={height}>
             <ReactReduxContext.Provider value={reduxContext}>
-              <Layer draggable>
-                <Rect
-                  x={-1000}
-                  y={-1000}
-                  width={width + 2000}
-                  height={height + 2000}
-                />
+              <Layer
+                draggable
+                onDragEnd={(e) => {
+                  dispatch(
+                    moveBoard({
+                      x: e.target.x(),
+                      y: e.target.y(),
+                    })
+                  );
+                }}
+              >
+                <Rect x={-x} y={-y} width={width} height={height} />
                 <Board />
               </Layer>
               <Layer>
