@@ -1,4 +1,4 @@
-import { GridLoc } from '../components/board/grid';
+import { equal, GridLoc } from '../components/board/grid';
 import { Direction } from '../components/room/Room';
 import {
   FlippedRoom,
@@ -159,10 +159,6 @@ export const placeRoom = async (loc: GridLoc) => {
     rooms,
     nextRoom: await getStackRoom(),
   } as PlaceRoomResponse;
-};
-
-const equal: (l1: GridLoc, l2: GridLoc) => boolean = (l1, l2) => {
-  return l1.gridX === l2.gridX && l1.gridY === l2.gridY;
 };
 
 export const getRooms: () => Promise<Room[]> = async () => {

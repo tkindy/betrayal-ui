@@ -10,6 +10,10 @@ export interface GridLoc {
   gridY: number;
 }
 
+export const equal: (l1: GridLoc, l2: GridLoc) => boolean = (l1, l2) => {
+  return l1.gridX === l2.gridX && l1.gridY === l2.gridY;
+};
+
 export const toString: (loc: GridLoc) => string = ({ gridX, gridY }) => {
   return `(${gridX}, ${gridY})`;
 };

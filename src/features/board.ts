@@ -5,7 +5,7 @@ import {
   PayloadAction,
   ThunkAction,
 } from '@reduxjs/toolkit';
-import { GridLoc } from '../components/board/grid';
+import { equal, GridLoc } from '../components/board/grid';
 import { Direction } from '../components/room/Room';
 import { RootState } from '../rootReducer';
 import * as api from '../api/api';
@@ -70,9 +70,8 @@ export const flippedRoomDropped: (
   getState
 ) => {
   const openNeighbors = getOpenNeighbors(getState());
-  const relevantNeighbor = openNeighbors?.find(
-    (neighbor) =>
-      neighbor.loc.gridX === loc.gridX && neighbor.loc.gridY === loc.gridY
+  const relevantNeighbor = openNeighbors?.find((neighbor) =>
+    equal(neighbor.loc, loc)
   );
 
   if (!relevantNeighbor) {
