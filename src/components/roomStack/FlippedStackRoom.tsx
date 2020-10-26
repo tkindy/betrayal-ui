@@ -1,6 +1,7 @@
 import React, { FunctionComponent, useState } from 'react';
 import { Group } from 'react-konva';
 import { useDispatch, useSelector } from 'react-redux';
+import { flippedRoomDropped } from '../../features/board';
 import { RootState } from '../../rootReducer';
 import { droppedOnGrid, useGridSize } from '../board/grid';
 import { Point } from '../geometry';
@@ -31,6 +32,7 @@ const FlippedStackRoom: FunctionComponent<FlippedStackRoomProps> = ({
       draggable
       onDragEnd={(e) => {
         const droppedOn = droppedOnGrid(e, roomBox, gridSize, boardTopLeft);
+        dispatch(flippedRoomDropped(droppedOn));
         setGroupTopLeft({ x: e.target.x(), y: e.target.y() });
         setGroupTopLeft({ x: 0, y: 0 });
       }}

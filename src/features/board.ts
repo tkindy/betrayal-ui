@@ -12,6 +12,7 @@ import * as api from '../api/api';
 import { PlaceRoomResponse } from '../api/api';
 import { Room } from './models';
 import { Point } from '../components/geometry';
+import { getOpenNeighbors } from './selectors';
 
 export const getRooms = createAsyncThunk('board/getStatus', api.getRooms);
 
@@ -60,6 +61,25 @@ export const openSpotClicked: (
   }
 
   dispatch(placeRoom(loc));
+};
+
+export const flippedRoomDropped: (
+  loc: GridLoc
+) => ThunkAction<void, RootState, unknown, Action<string>> = (loc) => (
+  dispatch,
+  getState
+) => {
+  const openNeighbors = getOpenNeighbors(getState());
+  const relevantNeighbor = openNeighbors?.find(
+    (neighbor) =>
+      neighbor.loc.gridX === loc.gridX && neighbor.loc.gridY === loc.gridY
+  );
+
+  if (!relevantNeighbor) {
+    return;
+  }
+
+  dispatch(openSpotClicked(relevantNeighbor.loc, relevantNeighbor.from));
 };
 
 const initialState: BoardState = {
