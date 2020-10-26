@@ -10,6 +10,10 @@ export interface GridLoc {
   gridY: number;
 }
 
+export const toString: (loc: GridLoc) => string = ({ gridX, gridY }) => {
+  return `(${gridX}, ${gridY})`;
+};
+
 export const useGridSize = () => {
   return useSelector((state: RootState) => state.zoom.gridSize);
 };

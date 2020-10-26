@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import BoardRoom from './BoardRoom';
 import { Group } from 'react-konva';
-import { GridLoc } from './grid';
+import { GridLoc, toString } from './grid';
 import OpenSpot from './OpenSpot';
 import { index } from '../../utils';
 import { Direction } from '../room/Room';
@@ -98,8 +98,7 @@ const Board: FunctionComponent<BoardProps> = () => {
         <BoardRoom key={room.name} {...room} />
       ))}
       {openNeighbors.map(({ loc, from }) => {
-        const { gridX, gridY } = loc;
-        return <OpenSpot key={`(${gridX}, ${gridY})`} loc={loc} from={from} />;
+        return <OpenSpot key={toString(loc)} loc={loc} from={from} />;
       })}
     </Group>
   );
