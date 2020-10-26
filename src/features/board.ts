@@ -2,6 +2,7 @@ import {
   Action,
   createAsyncThunk,
   createSlice,
+  PayloadAction,
   ThunkAction,
 } from '@reduxjs/toolkit';
 import { GridLoc } from '../components/board/grid';
@@ -10,10 +11,13 @@ import { RootState } from '../rootReducer';
 import * as api from '../api/api';
 import { PlaceRoomResponse } from '../api/api';
 import { Room } from './models';
+import { Point } from '../components/geometry';
+import { getOpenNeighbors } from './selectors';
 
 export const getRooms = createAsyncThunk('board/getStatus', api.getRooms);
 
 interface BoardState {
+  topLeft: Point;
   rooms?: Room[];
 }
 
@@ -59,12 +63,37 @@ export const openSpotClicked: (
   dispatch(placeRoom(loc));
 };
 
-const initialState: BoardState = {};
+export const flippedRoomDropped: (
+  loc: GridLoc
+) => ThunkAction<void, RootState, unknown, Action<string>> = (loc) => (
+  dispatch,
+  getState
+) => {
+  const openNeighbors = getOpenNeighbors(getState());
+  const relevantNeighbor = openNeighbors?.find(
+    (neighbor) =>
+      neighbor.loc.gridX === loc.gridX && neighbor.loc.gridY === loc.gridY
+  );
+
+  if (!relevantNeighbor) {
+    return;
+  }
+
+  dispatch(openSpotClicked(relevantNeighbor.loc, relevantNeighbor.from));
+};
+
+const initialState: BoardState = {
+  topLeft: { x: 0, y: 0 },
+};
 
 const boardSlice = createSlice({
   name: 'board',
   initialState,
-  reducers: {},
+  reducers: {
+    moveBoard(state, action: PayloadAction<Point>) {
+      state.topLeft = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getRooms.fulfilled, (state, { payload: rooms }) => {
@@ -76,4 +105,5 @@ const boardSlice = createSlice({
   },
 });
 
+export const { moveBoard } = boardSlice.actions;
 export default boardSlice.reducer;
