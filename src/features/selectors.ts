@@ -4,11 +4,18 @@ import { RootState } from '../rootReducer';
 
 export const getRooms = (state: RootState) => state.board.rooms;
 
-export const getOpenNeighbors = createSelector([getRooms], (rooms) => {
+export const getBoardMap = createSelector([getRooms], (rooms) => {
   if (!rooms) {
     return;
   }
 
-  const map = buildBoardMap(rooms);
+  return buildBoardMap(rooms);
+});
+
+export const getOpenNeighbors = createSelector([getBoardMap], (map) => {
+  if (!map) {
+    return;
+  }
+
   return findOpenNeighbors(map);
 });
