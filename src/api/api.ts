@@ -143,7 +143,9 @@ export interface PlaceRoomResponse {
   rooms: Room[];
   nextRoom?: StackRoom;
 }
-export const placeRoom = async (loc: GridLoc) => {
+export const placeRoom: (loc: GridLoc) => Promise<PlaceRoomResponse> = async (
+  loc
+) => {
   if (!flippedRoom) {
     throw new Error("can't place room since there isn't one flipped");
   }
@@ -156,9 +158,9 @@ export const placeRoom = async (loc: GridLoc) => {
   });
 
   return {
-    rooms,
+    rooms: await getRooms(),
     nextRoom: await getStackRoom(),
-  } as PlaceRoomResponse;
+  };
 };
 
 export const getRooms: () => Promise<Room[]> = async () => {
