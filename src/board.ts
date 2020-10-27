@@ -5,6 +5,13 @@ import { index } from './utils';
 
 type BoardMap = Map<number, Map<number, RoomModel>>;
 
+export const get: (map: BoardMap, loc: GridLoc) => RoomModel | undefined = (
+  map,
+  { gridX, gridY }
+) => {
+  return map.get(gridX)?.get(gridY);
+};
+
 export const buildBoardMap: (rooms: RoomModel[]) => BoardMap = (rooms) => {
   const map: BoardMap = new Map();
 
