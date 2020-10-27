@@ -171,3 +171,17 @@ export const getRooms: () => Promise<Room[]> = async () => {
     };
   });
 };
+
+export const movePlayer: (
+  color: PlayerColor,
+  loc: GridLoc
+) => Promise<Room[]> = async (color, loc) => {
+  const player = players.find((player) => player.color === color);
+
+  if (!player) {
+    throw new Error("can't move player that isn't in the game");
+  }
+
+  player.loc = loc;
+  return getRooms();
+};
