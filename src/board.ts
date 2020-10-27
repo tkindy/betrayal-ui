@@ -3,18 +3,18 @@ import { Direction } from './components/room/Room';
 import { Room as RoomModel } from './features/models';
 import { index } from './utils';
 
-type BoardMap = Record<number, Record<number, RoomModel>>;
+type BoardMap = Map<number, Map<number, RoomModel>>;
 
 export const buildBoardMap: (rooms: RoomModel[]) => BoardMap = (rooms) => {
-  const map: BoardMap = {};
+  const map: BoardMap = new Map();
 
   for (const room of rooms) {
     const { gridX: x, gridY: y } = room.loc;
-    if (!(x in map)) {
-      map[x] = {};
+    if (!map.get(x)) {
+      map.set(x, new Map());
     }
 
-    map[x][y] = room;
+    map.get(x)!!.set(y, room);
   }
 
   return map;
@@ -56,12 +56,12 @@ const getNeighbors: (room: RoomModel) => Neighbor[] = (room) => {
 
 const isOpen: (loc: GridLoc, map: BoardMap) => boolean = (loc, map) => {
   const { gridX: x, gridY: y } = loc;
-  return !(map[x] && map[x][y]);
+  return !map.get(x)?.get(y);
 };
 
 export const findOpenNeighbors: (map: BoardMap) => Neighbor[] = (map) => {
-  const openNeighbors = Object.values(map)
-    .flatMap(Object.values)
+  const openNeighbors = Array.from(map.values())
+    .flatMap((column) => Array.from(column.values()))
     .flatMap(getNeighbors)
     .filter(({ loc }) => isOpen(loc, map));
 
