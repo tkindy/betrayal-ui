@@ -6,7 +6,7 @@ import { index } from './utils';
 type BoardMap = Record<number, Record<number, RoomModel>>;
 
 export const buildBoardMap: (rooms: RoomModel[]) => BoardMap = (rooms) => {
-  const map = {} as BoardMap;
+  const map: BoardMap = {};
 
   for (const room of rooms) {
     const { gridX: x, gridY: y } = room.loc;
