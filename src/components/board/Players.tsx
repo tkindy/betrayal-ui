@@ -1,9 +1,18 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import { Circle, Group } from 'react-konva';
 import { partition } from '../../utils';
 import { add, Point, translate } from '../geometry';
-import { GridLoc, useGridSize, useGridTopLeft } from './grid';
+import {
+  centerDroppedOnGrid,
+  droppedOnGrid,
+  GridLoc,
+  useGridSize,
+  useGridTopLeft,
+} from './grid';
 import { Player as PlayerModel } from '../../features/models';
+import { useDispatch, useSelector } from 'react-redux';
+import { RootState } from '../../rootReducer';
+import { playerDropped } from '../../features/board';
 
 const usePlayerRadius: () => number = () => {
   return useGridSize() / 15;
@@ -32,10 +41,12 @@ export interface PlayerProps extends PlayerModel {
   center: Point;
 }
 
-const Player: FunctionComponent<PlayerProps> = ({
-  center: { x, y },
-  color,
-}) => {
+const Player: FunctionComponent<PlayerProps> = ({ center, color }) => {
+  const [{ x, y }, setCenter] = useState(center);
+  const dispatch = useDispatch();
+  const gridSize = useGridSize();
+  const boardTopLeft = useSelector((state: RootState) => state.board.topLeft);
+
   return (
     <Circle
       x={x}
@@ -43,6 +54,13 @@ const Player: FunctionComponent<PlayerProps> = ({
       radius={usePlayerRadius()}
       fill={color}
       stroke="white"
+      draggable
+      onDragEnd={(e) => {
+        const loc = centerDroppedOnGrid(e, center, gridSize, boardTopLeft);
+        dispatch(playerDropped(color, loc));
+        setCenter({ x: e.target.x(), y: e.target.y() });
+        setCenter(center);
+      }}
     />
   );
 };
