@@ -182,6 +182,8 @@ export const movePlayer: (
     throw new Error("can't move player that isn't in the game");
   }
 
-  player.loc = loc;
+  players = players
+    .filter((player) => player.color !== color)
+    .concat({ loc, color });
   return getRooms();
 };
