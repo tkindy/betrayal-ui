@@ -35,10 +35,11 @@ const FlippedStackRoom: FunctionComponent<FlippedStackRoomProps> = ({
     <Group
       draggable
       onDragEnd={(e) => {
+        const { x, y } = e.target.position();
         const pointDroppedOn = translate(
           roomTopLeft,
-          e.target.x() + roomWidth / 2,
-          e.target.y() + roomHeight / 2
+          x + roomWidth / 2,
+          y + roomHeight / 2
         );
         const gridDroppedOn = windowToGridLoc(
           pointDroppedOn,
@@ -46,7 +47,7 @@ const FlippedStackRoom: FunctionComponent<FlippedStackRoomProps> = ({
           boardTopLeft
         );
         dispatch(flippedRoomDropped(gridDroppedOn));
-        setGroupTopLeft({ x: e.target.x(), y: e.target.y() });
+        setGroupTopLeft({ x, y });
         setGroupTopLeft({ x: 0, y: 0 });
       }}
       x={groupTopLeft.x}

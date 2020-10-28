@@ -51,9 +51,8 @@ const Player: FunctionComponent<PlayerProps> = ({ center, color }) => {
       draggable
       onDragEnd={(e) => {
         e.cancelBubble = true; // avoid dragging the board
-        const pointDroppedOn = { x: e.target.x(), y: e.target.y() };
         const gridDroppedOn = windowToGridLoc(
-          pointDroppedOn,
+          e.target.position(),
           gridSize,
           boardTopLeft
         );
