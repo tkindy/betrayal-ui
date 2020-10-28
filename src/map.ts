@@ -46,3 +46,12 @@ export const getPoint: <T>(map: CartMap<T>, p: Point) => T | undefined = (
 ) => {
   return getXY(map, x, y);
 };
+
+export const mapCartMap: <T, R>(
+  map: CartMap<T>,
+  mapper: (p: Point, t: T) => R
+) => R[] = <T, R>(map: CartMap<T>, mapper: (p: Point, t: T) => R) => {
+  return Array.from(map.entries()).flatMap(([x, column]) =>
+    Array.from(column.entries()).map(([y, t]) => mapper({ x, y }, t))
+  );
+};

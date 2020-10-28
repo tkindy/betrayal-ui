@@ -2,11 +2,16 @@ import React, { FunctionComponent, useState } from 'react';
 import { Circle, Group } from 'react-konva';
 import { partition } from '../../utils';
 import { add, Point, translate } from '../geometry';
-import { GridLoc, useGridSize, useGridTopLeft, windowToGridLoc } from './grid';
+import {
+  GridLoc,
+  useGridSize,
+  useGridTopLeft,
+  windowToGridLoc,
+} from '../board/grid';
 import { Player as PlayerModel } from '../../features/models';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../rootReducer';
-import { playerDropped } from '../../features/board';
+import { playerDropped } from '../../features/players';
 
 const usePlayerRadius: () => number = () => {
   return useGridSize() / 15;
@@ -104,12 +109,15 @@ const PlayersRow: FunctionComponent<PlayersRowProps> = ({
   );
 };
 
-export interface PlayersProps {
+export interface RoomPlayersProps {
   players: PlayerModel[];
   roomLoc: GridLoc;
 }
 
-const Players: FunctionComponent<PlayersProps> = ({ players, roomLoc }) => {
+const RoomPlayers: FunctionComponent<RoomPlayersProps> = ({
+  players,
+  roomLoc,
+}) => {
   const { width, height, topLeft } = usePlayersDimensions();
 
   const byRow = partition(players, 3);
@@ -131,4 +139,4 @@ const Players: FunctionComponent<PlayersProps> = ({ players, roomLoc }) => {
   );
 };
 
-export default Players;
+export default RoomPlayers;

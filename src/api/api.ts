@@ -1,8 +1,9 @@
-import { equal, GridLoc } from '../components/board/grid';
+import { GridLoc } from '../components/board/grid';
 import { Direction } from '../components/room/Room';
 import {
   FlippedRoom,
   Floor,
+  Player,
   PlayerColor,
   Room,
   StackRoom,
@@ -95,12 +96,7 @@ export const rotateFlipped = async () => {
   return flippedRoom;
 };
 
-interface PlayerModel {
-  loc: GridLoc;
-  color: PlayerColor;
-}
-
-let players: PlayerModel[] = [
+let players: Player[] = [
   { loc: { gridX: 2, gridY: 1 }, color: PlayerColor.YELLOW },
   { loc: { gridX: 2, gridY: 1 }, color: PlayerColor.RED },
   { loc: { gridX: 2, gridY: 1 }, color: PlayerColor.GREEN },
@@ -109,9 +105,7 @@ let players: PlayerModel[] = [
   { loc: { gridX: 1, gridY: 2 }, color: PlayerColor.BLUE },
 ];
 
-type RoomWithoutPlayers = Omit<Room, 'players'>;
-
-let rooms: RoomWithoutPlayers[] = [
+let rooms: Room[] = [
   {
     name: 'Bloody Room',
     loc: { gridX: 2, gridY: 2 },
@@ -164,18 +158,17 @@ export const placeRoom: (loc: GridLoc) => Promise<PlaceRoomResponse> = async (
 };
 
 export const getRooms: () => Promise<Room[]> = async () => {
-  return rooms.map((room) => {
-    return {
-      ...room,
-      players: players.filter((player) => equal(player.loc, room.loc)),
-    };
-  });
+  return rooms;
+};
+
+export const getPlayers: () => Promise<Player[]> = async () => {
+  return players;
 };
 
 export const movePlayer: (
   color: PlayerColor,
   loc: GridLoc
-) => Promise<Room[]> = async (color, loc) => {
+) => Promise<Player[]> = async (color, loc) => {
   const player = players.find((player) => player.color === color);
 
   if (!player) {
@@ -185,5 +178,5 @@ export const movePlayer: (
   players = players
     .filter((player) => player.color !== color)
     .concat({ loc, color });
-  return getRooms();
+  return getPlayers();
 };

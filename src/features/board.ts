@@ -10,10 +10,9 @@ import { Direction } from '../components/room/Room';
 import { RootState } from '../rootReducer';
 import * as api from '../api/api';
 import { PlaceRoomResponse } from '../api/api';
-import { PlayerColor, Room } from './models';
+import { Room } from './models';
 import { Point } from '../components/geometry';
-import { getBoardMap, getOpenNeighbors } from './selectors';
-import { get } from '../board';
+import { getOpenNeighbors } from './selectors';
 
 export const getRooms = createAsyncThunk('board/getStatus', api.getRooms);
 
@@ -82,31 +81,6 @@ export const flippedRoomDropped: (
   dispatch(openSpotClicked(relevantNeighbor.loc, relevantNeighbor.from));
 };
 
-interface MovePlayerPayload {
-  color: PlayerColor;
-  loc: GridLoc;
-}
-
-export const movePlayer = createAsyncThunk(
-  'board/movePlayerStatus',
-  ({ color, loc }: MovePlayerPayload) => api.movePlayer(color, loc)
-);
-
-export const playerDropped: (
-  color: PlayerColor,
-  loc: GridLoc
-) => ThunkAction<void, RootState, unknown, Action<string>> = (color, loc) => (
-  dispatch,
-  getState
-) => {
-  const map = getBoardMap(getState())!!;
-  if (!get(map, loc)) {
-    return;
-  }
-
-  dispatch(movePlayer({ color, loc }));
-};
-
 const initialState: BoardState = {
   topLeft: { x: 0, y: 0 },
 };
@@ -125,9 +99,6 @@ const boardSlice = createSlice({
         state.rooms = rooms;
       })
       .addCase(placeRoom.fulfilled, (state, { payload: { rooms } }) => {
-        state.rooms = rooms;
-      })
-      .addCase(movePlayer.fulfilled, (state, { payload: rooms }) => {
         state.rooms = rooms;
       });
   },

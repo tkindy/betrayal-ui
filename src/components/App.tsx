@@ -8,6 +8,7 @@ import RoomStack from './roomStack/RoomStack';
 import { useWindowDimensions } from './windowDimensions';
 import { moveBoard } from '../features/board';
 import { RootState } from '../rootReducer';
+import Players from './players/Players';
 
 const App = () => {
   const { width, height } = useWindowDimensions();
@@ -34,6 +35,7 @@ const App = () => {
               >
                 <Rect x={x} y={y} width={width} height={height} />
                 <Board />
+                <Players />
               </Layer>
               <Layer>
                 <RoomStack />

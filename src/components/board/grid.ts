@@ -1,8 +1,6 @@
-import { KonvaEventObject } from 'konva/types/Node';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../rootReducer';
-import { Point, translate } from '../geometry';
-import { BoundingBox } from '../layout';
+import { Point } from '../geometry';
 
 // (0, 0) is top-left square on first render
 export interface GridLoc {
