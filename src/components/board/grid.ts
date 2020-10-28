@@ -42,35 +42,3 @@ export const windowToGridLoc: (
     gridY: Math.floor((y + boardY) / gridSize),
   };
 };
-
-export const centerDroppedOnGrid: (
-  e: KonvaEventObject<DragEvent>,
-  originalCenter: Point,
-  gridSize: number,
-  boardTopLeft: Point
-) => GridLoc = (e, originalCenter, gridSize, boardTopLeft) => {
-  const center = translate(originalCenter, e.target.x(), e.target.y());
-  return windowToGridLoc(center, gridSize, boardTopLeft);
-};
-
-export const droppedOnGrid: (
-  e: KonvaEventObject<DragEvent>,
-  originalTargetBox: BoundingBox,
-  gridSize: number,
-  boardTopLeft: Point
-) => GridLoc = (
-  e,
-  {
-    topLeft: originalTargetTopLeft,
-    dimensions: { width: targetWidth, height: targetHeight },
-  },
-  gridSize,
-  boardTopLeft
-) => {
-  const originalCenter = translate(
-    originalTargetTopLeft,
-    targetWidth / 2,
-    targetHeight / 2
-  );
-  return centerDroppedOnGrid(e, originalCenter, gridSize, boardTopLeft);
-};

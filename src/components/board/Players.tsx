@@ -2,13 +2,7 @@ import React, { FunctionComponent, useState } from 'react';
 import { Circle, Group } from 'react-konva';
 import { partition } from '../../utils';
 import { add, Point, translate } from '../geometry';
-import {
-  centerDroppedOnGrid,
-  droppedOnGrid,
-  GridLoc,
-  useGridSize,
-  useGridTopLeft,
-} from './grid';
+import { GridLoc, useGridSize, useGridTopLeft, windowToGridLoc } from './grid';
 import { Player as PlayerModel } from '../../features/models';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../rootReducer';
@@ -57,8 +51,13 @@ const Player: FunctionComponent<PlayerProps> = ({ center, color }) => {
       draggable
       onDragEnd={(e) => {
         e.cancelBubble = true; // avoid dragging the board
-        const loc = centerDroppedOnGrid(e, center, gridSize, boardTopLeft);
-        dispatch(playerDropped(color, loc));
+        const pointDroppedOn = { x: e.target.x(), y: e.target.y() };
+        const gridDroppedOn = windowToGridLoc(
+          pointDroppedOn,
+          gridSize,
+          boardTopLeft
+        );
+        dispatch(playerDropped(color, gridDroppedOn));
         setCenter({ x: e.target.x(), y: e.target.y() });
         setCenter(center);
       }}

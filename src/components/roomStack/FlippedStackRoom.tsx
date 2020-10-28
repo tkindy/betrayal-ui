@@ -3,8 +3,8 @@ import { Group } from 'react-konva';
 import { useDispatch, useSelector } from 'react-redux';
 import { flippedRoomDropped } from '../../features/board';
 import { RootState } from '../../rootReducer';
-import { droppedOnGrid, useGridSize } from '../board/grid';
-import { Point } from '../geometry';
+import { useGridSize, windowToGridLoc } from '../board/grid';
+import { Point, translate } from '../geometry';
 import { BoundingBox } from '../layout';
 import Room, { Direction } from '../room/Room';
 import RoomName from '../room/RoomName';
@@ -22,6 +22,10 @@ const FlippedStackRoom: FunctionComponent<FlippedStackRoomProps> = ({
   doorDirections,
 }) => {
   const roomBox = getRoomBoundingBox(areaBox);
+  const {
+    topLeft: roomTopLeft,
+    dimensions: { width: roomWidth, height: roomHeight },
+  } = roomBox;
   const dispatch = useDispatch();
   const gridSize = useGridSize();
   const boardTopLeft = useSelector((state: RootState) => state.board.topLeft);
@@ -31,8 +35,17 @@ const FlippedStackRoom: FunctionComponent<FlippedStackRoomProps> = ({
     <Group
       draggable
       onDragEnd={(e) => {
-        const droppedOn = droppedOnGrid(e, roomBox, gridSize, boardTopLeft);
-        dispatch(flippedRoomDropped(droppedOn));
+        const pointDroppedOn = translate(
+          roomTopLeft,
+          e.target.x() + roomWidth / 2,
+          e.target.y() + roomHeight / 2
+        );
+        const gridDroppedOn = windowToGridLoc(
+          pointDroppedOn,
+          gridSize,
+          boardTopLeft
+        );
+        dispatch(flippedRoomDropped(gridDroppedOn));
         setGroupTopLeft({ x: e.target.x(), y: e.target.y() });
         setGroupTopLeft({ x: 0, y: 0 });
       }}
