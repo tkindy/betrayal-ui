@@ -56,6 +56,7 @@ const Player: FunctionComponent<PlayerProps> = ({ center, color }) => {
       stroke="white"
       draggable
       onDragEnd={(e) => {
+        e.cancelBubble = true; // avoid dragging the board
         const loc = centerDroppedOnGrid(e, center, gridSize, boardTopLeft);
         dispatch(playerDropped(color, loc));
         setCenter({ x: e.target.x(), y: e.target.y() });
