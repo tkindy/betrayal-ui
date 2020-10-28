@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { RootState } from '../../rootReducer';
-import { Point } from '../geometry';
+import { Point, translate } from '../geometry';
 
 // (0, 0) is top-left square on first render
 export interface GridLoc {
@@ -30,13 +30,20 @@ export const useGridCenter: (loc: GridLoc) => Point = ({ gridX, gridY }) => {
   return { x: (gridX + 0.5) * gridSize, y: (gridY + 0.5) * gridSize };
 };
 
+export const pointToGridLoc: (p: Point, gridSize: number) => GridLoc = (
+  { x, y },
+  gridSize
+) => {
+  return {
+    gridX: Math.floor(x / gridSize),
+    gridY: Math.floor(y / gridSize),
+  };
+};
+
 export const windowToGridLoc: (
   windowPoint: Point,
   gridSize: number,
   boardTopLeft: Point
-) => GridLoc = ({ x, y }, gridSize, { x: boardX, y: boardY }) => {
-  return {
-    gridX: Math.floor((x + boardX) / gridSize),
-    gridY: Math.floor((y + boardY) / gridSize),
-  };
+) => GridLoc = (windowPoint, gridSize, { x: boardX, y: boardY }) => {
+  return pointToGridLoc(translate(windowPoint, boardX, boardY), gridSize);
 };
