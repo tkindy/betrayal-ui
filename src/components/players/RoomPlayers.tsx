@@ -128,7 +128,7 @@ const RoomPlayers: FunctionComponent<RoomPlayersProps> = ({
     <Group>
       {byRow.map((row, i) => (
         <PlayersRow
-          key={i}
+          key={Math.random()}
           players={row}
           topLeft={translate(add(roomTopLeft, topLeft), 0, i * rowHeight)}
           width={width}
