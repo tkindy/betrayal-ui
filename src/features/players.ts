@@ -6,9 +6,9 @@ import {
 } from '@reduxjs/toolkit';
 import { Player, PlayerColor } from './models';
 import * as api from '../api/api';
-import { GridLoc } from '../components/board/grid';
+import { equal, GridLoc } from '../components/board/grid';
 import { RootState } from '../rootReducer';
-import { getBoardMap } from './selectors';
+import { getBoardMap, getPlayers as selectPlayers } from './selectors';
 import { get } from '../board';
 
 export const getPlayers = createAsyncThunk('players/getStatus', api.getPlayers);
@@ -32,6 +32,13 @@ export const playerDropped: (
 ) => {
   const map = getBoardMap(getState())!!;
   if (!get(map, loc)) {
+    return;
+  }
+
+  const { loc: originalLoc } = selectPlayers(getState())!!.find(
+    (player) => player.color === color
+  )!!;
+  if (equal(originalLoc, loc)) {
     return;
   }
 
