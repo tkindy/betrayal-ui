@@ -4,13 +4,12 @@ import { partition } from '../../utils';
 import { add, Point, translate } from '../geometry';
 import {
   GridLoc,
+  pointToGridLoc,
   useGridSize,
   useGridTopLeft,
-  windowToGridLoc,
 } from '../board/grid';
 import { Player as PlayerModel } from '../../features/models';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../rootReducer';
+import { useDispatch } from 'react-redux';
 import { playerDropped } from '../../features/players';
 
 const usePlayerRadius: () => number = () => {
@@ -44,7 +43,6 @@ const Player: FunctionComponent<PlayerProps> = ({ center, color }) => {
   const [{ x, y }, setCenter] = useState(center);
   const dispatch = useDispatch();
   const gridSize = useGridSize();
-  const boardTopLeft = useSelector((state: RootState) => state.board.topLeft);
 
   return (
     <Circle
@@ -56,12 +54,11 @@ const Player: FunctionComponent<PlayerProps> = ({ center, color }) => {
       draggable
       onDragEnd={(e) => {
         e.cancelBubble = true; // avoid dragging the board
-        const gridDroppedOn = windowToGridLoc(
-          e.target.position(),
-          gridSize,
-          boardTopLeft
+
+        dispatch(
+          playerDropped(color, pointToGridLoc(e.target.position(), gridSize))
         );
-        dispatch(playerDropped(color, gridDroppedOn));
+
         setCenter({ x: e.target.x(), y: e.target.y() });
         setCenter(center);
       }}
