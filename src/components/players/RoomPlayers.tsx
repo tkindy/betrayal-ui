@@ -1,9 +1,16 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import { Circle, Group } from 'react-konva';
 import { partition } from '../../utils';
 import { add, Point, translate } from '../geometry';
-import { GridLoc, useGridSize, useGridTopLeft } from './grid';
+import {
+  GridLoc,
+  pointToGridLoc,
+  useGridSize,
+  useGridTopLeft,
+} from '../board/grid';
 import { Player as PlayerModel } from '../../features/models';
+import { useDispatch } from 'react-redux';
+import { playerDropped } from '../../features/players';
 
 const usePlayerRadius: () => number = () => {
   return useGridSize() / 15;
@@ -32,10 +39,11 @@ export interface PlayerProps extends PlayerModel {
   center: Point;
 }
 
-const Player: FunctionComponent<PlayerProps> = ({
-  center: { x, y },
-  color,
-}) => {
+const Player: FunctionComponent<PlayerProps> = ({ center, color }) => {
+  const [{ x, y }, setCenter] = useState(center);
+  const dispatch = useDispatch();
+  const gridSize = useGridSize();
+
   return (
     <Circle
       x={x}
@@ -43,6 +51,17 @@ const Player: FunctionComponent<PlayerProps> = ({
       radius={usePlayerRadius()}
       fill={color}
       stroke="white"
+      draggable
+      onDragEnd={(e) => {
+        e.cancelBubble = true; // avoid dragging the board
+
+        dispatch(
+          playerDropped(color, pointToGridLoc(e.target.position(), gridSize))
+        );
+
+        setCenter({ x: e.target.x(), y: e.target.y() });
+        setCenter(center);
+      }}
     />
   );
 };
@@ -87,12 +106,15 @@ const PlayersRow: FunctionComponent<PlayersRowProps> = ({
   );
 };
 
-export interface PlayersProps {
+export interface RoomPlayersProps {
   players: PlayerModel[];
   roomLoc: GridLoc;
 }
 
-const Players: FunctionComponent<PlayersProps> = ({ players, roomLoc }) => {
+const RoomPlayers: FunctionComponent<RoomPlayersProps> = ({
+  players,
+  roomLoc,
+}) => {
   const { width, height, topLeft } = usePlayersDimensions();
 
   const byRow = partition(players, 3);
@@ -103,7 +125,7 @@ const Players: FunctionComponent<PlayersProps> = ({ players, roomLoc }) => {
     <Group>
       {byRow.map((row, i) => (
         <PlayersRow
-          key={i}
+          key={Math.random()}
           players={row}
           topLeft={translate(add(roomTopLeft, topLeft), 0, i * rowHeight)}
           width={width}
@@ -114,4 +136,4 @@ const Players: FunctionComponent<PlayersProps> = ({ players, roomLoc }) => {
   );
 };
 
-export default Players;
+export default RoomPlayers;

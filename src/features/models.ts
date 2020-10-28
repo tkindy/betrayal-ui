@@ -12,13 +12,13 @@ export enum PlayerColor {
 
 export interface Player {
   color: PlayerColor;
+  loc: GridLoc;
 }
 
 export interface Room {
   name: string;
   loc: GridLoc;
   doorDirections: Direction[];
-  players: Player[];
 }
 
 export enum Floor {

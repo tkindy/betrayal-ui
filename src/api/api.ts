@@ -3,6 +3,7 @@ import { Direction } from '../components/room/Room';
 import {
   FlippedRoom,
   Floor,
+  Player,
   PlayerColor,
   Room,
   StackRoom,
@@ -95,6 +96,15 @@ export const rotateFlipped = async () => {
   return flippedRoom;
 };
 
+let players: Player[] = [
+  { loc: { gridX: 2, gridY: 1 }, color: PlayerColor.YELLOW },
+  { loc: { gridX: 2, gridY: 1 }, color: PlayerColor.RED },
+  { loc: { gridX: 2, gridY: 1 }, color: PlayerColor.GREEN },
+  { loc: { gridX: 2, gridY: 1 }, color: PlayerColor.WHITE },
+  { loc: { gridX: 2, gridY: 1 }, color: PlayerColor.PURPLE },
+  { loc: { gridX: 1, gridY: 2 }, color: PlayerColor.BLUE },
+];
+
 let rooms: Room[] = [
   {
     name: 'Bloody Room',
@@ -105,31 +115,21 @@ let rooms: Room[] = [
       Direction.NORTH,
       Direction.WEST,
     ],
-    players: [],
   },
   {
     name: 'Statuary Corridor',
     loc: { gridX: 1, gridY: 2 },
     doorDirections: [Direction.EAST, Direction.SOUTH],
-    players: [{ color: PlayerColor.BLUE }],
   },
   {
     name: 'Master Bedroom',
     loc: { gridX: 2, gridY: 3 },
     doorDirections: [Direction.NORTH, Direction.SOUTH],
-    players: [],
   },
   {
     name: 'Crypt',
     loc: { gridX: 2, gridY: 1 },
     doorDirections: [Direction.SOUTH],
-    players: [
-      { color: PlayerColor.YELLOW },
-      { color: PlayerColor.RED },
-      { color: PlayerColor.GREEN },
-      { color: PlayerColor.WHITE },
-      { color: PlayerColor.PURPLE },
-    ],
   },
 ];
 
@@ -137,7 +137,9 @@ export interface PlaceRoomResponse {
   rooms: Room[];
   nextRoom?: StackRoom;
 }
-export const placeRoom = async (loc: GridLoc) => {
+export const placeRoom: (loc: GridLoc) => Promise<PlaceRoomResponse> = async (
+  loc
+) => {
   if (!flippedRoom) {
     throw new Error("can't place room since there isn't one flipped");
   }
@@ -147,15 +149,34 @@ export const placeRoom = async (loc: GridLoc) => {
     name,
     doorDirections,
     loc,
-    players: [],
   });
 
   return {
-    rooms,
+    rooms: await getRooms(),
     nextRoom: await getStackRoom(),
-  } as PlaceRoomResponse;
+  };
 };
 
-export const getRooms = async () => {
+export const getRooms: () => Promise<Room[]> = async () => {
   return rooms;
+};
+
+export const getPlayers: () => Promise<Player[]> = async () => {
+  return players;
+};
+
+export const movePlayer: (
+  color: PlayerColor,
+  loc: GridLoc
+) => Promise<Player[]> = async (color, loc) => {
+  const player = players.find((player) => player.color === color);
+
+  if (!player) {
+    throw new Error("can't move player that isn't in the game");
+  }
+
+  players = players
+    .filter((player) => player.color !== color)
+    .concat({ loc, color });
+  return getPlayers();
 };

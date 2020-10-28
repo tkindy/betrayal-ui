@@ -1,23 +1,22 @@
 import { GridLoc } from './components/board/grid';
 import { Direction } from './components/room/Room';
 import { Room as RoomModel } from './features/models';
+import { buildCartMap, CartMap, getXY } from './map';
 import { index } from './utils';
 
-type BoardMap = Record<number, Record<number, RoomModel>>;
+type BoardMap = CartMap<RoomModel>;
+
+export const get: (map: BoardMap, loc: GridLoc) => RoomModel | undefined = (
+  map,
+  { gridX, gridY }
+) => {
+  return getXY(map, gridX, gridY);
+};
 
 export const buildBoardMap: (rooms: RoomModel[]) => BoardMap = (rooms) => {
-  const map: BoardMap = {};
-
-  for (const room of rooms) {
-    const { gridX: x, gridY: y } = room.loc;
-    if (!(x in map)) {
-      map[x] = {};
-    }
-
-    map[x][y] = room;
-  }
-
-  return map;
+  return buildCartMap(rooms, ({ loc: { gridX: x, gridY: y } }) => {
+    return { x, y };
+  });
 };
 
 const getDelta: (dir: Direction) => [number, number] = (dir) => {
@@ -56,12 +55,12 @@ const getNeighbors: (room: RoomModel) => Neighbor[] = (room) => {
 
 const isOpen: (loc: GridLoc, map: BoardMap) => boolean = (loc, map) => {
   const { gridX: x, gridY: y } = loc;
-  return !(map[x] && map[x][y]);
+  return !getXY(map, x, y);
 };
 
 export const findOpenNeighbors: (map: BoardMap) => Neighbor[] = (map) => {
-  const openNeighbors = Object.values(map)
-    .flatMap(Object.values)
+  const openNeighbors = Array.from(map.values())
+    .flatMap((column) => Array.from(column.values()))
     .flatMap(getNeighbors)
     .filter(({ loc }) => isOpen(loc, map));
 
