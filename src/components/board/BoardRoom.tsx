@@ -2,27 +2,29 @@ import React, { FunctionComponent } from 'react';
 import { Group } from 'react-konva';
 import Room from '../room/Room';
 import RoomName from '../room/RoomName';
-import { useGridSize, useGridTopLeft } from './grid';
+import { useGridBox } from './grid';
 import { Room as RoomModel } from '../../features/models';
+import { BoundingBox } from '../layout';
 
 const BoardRoom: FunctionComponent<RoomModel> = ({
   name,
   loc,
   doorDirections,
 }) => {
-  const topLeft = useGridTopLeft(loc);
-  const gridSize = useGridSize();
+  const box = useGridBox(loc);
+  const {
+    topLeft,
+    dimensions: { width, height },
+  } = box;
+  const nameBox: BoundingBox = {
+    topLeft,
+    dimensions: { width, height: height / 2 },
+  };
 
   return (
     <Group>
-      <Room
-        box={{ topLeft, dimensions: { width: gridSize, height: gridSize } }}
-        doorDirections={doorDirections}
-      />
-      <RoomName
-        box={{ topLeft, dimensions: { width: gridSize, height: gridSize / 2 } }}
-        name={name}
-      />
+      <Room box={box} doorDirections={doorDirections} />
+      <RoomName box={nameBox} name={name} />
     </Group>
   );
 };

@@ -5,8 +5,8 @@ import { add, Point, translate } from '../geometry';
 import {
   GridLoc,
   pointToGridLoc,
+  useGridBox,
   useGridSize,
-  useGridTopLeft,
 } from '../board/grid';
 import { Player as PlayerModel } from '../../features/models';
 import { useDispatch } from 'react-redux';
@@ -119,7 +119,7 @@ const RoomPlayers: FunctionComponent<RoomPlayersProps> = ({
 
   const byRow = partition(players, 3);
   const rowHeight = height / byRow.length;
-  const roomTopLeft = useGridTopLeft(roomLoc);
+  const { topLeft: roomTopLeft } = useGridBox(roomLoc);
 
   return (
     <Group>
