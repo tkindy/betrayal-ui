@@ -1,6 +1,7 @@
 import { GridLoc } from '../components/board/grid';
 import { Direction } from '../components/room/Room';
 import {
+  Feature,
   FlippedRoom,
   Floor,
   Player,
@@ -15,17 +16,26 @@ const mockStack: { stackRoom: StackRoom; flipped: FlippedRoom }[] = [
     flipped: {
       name: 'Graveyard',
       doorDirections: [Direction.NORTH, Direction.EAST],
+      features: [Feature.EVENT],
     },
   },
   {
     stackRoom: { possibleFloors: [Floor.GROUND] },
-    flipped: { name: 'Entrance Hall', doorDirections: [Direction.NORTH] },
+    flipped: {
+      name: 'Entrance Hall',
+      doorDirections: [Direction.NORTH],
+      features: [Feature.OMEN, Feature.DUMBWAITER],
+    },
   },
   {
     stackRoom: {
       possibleFloors: [Floor.BASEMENT, Floor.GROUND, Floor.UPPER, Floor.ROOF],
     },
-    flipped: { name: 'Mystic Elevator', doorDirections: [Direction.SOUTH] },
+    flipped: {
+      name: 'Mystic Elevator',
+      doorDirections: [Direction.SOUTH],
+      features: [Feature.ITEM, Feature.ITEM],
+    },
   },
 ];
 
@@ -87,10 +97,11 @@ export const rotateFlipped = async () => {
     throw new Error("can't rotate since there's no flipped room");
   }
 
-  const { name, doorDirections } = flippedRoom;
+  const { name, doorDirections, features } = flippedRoom;
   flippedRoom = {
     name,
     doorDirections: doorDirections.map(rotateDirection),
+    features,
   };
 
   return flippedRoom;
@@ -115,21 +126,25 @@ let rooms: Room[] = [
       Direction.NORTH,
       Direction.WEST,
     ],
+    features: [Feature.ITEM],
   },
   {
     name: 'Statuary Corridor',
     loc: { gridX: 1, gridY: 2 },
     doorDirections: [Direction.EAST, Direction.SOUTH],
+    features: [Feature.EVENT, Feature.DUMBWAITER],
   },
   {
     name: 'Master Bedroom',
     loc: { gridX: 2, gridY: 3 },
     doorDirections: [Direction.NORTH, Direction.SOUTH],
+    features: [Feature.OMEN],
   },
   {
     name: 'Crypt',
     loc: { gridX: 2, gridY: 1 },
     doorDirections: [Direction.SOUTH],
+    features: [Feature.DUMBWAITER],
   },
 ];
 
@@ -144,10 +159,8 @@ export const placeRoom: (loc: GridLoc) => Promise<PlaceRoomResponse> = async (
     throw new Error("can't place room since there isn't one flipped");
   }
 
-  const { name, doorDirections } = flippedRoom;
   rooms = rooms.concat({
-    name,
-    doorDirections,
+    ...flippedRoom,
     loc,
   });
 
