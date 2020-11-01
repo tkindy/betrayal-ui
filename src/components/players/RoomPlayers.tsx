@@ -1,46 +1,29 @@
 import React, { FunctionComponent, useState } from 'react';
 import { Circle, Group } from 'react-konva';
 import { partition } from '../../utils';
-import { add, Point, translate } from '../geometry';
+import { translate } from '../geometry';
 import {
   GridLoc,
   pointToGridLoc,
   useGridBox,
   useGridSize,
 } from '../board/grid';
-import { Player as PlayerModel } from '../../features/models';
+import { Player as PlayerModel, PlayerColor } from '../../features/models';
 import { useDispatch } from 'react-redux';
 import { playerDropped } from '../../features/players';
+import { BoundingBox, getCenter, getPlayersBox } from '../layout';
 
-const usePlayerRadius: () => number = () => {
-  return useGridSize() / 15;
-};
-
-interface PlayersDimensions {
-  width: number;
-  height: number;
-  topLeft: Point;
-  playerSpacing: number;
+export interface PlayerProps {
+  color: PlayerColor;
+  box: BoundingBox;
 }
 
-const usePlayersDimensions: () => PlayersDimensions = () => {
-  const gridSize = useGridSize();
-  const playerRadius = usePlayerRadius();
+const Player: FunctionComponent<PlayerProps> = ({ box, color }) => {
+  const originalCenter = getCenter(box);
+  const { width, height } = box.dimensions;
+  const radius = Math.min(width, height) / 2;
 
-  return {
-    width: gridSize,
-    height: gridSize / 3,
-    topLeft: { x: 0, y: gridSize / 3 },
-    playerSpacing: playerRadius,
-  };
-};
-
-export interface PlayerProps extends PlayerModel {
-  center: Point;
-}
-
-const Player: FunctionComponent<PlayerProps> = ({ center, color }) => {
-  const [{ x, y }, setCenter] = useState(center);
+  const [{ x, y }, setCenter] = useState(originalCenter);
   const dispatch = useDispatch();
   const gridSize = useGridSize();
 
@@ -48,7 +31,7 @@ const Player: FunctionComponent<PlayerProps> = ({ center, color }) => {
     <Circle
       x={x}
       y={y}
-      radius={usePlayerRadius()}
+      radius={radius}
       fill={color}
       stroke="white"
       draggable
@@ -60,45 +43,47 @@ const Player: FunctionComponent<PlayerProps> = ({ center, color }) => {
         );
 
         setCenter({ x: e.target.x(), y: e.target.y() });
-        setCenter(center);
+        setCenter(originalCenter);
       }}
     />
   );
 };
 
 interface PlayersRowProps {
+  box: BoundingBox;
   players: PlayerModel[];
-  topLeft: Point;
-  width: number;
-  height: number;
 }
 
 const PlayersRow: FunctionComponent<PlayersRowProps> = ({
   players,
-  topLeft,
-  width,
-  height,
+  box: {
+    topLeft,
+    dimensions: { width, height },
+  },
 }) => {
-  const playerRadius = usePlayerRadius();
-  const { playerSpacing } = usePlayersDimensions();
-  const totalPlayersWidth = players.length * playerRadius * 2;
+  const playerWidth = width / 6;
+  const playerHeight = playerWidth;
+  const playerSpacing = playerWidth / 2;
+  const totalPlayersWidth = players.length * playerWidth;
   const totalInterPlayerDistance = (players.length - 1) * playerSpacing;
-  const firstMiddleLeft = translate(
+  const firstTopLeft = translate(
     topLeft,
     (width - (totalPlayersWidth + totalInterPlayerDistance)) / 2,
-    height / 2
+    (height - playerHeight) / 2
   );
-
   return (
     <Group>
       {players.map((player, i) => (
         <Player
           key={player.color}
-          center={translate(
-            firstMiddleLeft,
-            playerRadius + i * (playerRadius * 2 + playerSpacing),
-            0
-          )}
+          box={{
+            topLeft: translate(
+              firstTopLeft,
+              i * (playerWidth + playerSpacing),
+              0
+            ),
+            dimensions: { width: playerWidth, height: playerHeight },
+          }}
           {...player}
         />
       ))}
@@ -115,21 +100,25 @@ const RoomPlayers: FunctionComponent<RoomPlayersProps> = ({
   players,
   roomLoc,
 }) => {
-  const { width, height, topLeft } = usePlayersDimensions();
+  const roomBox = useGridBox(roomLoc);
+  const {
+    topLeft,
+    dimensions: { width, height },
+  } = getPlayersBox(roomBox);
 
   const byRow = partition(players, 3);
   const rowHeight = height / byRow.length;
-  const { topLeft: roomTopLeft } = useGridBox(roomLoc);
 
   return (
     <Group>
       {byRow.map((row, i) => (
         <PlayersRow
           key={Math.random()}
+          box={{
+            topLeft: translate(topLeft, 0, i * rowHeight),
+            dimensions: { width, height: rowHeight },
+          }}
           players={row}
-          topLeft={translate(add(roomTopLeft, topLeft), 0, i * rowHeight)}
-          width={width}
-          height={rowHeight}
         />
       ))}
     </Group>
