@@ -144,12 +144,13 @@ const StackRoom: FunctionComponent<StackRoomProps> = ({ areaBox }) => {
   );
 
   if (flippedRoom) {
-    const { name, doorDirections } = flippedRoom;
+    const { name, doorDirections, features } = flippedRoom;
     return (
       <FlippedStackRoom
         areaBox={areaBox}
         name={name}
         doorDirections={doorDirections}
+        features={features}
       />
     );
   }
