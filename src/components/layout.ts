@@ -42,3 +42,19 @@ export const getPlayersBox: (roomBox: BoundingBox) => BoundingBox = ({
     },
   };
 };
+
+export const getRoomDetailsBox: (roomBox: BoundingBox) => BoundingBox = ({
+  topLeft: roomTopLeft,
+  dimensions: roomDimensions,
+}) => {
+  const { height: doorHeight } = getDoorDimensions(roomDimensions);
+  const { width: roomWidth, height: roomHeight } = roomDimensions;
+
+  return {
+    topLeft: translate(roomTopLeft, doorHeight, doorHeight),
+    dimensions: {
+      width: roomWidth - 2 * doorHeight,
+      height: roomHeight / 2 - doorHeight,
+    },
+  };
+};
