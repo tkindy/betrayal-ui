@@ -3,7 +3,7 @@ import { Rect } from 'react-konva';
 import { useDispatch } from 'react-redux';
 import { openSpotClicked } from '../../features/board';
 import { Direction } from '../room/Room';
-import { GridLoc, useGridSize, useGridTopLeft } from './grid';
+import { GridLoc, useGridBox } from './grid';
 
 interface OpenSpotProps {
   loc: GridLoc;
@@ -11,8 +11,10 @@ interface OpenSpotProps {
 }
 
 const OpenSpot: FunctionComponent<OpenSpotProps> = ({ loc, from }) => {
-  const gridSize = useGridSize();
-  const { x, y } = useGridTopLeft(loc);
+  const {
+    topLeft: { x, y },
+    dimensions: { width, height },
+  } = useGridBox(loc);
 
   const dispatch = useDispatch();
   const onClick = () => dispatch(openSpotClicked(loc, from));
@@ -21,8 +23,8 @@ const OpenSpot: FunctionComponent<OpenSpotProps> = ({ loc, from }) => {
     <Rect
       x={x}
       y={y}
-      width={gridSize}
-      height={gridSize}
+      width={width}
+      height={height}
       onClick={onClick}
       onTap={onClick}
     />

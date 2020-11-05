@@ -15,10 +15,21 @@ export interface Player {
   loc: GridLoc;
 }
 
-export interface Room {
+export enum Feature {
+  EVENT = 'EVENT',
+  ITEM = 'ITEM',
+  OMEN = 'OMEN',
+  DUMBWAITER = 'DUMBWAITER',
+}
+
+interface RoomCore {
   name: string;
-  loc: GridLoc;
   doorDirections: Direction[];
+  features: Feature[];
+}
+
+export interface Room extends RoomCore {
+  loc: GridLoc;
 }
 
 export enum Floor {
@@ -32,7 +43,4 @@ export interface StackRoom {
   possibleFloors: Floor[];
 }
 
-export interface FlippedRoom {
-  name: string;
-  doorDirections: Direction[];
-}
+export interface FlippedRoom extends RoomCore {}

@@ -25,6 +25,7 @@ const RoomName: FunctionComponent<RoomNameProps> = ({
       fill="red"
       align="center"
       verticalAlign="middle"
+      ellipsis={true}
     />
   );
 };

@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { Group, Rect, Shape } from 'react-konva';
 import { Point, rotate, translate } from '../geometry';
-import { BoundingBox } from '../layout';
+import { BoundingBox, getCenter } from '../layout';
 
 export enum Direction {
   NORTH = 90,
@@ -15,14 +15,12 @@ interface DoorProps {
   direction: Direction;
 }
 
-const Door: FunctionComponent<DoorProps> = ({
-  roomBox: {
-    topLeft: roomTopLeft,
+const Door: FunctionComponent<DoorProps> = ({ roomBox, direction }) => {
+  const roomCenter = getCenter(roomBox);
+
+  const {
     dimensions: { width: roomWidth, height: roomHeight },
-  },
-  direction,
-}) => {
-  const roomCenter = translate(roomTopLeft, roomWidth / 2, roomHeight / 2);
+  } = roomBox;
   const doorWidth = roomWidth / 2.5;
   const doorHeight = roomHeight / 8;
 
