@@ -13,13 +13,16 @@ import { useDispatch } from 'react-redux';
 import { playerDropped } from '../../features/players';
 import { BoundingBox, getCenter, getPlayersBox } from '../layout';
 import { useRender } from '../hooks';
+import { HasTooltipMouseHandlers, withTooltip } from '../Tooltip';
 
 interface PlayerProps {
   color: PlayerColor;
   box: BoundingBox;
 }
 
-const Player: FunctionComponent<PlayerProps> = ({ box, color }) => {
+const Player: FunctionComponent<PlayerProps> = withTooltip<
+  PlayerProps & HasTooltipMouseHandlers
+>(({ box, color, tooltipMouseHandlers }) => {
   const { x, y } = getCenter(box);
   const { width, height } = box.dimensions;
   const radius = Math.min(width, height) / 2;
@@ -29,25 +32,27 @@ const Player: FunctionComponent<PlayerProps> = ({ box, color }) => {
   const gridSize = useGridSize();
 
   return (
-    <Circle
-      x={x}
-      y={y}
-      radius={radius}
-      fill={color}
-      stroke="white"
-      draggable
-      onDragEnd={(e) => {
-        e.cancelBubble = true; // avoid dragging the board
+    <Group {...tooltipMouseHandlers}>
+      <Circle
+        x={x}
+        y={y}
+        radius={radius}
+        fill={color}
+        stroke="white"
+        draggable
+        onDragEnd={(e) => {
+          e.cancelBubble = true; // avoid dragging the board
 
-        dispatch(
-          playerDropped(color, pointToGridLoc(e.target.position(), gridSize))
-        );
+          dispatch(
+            playerDropped(color, pointToGridLoc(e.target.position(), gridSize))
+          );
 
-        render(); // to snap back if dropped in an invalid spot
-      }}
-    />
+          render(); // to snap back if dropped in an invalid spot
+        }}
+      />
+    </Group>
   );
-};
+});
 
 interface PlayersRowProps {
   box: BoundingBox;
