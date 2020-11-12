@@ -40,6 +40,7 @@ const App = () => {
               <Layer>
                 <RoomStack />
               </Layer>
+              <Layer name="overlay" />
             </ReactReduxContext.Provider>
           </Stage>
         )}

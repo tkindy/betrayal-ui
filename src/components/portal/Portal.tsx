@@ -4,7 +4,7 @@ import { Group as GroupElem } from 'konva/types/Group';
 
 // Adapted from https://konvajs.org/docs/react/Canvas_Portal.html
 
-interface PortalProps {
+export interface PortalProps {
   selector: string;
   enabled: boolean;
 }
