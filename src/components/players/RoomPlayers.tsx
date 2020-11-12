@@ -50,6 +50,7 @@ const Player: FunctionComponent<PlayerProps> = ({ box, color }) => {
 
           render(); // to snap back if dropped in an invalid spot
         }}
+        onTap={() => setHovered(!hovered)}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       />
