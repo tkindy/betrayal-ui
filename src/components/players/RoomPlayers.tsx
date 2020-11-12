@@ -13,16 +13,13 @@ import { useDispatch } from 'react-redux';
 import { playerDropped } from '../../features/players';
 import { BoundingBox, getCenter, getPlayersBox } from '../layout';
 import { useRender } from '../hooks';
-import { HasTooltipMouseHandlers, withTooltip } from '../Tooltip';
 
 interface PlayerProps {
   color: PlayerColor;
   box: BoundingBox;
 }
 
-const Player: FunctionComponent<PlayerProps> = withTooltip<
-  PlayerProps & HasTooltipMouseHandlers
->(({ box, color, tooltipMouseHandlers }) => {
+const Player: FunctionComponent<PlayerProps> = ({ box, color }) => {
   const { x, y } = getCenter(box);
   const { width, height } = box.dimensions;
   const radius = Math.min(width, height) / 2;
@@ -32,7 +29,7 @@ const Player: FunctionComponent<PlayerProps> = withTooltip<
   const gridSize = useGridSize();
 
   return (
-    <Group {...tooltipMouseHandlers}>
+    <Group>
       <Circle
         x={x}
         y={y}
@@ -52,7 +49,7 @@ const Player: FunctionComponent<PlayerProps> = withTooltip<
       />
     </Group>
   );
-});
+};
 
 interface PlayersRowProps {
   box: BoundingBox;
