@@ -9,6 +9,9 @@ import { rootReducer } from './rootReducer';
 import { getRooms } from './features/board';
 import { getStackRoom } from './features/roomStack';
 import { getPlayers } from './features/players';
+import { useStrictMode } from 'react-konva';
+
+useStrictMode(true);
 
 const store = configureStore({
   reducer: rootReducer,
