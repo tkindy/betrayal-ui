@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useState } from 'react';
-import { Circle, Group } from 'react-konva';
+import { Circle, Group, Text } from 'react-konva';
 import { partition } from '../../utils';
 import { translate } from '../geometry';
 import {
@@ -52,7 +52,24 @@ const Player: FunctionComponent<PlayerProps> = ({ box, color }) => {
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       />
-      <Hovercard enabled={hovered} x={x} y={y} />
+      <Hovercard
+        enabled={hovered}
+        targetBox={box}
+        contentDimensions={{ width: 100, height: 200 }}
+        renderContent={({
+          topLeft: { x, y },
+          dimensions: { width, height },
+        }) => (
+          <Text
+            x={x}
+            y={y}
+            width={width}
+            height={height}
+            text="Hello, world!"
+            fontSize={24}
+          />
+        )}
+      />
     </Group>
   );
 };
