@@ -1,11 +1,12 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent } from 'react';
 import { Group } from 'react-konva';
 import { useDispatch, useSelector } from 'react-redux';
 import { flippedRoomDropped } from '../../features/board';
 import { Feature } from '../../features/models';
 import { RootState } from '../../rootReducer';
 import { useGridSize, windowToGridLoc } from '../board/grid';
-import { Point, translate } from '../geometry';
+import { translate } from '../geometry';
+import { useRender } from '../hooks';
 import { BoundingBox, getDoorDimensions } from '../layout';
 import Room, { Direction } from '../room/Room';
 import RoomFeatures from '../room/RoomFeatures';
@@ -45,10 +46,12 @@ const FlippedStackRoom: FunctionComponent<FlippedStackRoomProps> = ({
   const dispatch = useDispatch();
   const gridSize = useGridSize();
   const boardTopLeft = useSelector((state: RootState) => state.board.topLeft);
-  const [groupTopLeft, setGroupTopLeft] = useState<Point>({ x: 0, y: 0 });
+  const render = useRender();
 
   return (
     <Group
+      x={0}
+      y={0}
       draggable
       onDragEnd={(e) => {
         const { x, y } = e.target.position();
@@ -63,11 +66,9 @@ const FlippedStackRoom: FunctionComponent<FlippedStackRoomProps> = ({
           boardTopLeft
         );
         dispatch(flippedRoomDropped(gridDroppedOn));
-        setGroupTopLeft({ x, y });
-        setGroupTopLeft({ x: 0, y: 0 });
+
+        render();
       }}
-      x={groupTopLeft.x}
-      y={groupTopLeft.y}
     >
       <Room box={roomBox} doorDirections={doorDirections} />
       <RoomName box={nameBox} name={name} />
