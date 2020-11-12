@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent } from 'react';
 import { Circle, Group } from 'react-konva';
 import { partition } from '../../utils';
 import { translate } from '../geometry';
@@ -12,18 +12,19 @@ import { Player as PlayerModel, PlayerColor } from '../../features/models';
 import { useDispatch } from 'react-redux';
 import { playerDropped } from '../../features/players';
 import { BoundingBox, getCenter, getPlayersBox } from '../layout';
+import { useRender } from '../hooks';
 
-export interface PlayerProps {
+interface PlayerProps {
   color: PlayerColor;
   box: BoundingBox;
 }
 
 const Player: FunctionComponent<PlayerProps> = ({ box, color }) => {
-  const originalCenter = getCenter(box);
+  const { x, y } = getCenter(box);
   const { width, height } = box.dimensions;
   const radius = Math.min(width, height) / 2;
 
-  const [{ x, y }, setCenter] = useState(originalCenter);
+  const render = useRender();
   const dispatch = useDispatch();
   const gridSize = useGridSize();
 
@@ -42,8 +43,7 @@ const Player: FunctionComponent<PlayerProps> = ({ box, color }) => {
           playerDropped(color, pointToGridLoc(e.target.position(), gridSize))
         );
 
-        setCenter({ x: e.target.x(), y: e.target.y() });
-        setCenter(originalCenter);
+        render(); // to snap back if dropped in an invalid spot
       }}
     />
   );
@@ -113,7 +113,7 @@ const RoomPlayers: FunctionComponent<RoomPlayersProps> = ({
     <Group>
       {byRow.map((row, i) => (
         <PlayersRow
-          key={Math.random()}
+          key={i}
           box={{
             topLeft: translate(topLeft, 0, i * rowHeight),
             dimensions: { width, height: rowHeight },
