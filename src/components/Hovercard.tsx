@@ -4,7 +4,7 @@ import { translate } from './geometry';
 import { BoundingBox, Dimensions } from './layout';
 import OverlayPortal from './portal/OverlayPortal';
 
-const spacing = 10;
+const spacing = 20;
 
 const buildBox: (
   targetBox: BoundingBox,
@@ -49,7 +49,14 @@ const Hovercard: FunctionComponent<HovercardProps> = ({
     <OverlayPortal enabled={enabled}>
       {enabled && (
         <Group>
-          <Rect x={x} y={y} width={width} height={height} fill="gray" />
+          <Rect
+            x={x}
+            y={y}
+            width={width}
+            height={height}
+            fill="gray"
+            stroke="black"
+          />
           {renderContent(box)}
         </Group>
       )}
