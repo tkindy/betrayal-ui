@@ -40,6 +40,7 @@ const Player: FunctionComponent<PlayerProps> = ({ box, color }) => {
         fill={color}
         stroke="white"
         draggable
+        onDragStart={() => setHovered(false)}
         onDragEnd={(e) => {
           e.cancelBubble = true; // avoid dragging the board
 
