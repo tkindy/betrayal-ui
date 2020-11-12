@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import { Circle, Group } from 'react-konva';
 import { partition } from '../../utils';
 import { translate } from '../geometry';
@@ -13,6 +13,7 @@ import { useDispatch } from 'react-redux';
 import { playerDropped } from '../../features/players';
 import { BoundingBox, getCenter, getPlayersBox } from '../layout';
 import { useRender } from '../hooks';
+import Hovercard from '../Hovercard';
 
 interface PlayerProps {
   color: PlayerColor;
@@ -27,6 +28,8 @@ const Player: FunctionComponent<PlayerProps> = ({ box, color }) => {
   const render = useRender();
   const dispatch = useDispatch();
   const gridSize = useGridSize();
+
+  const [hovered, setHovered] = useState(false);
 
   return (
     <Group>
@@ -46,7 +49,10 @@ const Player: FunctionComponent<PlayerProps> = ({ box, color }) => {
 
           render(); // to snap back if dropped in an invalid spot
         }}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
       />
+      <Hovercard enabled={hovered} x={x} y={y} />
     </Group>
   );
 };
