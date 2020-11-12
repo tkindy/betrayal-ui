@@ -6,31 +6,31 @@ import { Point } from './geometry';
 
 type MouseEventHandler = (e: KonvaEventObject<MouseEvent>) => void;
 
-export interface TooltipMouseHandlers {
+export interface HovercardMouseHandlers {
   onMouseEnter: MouseEventHandler;
   onMouseLeave: MouseEventHandler;
   onMouseMove: MouseEventHandler;
 }
 
-export interface HasTooltipMouseHandlers {
-  tooltipMouseHandlers: TooltipMouseHandlers;
+export interface HasHovercardMouseHandlers {
+  hovercardMouseHandlers: HovercardMouseHandlers;
 }
 
-interface TooltipProps {
+interface HovercardProps {
   x: number;
   y: number;
 }
 
-const Tooltip: FunctionComponent<TooltipProps> = ({ x, y }) => {
+const Hovercard: FunctionComponent<HovercardProps> = ({ x, y }) => {
   return <Rect x={x} y={y} width={100} height={30} fill="yellow" />;
 };
 
-export default Tooltip;
+export default Hovercard;
 
-export const withTooltip = <P extends HasTooltipMouseHandlers>(
+export const withHovercard = <P extends HasHovercardMouseHandlers>(
   Component: ComponentType<P>
 ) => {
-  return (props: Subtract<P, HasTooltipMouseHandlers>) => {
+  return (props: Subtract<P, HasHovercardMouseHandlers>) => {
     const [visible, setVisible] = useState(false);
     const [{ x, y }, setPoint] = useState<Point>({ x: 0, y: 0 });
 
@@ -38,13 +38,13 @@ export const withTooltip = <P extends HasTooltipMouseHandlers>(
       <Group>
         <Component
           {...(props as P)}
-          tooltipMouseHandlers={{
+          hovercardMouseHandlers={{
             onMouseEnter: () => setVisible(true),
             onMouseLeave: () => setVisible(false),
             onMouseMove: (e) => setPoint({ x: e.evt.x + 10, y: e.evt.y + 10 }),
           }}
         />
-        {visible && <Tooltip x={x} y={y} />}
+        {visible && <Hovercard x={x} y={y} />}
       </Group>
     );
   };
