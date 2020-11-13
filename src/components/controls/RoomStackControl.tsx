@@ -48,35 +48,17 @@ const getControlBoundingBox: (areaBox: BoundingBox) => BoundingBox = ({
 
 const StackButtons: FunctionComponent<{}> = () => {
   const dispatch = useDispatch();
-
-  const areaBox = getAreaBoundingBox(useWindowDimensions());
-  const {
-    dimensions: { height: areaHeight },
-  } = areaBox;
-
-  const spacing = getSpacing(areaHeight);
-  const buttonWidth = getButtonWidth(areaHeight);
-  const buttonHeight = getButtonHeight(areaHeight);
   const buttonStyle: CSSProperties = {
-    position: 'absolute',
-    top: 0,
-    width: buttonWidth,
-    height: buttonHeight,
-    padding: 0,
+    flex: '5',
   };
 
   return (
     <div>
-      <button
-        onClick={() => dispatch(flipRoomStack())}
-        style={{ left: 0, ...buttonStyle }}
-      >
+      <button onClick={() => dispatch(flipRoomStack())} style={buttonStyle}>
         Use
       </button>
-      <button
-        onClick={() => dispatch(skipRoom())}
-        style={{ left: buttonWidth + spacing, ...buttonStyle }}
-      >
+      <div style={{ flex: '1' }}></div>
+      <button onClick={() => dispatch(skipRoom())} style={buttonStyle}>
         Next
       </button>
     </div>
@@ -86,41 +68,26 @@ const StackButtons: FunctionComponent<{}> = () => {
 const FlippedRoomButtons: FunctionComponent<{}> = () => {
   const dispatch = useDispatch();
 
-  const areaBox = getAreaBoundingBox(useWindowDimensions());
-  const {
-    dimensions: { height: areaHeight },
-  } = areaBox;
-  const buttonHeight = getButtonHeight(areaHeight);
-
   return (
     <div>
-      <button
-        onClick={() => dispatch(rotateFlipped())}
-        style={{
-          position: 'absolute',
-          width: '100%',
-          height: buttonHeight,
-          padding: 0,
-        }}
-      >
-        Rotate
-      </button>
+      <button onClick={() => dispatch(rotateFlipped())}>Rotate</button>
     </div>
   );
 };
 
-interface RoomStackControlProps {}
+interface RoomStackControlProps {
+  box: BoundingBox;
+}
 
-const RoomStackControl: FunctionComponent<RoomStackControlProps> = () => {
+const RoomStackControl: FunctionComponent<RoomStackControlProps> = ({
+  box: {
+    topLeft: { x, y },
+    dimensions: { width, height },
+  },
+}) => {
   const flippedRoom = useSelector(
     (state: RootState) => state.roomStack.flippedRoom
   );
-
-  const areaBox = getAreaBoundingBox(useWindowDimensions());
-  const {
-    topLeft: { x, y },
-    dimensions: { width, height },
-  } = getControlBoundingBox(areaBox);
 
   return (
     <div
@@ -131,6 +98,7 @@ const RoomStackControl: FunctionComponent<RoomStackControlProps> = () => {
         left: x,
         width,
         height,
+        display: 'flex',
       }}
     >
       {flippedRoom ? <FlippedRoomButtons /> : <StackButtons />}
