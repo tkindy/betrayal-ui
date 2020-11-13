@@ -2,18 +2,18 @@ import React, { FunctionComponent } from 'react';
 import Hovercard, { CardDirection } from '../Hovercard';
 import { BoundingBox } from '../layout';
 import { Text } from 'react-konva';
-import { PlayerColor } from '../../features/models';
+import { Player } from '../../features/models';
 
 interface PlayerHovercardProps {
   hovered: boolean;
   playerBox: BoundingBox;
-  color: PlayerColor;
+  player: Player;
 }
 
 const PlayerHovercard: FunctionComponent<PlayerHovercardProps> = ({
   hovered,
   playerBox,
-  color,
+  player: { color },
 }) => {
   return (
     <Hovercard

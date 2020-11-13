@@ -8,7 +8,7 @@ import {
   useGridBox,
   useGridSize,
 } from '../board/grid';
-import { Player as PlayerModel, PlayerColor } from '../../features/models';
+import { Player as PlayerModel } from '../../features/models';
 import { useDispatch } from 'react-redux';
 import { playerDropped } from '../../features/players';
 import { BoundingBox, getCenter, getPlayersBox } from '../layout';
@@ -16,14 +16,15 @@ import { useRender } from '../hooks';
 import PlayerHovercard from './PlayerHovercard';
 
 interface PlayerProps {
-  color: PlayerColor;
   box: BoundingBox;
+  player: PlayerModel;
 }
 
-const Player: FunctionComponent<PlayerProps> = ({ box, color }) => {
+const Player: FunctionComponent<PlayerProps> = ({ box, player }) => {
   const { x, y } = getCenter(box);
   const { width, height } = box.dimensions;
   const radius = Math.min(width, height) / 2;
+  const { color } = player;
 
   const render = useRender();
   const dispatch = useDispatch();
@@ -54,7 +55,7 @@ const Player: FunctionComponent<PlayerProps> = ({ box, color }) => {
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       />
-      <PlayerHovercard hovered={hovered} playerBox={box} color={color} />
+      <PlayerHovercard hovered={hovered} playerBox={box} player={player} />
     </Group>
   );
 };
@@ -94,7 +95,7 @@ const PlayersRow: FunctionComponent<PlayersRowProps> = ({
             ),
             dimensions: { width: playerWidth, height: playerHeight },
           }}
-          {...player}
+          player={player}
         />
       ))}
     </Group>
