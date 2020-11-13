@@ -1,27 +1,51 @@
 import React, { FunctionComponent, ReactElement } from 'react';
 import { Group, Rect } from 'react-konva';
 import { translate } from './geometry';
-import { BoundingBox, Dimensions } from './layout';
+import { BoundingBox, Dimensions, getCenter } from './layout';
 import OverlayPortal from './portal/OverlayPortal';
 
 const spacing = 20;
 
+export enum CardDirection {
+  UP = 'UP',
+  DOWN = 'DOWN',
+  LEFT = 'LEFT',
+  RIGHT = 'RIGHT',
+}
+
 const buildBox: (
   targetBox: BoundingBox,
-  contentDimensions: Dimensions
-) => BoundingBox = (
-  { topLeft: targetTopLeft, dimensions: { width: targetWidth } },
-  contentDimensions
-) => {
-  const targetCenterTop = translate(targetTopLeft, targetWidth / 2, 0);
+  contentDimensions: Dimensions,
+  direction: CardDirection
+) => BoundingBox = (targetBox, contentDimensions, direction) => {
+  const {
+    dimensions: { width: targetWidth, height: targetHeight },
+  } = targetBox;
+  const targetCenter = getCenter(targetBox);
   const { width: contentWidth, height: contentHeight } = contentDimensions;
 
+  let dx, dy;
+  switch (direction) {
+    case CardDirection.UP:
+      dx = -contentWidth / 2;
+      dy = -(targetHeight / 2 + spacing + contentHeight);
+      break;
+    case CardDirection.DOWN:
+      dx = -contentWidth / 2;
+      dy = targetHeight / 2 + spacing;
+      break;
+    case CardDirection.LEFT:
+      dx = -(targetWidth / 2 + spacing + contentWidth);
+      dy = -contentHeight / 2;
+      break;
+    case CardDirection.RIGHT:
+      dx = targetWidth / 2 + spacing;
+      dy = -contentHeight / 2;
+      break;
+  }
+
   return {
-    topLeft: translate(
-      targetCenterTop,
-      -contentWidth / 2,
-      -(spacing + contentHeight)
-    ),
+    topLeft: translate(targetCenter, dx, dy),
     dimensions: contentDimensions,
   };
 };
@@ -39,7 +63,7 @@ const Hovercard: FunctionComponent<HovercardProps> = ({
   contentDimensions,
   renderContent,
 }) => {
-  const box = buildBox(targetBox, contentDimensions);
+  const box = buildBox(targetBox, contentDimensions, CardDirection.RIGHT);
   const {
     topLeft: { x, y },
     dimensions: { width, height },
