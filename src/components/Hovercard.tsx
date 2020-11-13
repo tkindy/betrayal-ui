@@ -4,10 +4,10 @@ import { pointsToArray, translate } from './geometry';
 import { BoundingBox, Dimensions, getCenter } from './layout';
 import OverlayPortal from './portal/OverlayPortal';
 
-const spacing = 20;
-const padding = 15;
-const triangleBaseWidth = 20;
-const triangleHeight = 15;
+const SPACING = 20;
+const PADDING = 15;
+const TRIANGLE_BASE_WIDTH = 20;
+const TRIANGLE_HEIGHT = 15;
 
 export enum CardDirection {
   UP = 'UP',
@@ -31,18 +31,18 @@ const buildContentBox: (
   switch (direction) {
     case CardDirection.UP:
       dx = -contentWidth / 2;
-      dy = -(targetHeight / 2 + spacing + padding + contentHeight);
+      dy = -(targetHeight / 2 + SPACING + PADDING + contentHeight);
       break;
     case CardDirection.DOWN:
       dx = -contentWidth / 2;
-      dy = targetHeight / 2 + spacing + padding;
+      dy = targetHeight / 2 + SPACING + PADDING;
       break;
     case CardDirection.LEFT:
-      dx = -(targetWidth / 2 + spacing + padding + contentWidth);
+      dx = -(targetWidth / 2 + SPACING + PADDING + contentWidth);
       dy = -contentHeight / 2;
       break;
     case CardDirection.RIGHT:
-      dx = targetWidth / 2 + spacing + padding;
+      dx = targetWidth / 2 + SPACING + PADDING;
       dy = -contentHeight / 2;
       break;
   }
@@ -63,9 +63,9 @@ const getCardPoints: (
   },
   direction
 ) => {
-  const topLeft = translate(contentTopLeft, -padding, -padding);
-  const width = contentWidth + 2 * padding;
-  const height = contentHeight + 2 * padding;
+  const topLeft = translate(contentTopLeft, -PADDING, -PADDING);
+  const width = contentWidth + 2 * PADDING;
+  const height = contentHeight + 2 * PADDING;
   const rectPoints = [
     topLeft,
     translate(topLeft, width, 0),
@@ -78,33 +78,33 @@ const getCardPoints: (
     case CardDirection.UP:
       triangleIndex = 3;
       trianglePoints = [
-        translate(topLeft, width / 2 + triangleBaseWidth / 2, height),
-        translate(topLeft, width / 2, height + triangleHeight),
-        translate(topLeft, width / 2 - triangleBaseWidth / 2, height),
+        translate(topLeft, width / 2 + TRIANGLE_BASE_WIDTH / 2, height),
+        translate(topLeft, width / 2, height + TRIANGLE_HEIGHT),
+        translate(topLeft, width / 2 - TRIANGLE_BASE_WIDTH / 2, height),
       ];
       break;
     case CardDirection.DOWN:
       triangleIndex = 1;
       trianglePoints = [
-        translate(topLeft, width / 2 - triangleBaseWidth / 2, 0),
-        translate(topLeft, width / 2, -triangleHeight),
-        translate(topLeft, width / 2 + triangleBaseWidth / 2, 0),
+        translate(topLeft, width / 2 - TRIANGLE_BASE_WIDTH / 2, 0),
+        translate(topLeft, width / 2, -TRIANGLE_HEIGHT),
+        translate(topLeft, width / 2 + TRIANGLE_BASE_WIDTH / 2, 0),
       ];
       break;
     case CardDirection.LEFT:
       triangleIndex = 2;
       trianglePoints = [
-        translate(topLeft, width, height / 2 - triangleBaseWidth / 2),
-        translate(topLeft, width + triangleHeight, height / 2),
-        translate(topLeft, width, height / 2 + triangleBaseWidth / 2),
+        translate(topLeft, width, height / 2 - TRIANGLE_BASE_WIDTH / 2),
+        translate(topLeft, width + TRIANGLE_HEIGHT, height / 2),
+        translate(topLeft, width, height / 2 + TRIANGLE_BASE_WIDTH / 2),
       ];
       break;
     case CardDirection.RIGHT:
       triangleIndex = 4;
       trianglePoints = [
-        translate(topLeft, 0, height / 2 + triangleBaseWidth / 2),
-        translate(topLeft, -triangleHeight, height / 2),
-        translate(topLeft, 0, height / 2 - triangleBaseWidth / 2),
+        translate(topLeft, 0, height / 2 + TRIANGLE_BASE_WIDTH / 2),
+        translate(topLeft, -TRIANGLE_HEIGHT, height / 2),
+        translate(topLeft, 0, height / 2 - TRIANGLE_BASE_WIDTH / 2),
       ];
       break;
   }
