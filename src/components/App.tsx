@@ -2,7 +2,6 @@ import React from 'react';
 import './App.css';
 import { Layer, Rect, Stage, Group } from 'react-konva';
 import Board from './board/Board';
-import Controls from './controls/Controls';
 import { ReactReduxContext, useDispatch, useSelector } from 'react-redux';
 import RoomStack from './roomStack/RoomStack';
 import { useWindowDimensions } from './windowDimensions';
@@ -17,7 +16,6 @@ const App = () => {
 
   return (
     <div>
-      <Controls />
       <ReactReduxContext.Consumer>
         {(reduxContext) => (
           <Stage width={width} height={height}>
