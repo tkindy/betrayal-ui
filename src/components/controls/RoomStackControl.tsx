@@ -6,46 +6,8 @@ import {
   skipRoom,
 } from '../../features/roomStack';
 import { RootState } from '../../store';
-import { translate } from '../geometry';
 import { BoundingBox } from '../layout';
-import {
-  calcUnitsLength,
-  getAreaBoundingBox,
-  xUnits,
-  yUnits,
-} from '../roomStack/shared';
 import DOMPortal from '../portal/DOMPortal';
-
-import { useWindowDimensions } from '../windowDimensions';
-
-const getSpacing = (areaHeight: number) =>
-  calcUnitsLength(areaHeight, yUnits.spacing);
-const getButtonWidth = (areaHeight: number) =>
-  calcUnitsLength(areaHeight, xUnits.button);
-const getButtonHeight = (areaHeight: number) =>
-  calcUnitsLength(areaHeight, yUnits.button);
-
-const getControlBoundingBox: (areaBox: BoundingBox) => BoundingBox = ({
-  topLeft: areaTopLeft,
-  dimensions: { height: areaHeight },
-}) => {
-  const topLeft = translate(
-    areaTopLeft,
-    calcUnitsLength(areaHeight, yUnits.spacing),
-    calcUnitsLength(areaHeight, yUnits.spacing + yUnits.room + yUnits.spacing)
-  );
-  const spacing = getSpacing(areaHeight);
-  const buttonWidth = getButtonWidth(areaHeight);
-  const buttonHeight = getButtonHeight(areaHeight);
-
-  return {
-    topLeft,
-    dimensions: {
-      width: buttonWidth + spacing + buttonWidth,
-      height: buttonHeight,
-    },
-  };
-};
 
 const StackButtons: FunctionComponent<{}> = () => {
   const dispatch = useDispatch();
