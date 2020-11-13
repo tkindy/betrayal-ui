@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import Portal, { PortalProps } from './Portal';
+import CanvasPortal, { PortalProps } from './CanvasPortal';
 
 type OverlayPortalProps = Omit<PortalProps, 'selector'>;
 
@@ -8,9 +8,9 @@ const OverlayPortal: FunctionComponent<OverlayPortalProps> = ({
   ...rest
 }) => {
   return (
-    <Portal selector=".overlay" {...rest}>
+    <CanvasPortal selector=".overlay" {...rest}>
       {children}
-    </Portal>
+    </CanvasPortal>
   );
 };
 

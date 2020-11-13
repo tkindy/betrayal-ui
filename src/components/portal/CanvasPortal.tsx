@@ -2,6 +2,7 @@ import React, { FunctionComponent, useEffect, useRef } from 'react';
 import { Group } from 'react-konva';
 import { Group as GroupElem } from 'konva/types/Group';
 
+// For drawing canvas elements in another part of the react-konva tree
 // Adapted from https://konvajs.org/docs/react/Canvas_Portal.html
 
 export interface PortalProps {
@@ -9,7 +10,7 @@ export interface PortalProps {
   enabled: boolean;
 }
 
-const Portal: FunctionComponent<PortalProps> = ({
+const CanvasPortal: FunctionComponent<PortalProps> = ({
   selector,
   enabled,
   children,
@@ -43,4 +44,4 @@ const Portal: FunctionComponent<PortalProps> = ({
   );
 };
 
-export default Portal;
+export default CanvasPortal;
