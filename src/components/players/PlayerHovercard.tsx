@@ -15,14 +15,12 @@ interface TraitProps {
 
 const Trait: FunctionComponent<TraitProps> = ({
   box: {
-    topLeft,
+    topLeft: { x, y },
     dimensions: { width, height },
   },
   name,
   value,
 }) => {
-  const { x, y } = topLeft;
-
   return (
     <Group>
       <Text
