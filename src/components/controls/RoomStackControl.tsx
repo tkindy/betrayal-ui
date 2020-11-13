@@ -14,6 +14,7 @@ import {
   xUnits,
   yUnits,
 } from '../roomStack/shared';
+import DOMPortal from '../portal/DOMPortal';
 
 import { useWindowDimensions } from '../windowDimensions';
 
@@ -90,19 +91,21 @@ const RoomStackControl: FunctionComponent<RoomStackControlProps> = ({
   );
 
   return (
-    <div
-      className="room-stack-control"
-      style={{
-        position: 'absolute',
-        top: y,
-        left: x,
-        width,
-        height,
-        display: 'flex',
-      }}
-    >
-      {flippedRoom ? <FlippedRoomButtons /> : <StackButtons />}
-    </div>
+    <DOMPortal name="roomStackControls">
+      <div
+        className="room-stack-control"
+        style={{
+          position: 'absolute',
+          top: y,
+          left: x,
+          width,
+          height,
+          display: 'flex',
+        }}
+      >
+        {flippedRoom ? <FlippedRoomButtons /> : <StackButtons />}
+      </div>
+    </DOMPortal>
   );
 };
 
