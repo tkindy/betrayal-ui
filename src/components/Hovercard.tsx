@@ -4,7 +4,7 @@ import { pointsToArray, translate } from './geometry';
 import { BoundingBox, Dimensions, getCenter } from './layout';
 import OverlayPortal from './portal/OverlayPortal';
 
-const SPACING = 20;
+const MARGIN = 20;
 const PADDING = 15;
 const TRIANGLE_BASE_WIDTH = 20;
 const TRIANGLE_HEIGHT = 15;
@@ -31,18 +31,18 @@ const buildContentBox: (
   switch (direction) {
     case CardDirection.UP:
       dx = -contentWidth / 2;
-      dy = -(targetHeight / 2 + SPACING + PADDING + contentHeight);
+      dy = -(targetHeight / 2 + MARGIN + PADDING + contentHeight);
       break;
     case CardDirection.DOWN:
       dx = -contentWidth / 2;
-      dy = targetHeight / 2 + SPACING + PADDING;
+      dy = targetHeight / 2 + MARGIN + PADDING;
       break;
     case CardDirection.LEFT:
-      dx = -(targetWidth / 2 + SPACING + PADDING + contentWidth);
+      dx = -(targetWidth / 2 + MARGIN + PADDING + contentWidth);
       dy = -contentHeight / 2;
       break;
     case CardDirection.RIGHT:
-      dx = targetWidth / 2 + SPACING + PADDING;
+      dx = targetWidth / 2 + MARGIN + PADDING;
       dy = -contentHeight / 2;
       break;
   }
