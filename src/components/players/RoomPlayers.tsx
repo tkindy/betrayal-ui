@@ -14,6 +14,7 @@ import { playerDropped } from '../../features/players';
 import { BoundingBox, getCenter, getPlayersBox } from '../layout';
 import { useRender } from '../hooks';
 import Hovercard, { CardDirection } from '../Hovercard';
+import PlayerHovercard from './PlayerHovercard';
 
 interface PlayerProps {
   color: PlayerColor;
@@ -54,25 +55,7 @@ const Player: FunctionComponent<PlayerProps> = ({ box, color }) => {
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       />
-      <Hovercard
-        enabled={hovered}
-        targetBox={box}
-        contentDimensions={{ width: 100, height: 200 }}
-        direction={CardDirection.RIGHT}
-        renderContent={({
-          topLeft: { x, y },
-          dimensions: { width, height },
-        }) => (
-          <Text
-            x={x}
-            y={y}
-            width={width}
-            height={height}
-            text="Hello, world!"
-            fontSize={24}
-          />
-        )}
-      />
+      <PlayerHovercard hovered={hovered} playerBox={box} />
     </Group>
   );
 };
