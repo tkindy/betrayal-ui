@@ -108,12 +108,60 @@ export const rotateFlipped = async () => {
 };
 
 let players: Player[] = [
-  { loc: { gridX: 2, gridY: 1 }, color: PlayerColor.YELLOW },
-  { loc: { gridX: 2, gridY: 1 }, color: PlayerColor.RED },
-  { loc: { gridX: 2, gridY: 1 }, color: PlayerColor.GREEN },
-  { loc: { gridX: 2, gridY: 1 }, color: PlayerColor.WHITE },
-  { loc: { gridX: 2, gridY: 1 }, color: PlayerColor.PURPLE },
-  { loc: { gridX: 1, gridY: 2 }, color: PlayerColor.BLUE },
+  {
+    name: 'Missy Dubourde',
+    loc: { gridX: 2, gridY: 1 },
+    color: PlayerColor.YELLOW,
+    speed: 3,
+    might: 3,
+    sanity: 6,
+    knowledge: 4,
+  },
+  {
+    name: 'Darrin "Flash" Williams',
+    loc: { gridX: 2, gridY: 1 },
+    color: PlayerColor.RED,
+    speed: 7,
+    might: 4,
+    sanity: 3,
+    knowledge: 2,
+  },
+  {
+    name: 'Peter Akimoto',
+    loc: { gridX: 2, gridY: 1 },
+    color: PlayerColor.GREEN,
+    speed: 5,
+    might: 2,
+    sanity: 4,
+    knowledge: 6,
+  },
+  {
+    name: 'Father Rhinehardt',
+    loc: { gridX: 2, gridY: 1 },
+    color: PlayerColor.WHITE,
+    speed: 2,
+    might: 3,
+    sanity: 6,
+    knowledge: 6,
+  },
+  {
+    name: 'Jenny LeClerc',
+    loc: { gridX: 2, gridY: 1 },
+    color: PlayerColor.PURPLE,
+    speed: 4,
+    might: 3,
+    sanity: 3,
+    knowledge: 6,
+  },
+  {
+    name: 'Madame Zostra',
+    loc: { gridX: 1, gridY: 2 },
+    color: PlayerColor.BLUE,
+    speed: 4,
+    might: 3,
+    sanity: 6,
+    knowledge: 1,
+  },
 ];
 
 let rooms: Room[] = [
@@ -190,6 +238,6 @@ export const movePlayer: (
 
   players = players
     .filter((player) => player.color !== color)
-    .concat({ loc, color });
+    .concat({ ...player, loc });
   return getPlayers();
 };

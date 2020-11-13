@@ -1,16 +1,12 @@
 import React, { FunctionComponent } from 'react';
 import { BoundingBox } from '../layout';
 import { Floor, StackRoom as StackRoomModel } from '../../features/models';
-import { Point, translate } from '../geometry';
+import { Point, pointsToArray, translate } from '../geometry';
 import { Group, Line, Rect, Text } from 'react-konva';
 import { getRoomBoundingBox } from './shared';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../rootReducer';
 import FlippedStackRoom from './FlippedStackRoom';
-
-const pointsToArray: (points: Point[]) => number[] = (points) => {
-  return points.map(({ x, y }) => [x, y]).flat();
-};
 
 const getHousePoints: (
   topLeft: Point,

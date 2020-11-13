@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import { Layer, Rect, Stage } from 'react-konva';
+import { Layer, Rect, Stage, Group } from 'react-konva';
 import Board from './board/Board';
 import Controls from './controls/Controls';
 import { ReactReduxContext, useDispatch, useSelector } from 'react-redux';
@@ -36,6 +36,7 @@ const App = () => {
                 <Rect x={x} y={y} width={width} height={height} />
                 <Board />
                 <Players />
+                <Group name="overlay" />
               </Layer>
               <Layer>
                 <RoomStack />

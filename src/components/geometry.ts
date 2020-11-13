@@ -45,3 +45,7 @@ export const rotate: (p: Point, center: Point, rotation: number) => Point = (
     y: -x * sin - y * cos,
   });
 };
+
+export const pointsToArray: (points: Point[]) => number[] = (points) => {
+  return points.map(({ x, y }) => [x, y]).flat();
+};

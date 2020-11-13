@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import { Circle, Group } from 'react-konva';
 import { partition } from '../../utils';
 import { translate } from '../geometry';
@@ -8,44 +8,55 @@ import {
   useGridBox,
   useGridSize,
 } from '../board/grid';
-import { Player as PlayerModel, PlayerColor } from '../../features/models';
+import { Player as PlayerModel } from '../../features/models';
 import { useDispatch } from 'react-redux';
 import { playerDropped } from '../../features/players';
 import { BoundingBox, getCenter, getPlayersBox } from '../layout';
 import { useRender } from '../hooks';
+import PlayerHovercard from './PlayerHovercard';
 
 interface PlayerProps {
-  color: PlayerColor;
   box: BoundingBox;
+  player: PlayerModel;
 }
 
-const Player: FunctionComponent<PlayerProps> = ({ box, color }) => {
+const Player: FunctionComponent<PlayerProps> = ({ box, player }) => {
   const { x, y } = getCenter(box);
   const { width, height } = box.dimensions;
   const radius = Math.min(width, height) / 2;
+  const { color } = player;
 
   const render = useRender();
   const dispatch = useDispatch();
   const gridSize = useGridSize();
 
+  const [hovered, setHovered] = useState(false);
+
   return (
-    <Circle
-      x={x}
-      y={y}
-      radius={radius}
-      fill={color}
-      stroke="white"
-      draggable
-      onDragEnd={(e) => {
-        e.cancelBubble = true; // avoid dragging the board
+    <Group>
+      <Circle
+        x={x}
+        y={y}
+        radius={radius}
+        fill={color}
+        stroke="white"
+        draggable
+        onDragStart={() => setHovered(false)}
+        onDragEnd={(e) => {
+          e.cancelBubble = true; // avoid dragging the board
 
-        dispatch(
-          playerDropped(color, pointToGridLoc(e.target.position(), gridSize))
-        );
+          dispatch(
+            playerDropped(color, pointToGridLoc(e.target.position(), gridSize))
+          );
 
-        render(); // to snap back if dropped in an invalid spot
-      }}
-    />
+          render(); // to snap back if dropped in an invalid spot
+        }}
+        onTap={() => setHovered(!hovered)}
+        onMouseEnter={() => setHovered(true)}
+        onMouseLeave={() => setHovered(false)}
+      />
+      <PlayerHovercard hovered={hovered} playerBox={box} player={player} />
+    </Group>
   );
 };
 
@@ -84,7 +95,7 @@ const PlayersRow: FunctionComponent<PlayersRowProps> = ({
             ),
             dimensions: { width: playerWidth, height: playerHeight },
           }}
-          {...player}
+          player={player}
         />
       ))}
     </Group>
