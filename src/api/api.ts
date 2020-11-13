@@ -109,6 +109,7 @@ export const rotateFlipped = async () => {
 
 let players: Player[] = [
   {
+    name: 'Missy Dubourde',
     loc: { gridX: 2, gridY: 1 },
     color: PlayerColor.YELLOW,
     speed: 3,
@@ -117,6 +118,7 @@ let players: Player[] = [
     knowledge: 4,
   },
   {
+    name: 'Darrin "Flash" Williams',
     loc: { gridX: 2, gridY: 1 },
     color: PlayerColor.RED,
     speed: 7,
@@ -125,6 +127,7 @@ let players: Player[] = [
     knowledge: 2,
   },
   {
+    name: 'Peter Akimoto',
     loc: { gridX: 2, gridY: 1 },
     color: PlayerColor.GREEN,
     speed: 5,
@@ -133,6 +136,7 @@ let players: Player[] = [
     knowledge: 6,
   },
   {
+    name: 'Father Rhinehardt',
     loc: { gridX: 2, gridY: 1 },
     color: PlayerColor.WHITE,
     speed: 2,
@@ -141,6 +145,7 @@ let players: Player[] = [
     knowledge: 6,
   },
   {
+    name: 'Jenny LeClerc',
     loc: { gridX: 2, gridY: 1 },
     color: PlayerColor.PURPLE,
     speed: 4,
@@ -149,6 +154,7 @@ let players: Player[] = [
     knowledge: 6,
   },
   {
+    name: 'Madame Zostra',
     loc: { gridX: 1, gridY: 2 },
     color: PlayerColor.BLUE,
     speed: 4,
