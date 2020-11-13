@@ -1,4 +1,4 @@
-import React, { VoidFunctionComponent } from 'react';
+import React, { ReactElement, VoidFunctionComponent } from 'react';
 import { Group, KonvaNodeComponent } from 'react-konva';
 import { Point, translate } from '../../geometry';
 import { BoundingBox, Dimensions } from '../../layout';
@@ -10,7 +10,7 @@ export enum FlexDirection {
 
 interface FlexItem {
   units: number;
-  render: (box: BoundingBox) => KonvaNodeComponent<any, any>;
+  render: (box: BoundingBox) => ReactElement<any, any> | null;
 }
 
 interface FlexContainerProps {
@@ -56,7 +56,7 @@ const renderItems: (
   containerBox: BoundingBox,
   direction: FlexDirection,
   unitLength: number
-) => KonvaNodeComponent<any, any>[] = (
+) => ReactElement<any, any>[] = (
   items,
   { topLeft: containerTopLeft, dimensions: containerDimensions },
   direction,
@@ -77,14 +77,15 @@ const renderItems: (
           unitLength
         ),
       };
+      const component = render(box);
 
       return {
-        components: components.concat(render(box)),
+        components: component ? components.concat(component) : components,
         usedUnits: usedUnits + units,
       };
     },
     {
-      components: [] as KonvaNodeComponent<any, any>[],
+      components: [] as ReactElement<any, any>[],
       usedUnits: 0,
     }
   ).components;
