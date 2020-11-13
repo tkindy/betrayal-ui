@@ -3,7 +3,7 @@ import { Group } from 'react-konva';
 import { useDispatch, useSelector } from 'react-redux';
 import { flippedRoomDropped } from '../../features/board';
 import { Feature } from '../../features/models';
-import { RootState } from '../../rootReducer';
+import { RootState } from '../../store';
 import { useGridSize, windowToGridLoc } from '../board/grid';
 import { translate } from '../geometry';
 import { useRender } from '../hooks';

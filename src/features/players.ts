@@ -7,7 +7,7 @@ import {
 import { Player, PlayerColor } from './models';
 import * as api from '../api/api';
 import { equal, GridLoc } from '../components/board/grid';
-import { RootState } from '../rootReducer';
+import { RootState } from '../store';
 import { getBoardMap, getPlayers as selectPlayers } from './selectors';
 import { get } from '../board';
 

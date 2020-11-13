@@ -5,7 +5,7 @@ import { Point, pointsToArray, translate } from '../geometry';
 import { Group, Line, Rect, Text } from 'react-konva';
 import { getRoomBoundingBox } from './shared';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../rootReducer';
+import { RootState } from '../../store';
 import FlippedStackRoom from './FlippedStackRoom';
 
 const getHousePoints: (

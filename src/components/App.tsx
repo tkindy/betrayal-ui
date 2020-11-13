@@ -7,7 +7,7 @@ import { ReactReduxContext, useDispatch, useSelector } from 'react-redux';
 import RoomStack from './roomStack/RoomStack';
 import { useWindowDimensions } from './windowDimensions';
 import { moveBoard } from '../features/board';
-import { RootState } from '../rootReducer';
+import { RootState } from '../store';
 import Players from './players/Players';
 
 const App = () => {

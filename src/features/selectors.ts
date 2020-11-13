@@ -1,7 +1,7 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { buildBoardMap, findOpenNeighbors } from '../board';
 import { buildMultiCartMap } from '../map';
-import { RootState } from '../rootReducer';
+import { RootState } from '../store';
 
 export const getRooms = (state: RootState) => state.board.rooms;
 

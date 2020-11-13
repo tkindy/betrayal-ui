@@ -1,5 +1,5 @@
 import { useSelector } from 'react-redux';
-import { RootState } from '../../rootReducer';
+import { RootState } from '../../store';
 import { Point, translate } from '../geometry';
 import { BoundingBox } from '../layout';
 

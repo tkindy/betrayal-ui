@@ -5,7 +5,7 @@ import {
   rotateFlipped,
   skipRoom,
 } from '../../features/roomStack';
-import { RootState } from '../../rootReducer';
+import { RootState } from '../../store';
 import { translate } from '../geometry';
 import { BoundingBox } from '../layout';
 import {

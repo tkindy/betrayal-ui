@@ -7,7 +7,7 @@ import {
 } from '@reduxjs/toolkit';
 import { equal, GridLoc } from '../components/board/grid';
 import { Direction } from '../components/room/Room';
-import { RootState } from '../rootReducer';
+import { RootState } from '../store';
 import * as api from '../api/api';
 import { PlaceRoomResponse } from '../api/api';
 import { Room } from './models';
