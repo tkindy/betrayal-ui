@@ -13,7 +13,7 @@ import { useDispatch } from 'react-redux';
 import { playerDropped } from '../../features/players';
 import { BoundingBox, getCenter, getPlayersBox } from '../layout';
 import { useRender } from '../hooks';
-import Hovercard from '../Hovercard';
+import Hovercard, { CardDirection } from '../Hovercard';
 
 interface PlayerProps {
   color: PlayerColor;
@@ -58,6 +58,7 @@ const Player: FunctionComponent<PlayerProps> = ({ box, color }) => {
         enabled={hovered}
         targetBox={box}
         contentDimensions={{ width: 100, height: 200 }}
+        direction={CardDirection.RIGHT}
         renderContent={({
           topLeft: { x, y },
           dimensions: { width, height },

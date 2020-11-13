@@ -54,6 +54,7 @@ interface HovercardProps {
   enabled: boolean;
   targetBox: BoundingBox;
   contentDimensions: Dimensions;
+  direction: CardDirection;
   renderContent: (box: BoundingBox) => ReactElement<any, any>;
 }
 
@@ -61,9 +62,10 @@ const Hovercard: FunctionComponent<HovercardProps> = ({
   enabled,
   targetBox,
   contentDimensions,
+  direction,
   renderContent,
 }) => {
-  const box = buildBox(targetBox, contentDimensions, CardDirection.RIGHT);
+  const box = buildBox(targetBox, contentDimensions, direction);
   const {
     topLeft: { x, y },
     dimensions: { width, height },
