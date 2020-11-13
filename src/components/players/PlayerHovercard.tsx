@@ -5,7 +5,7 @@ import { Group, Text } from 'react-konva';
 import { Player } from '../../features/models';
 import { translate } from '../geometry';
 
-const DIMENSIONS: Dimensions = { width: 200, height: 50 };
+const DIMENSIONS: Dimensions = { width: 200, height: 100 };
 
 interface TraitProps {
   box: BoundingBox;
@@ -57,7 +57,7 @@ interface PlayerHovercardProps {
 const PlayerHovercard: FunctionComponent<PlayerHovercardProps> = ({
   hovered,
   playerBox,
-  player,
+  player: { name, speed, might, sanity, knowledge },
 }) => {
   return (
     <Hovercard
@@ -66,21 +66,34 @@ const PlayerHovercard: FunctionComponent<PlayerHovercardProps> = ({
       contentDimensions={DIMENSIONS}
       direction={CardDirection.RIGHT}
       renderContent={({ topLeft, dimensions: { width, height } }) => {
+        const { x, y } = topLeft;
         const traitWidth = width / 4;
+        const traitHeight = height / 2;
+        const traitDimensions = { width: traitWidth, height: traitHeight };
 
         return (
           <Group>
+            <Text
+              x={x}
+              y={y}
+              width={width}
+              height={height / 2}
+              text={name}
+              fontSize={20}
+              fontStyle="bold"
+              align="center"
+            />
             {[
-              { name: 'SPD', value: player.speed },
-              { name: 'MGT', value: player.might },
-              { name: 'SAN', value: player.sanity },
-              { name: 'KNO', value: player.knowledge },
+              { name: 'SPD', value: speed },
+              { name: 'MGT', value: might },
+              { name: 'SAN', value: sanity },
+              { name: 'KNO', value: knowledge },
             ].map(({ name, value }, i) => (
               <Trait
                 key={name}
                 box={{
-                  topLeft: translate(topLeft, i * traitWidth, 0),
-                  dimensions: { width: traitWidth, height },
+                  topLeft: translate(topLeft, i * traitWidth, height / 2),
+                  dimensions: traitDimensions,
                 }}
                 name={name}
                 value={value}
