@@ -50,11 +50,18 @@ const getControlBoundingBox: (areaBox: BoundingBox) => BoundingBox = ({
 const StackButtons: FunctionComponent<{}> = () => {
   const dispatch = useDispatch();
   const buttonStyle: CSSProperties = {
-    flex: '5',
+    flex: '2',
+    height: '100%',
   };
 
   return (
-    <div>
+    <div
+      style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        height: '100%',
+      }}
+    >
       <button onClick={() => dispatch(flipRoomStack())} style={buttonStyle}>
         Use
       </button>
@@ -70,8 +77,13 @@ const FlippedRoomButtons: FunctionComponent<{}> = () => {
   const dispatch = useDispatch();
 
   return (
-    <div>
-      <button onClick={() => dispatch(rotateFlipped())}>Rotate</button>
+    <div style={{ height: '100%' }}>
+      <button
+        onClick={() => dispatch(rotateFlipped())}
+        style={{ height: '100%', width: '100%' }}
+      >
+        Rotate
+      </button>
     </div>
   );
 };
@@ -100,7 +112,6 @@ const RoomStackControl: FunctionComponent<RoomStackControlProps> = ({
           left: x,
           width,
           height,
-          display: 'flex',
         }}
       >
         {flippedRoom ? <FlippedRoomButtons /> : <StackButtons />}

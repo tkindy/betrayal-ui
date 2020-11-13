@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { Group, Rect } from 'react-konva';
+import RoomStackControl from '../controls/RoomStackControl';
 import { translate } from '../geometry';
 import { BoundingBox, Dimensions } from '../layout';
 import { useWindowDimensions } from '../windowDimensions';
@@ -69,6 +70,23 @@ const RoomStack: FunctionComponent<{}> = () => {
     dimensions: { width, height },
   } = areaBox;
 
+  const controlBox: BoundingBox = {
+    topLeft: translate(
+      topLeft,
+      calcUnitsLength(height, yUnits.spacing),
+      calcUnitsLength(height, yUnits.spacing + yUnits.room + yUnits.spacing)
+    ),
+    dimensions: {
+      width: calcUnitsLength(height, yUnits.room),
+      height:
+        height -
+        calcUnitsLength(
+          height,
+          yUnits.spacing + yUnits.room + yUnits.spacing + yUnits.spacing
+        ),
+    },
+  };
+
   return (
     <Group>
       <Rect
@@ -81,6 +99,7 @@ const RoomStack: FunctionComponent<{}> = () => {
         cornerRadius={10}
       />
       <StackRoom box={getRoomBox(areaBox)} />
+      <RoomStackControl box={controlBox} />
     </Group>
   );
 };
