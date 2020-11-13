@@ -1,5 +1,6 @@
+import Konva from 'konva';
 import React, { ReactElement, VoidFunctionComponent } from 'react';
-import { Group, KonvaNodeComponent } from 'react-konva';
+import { Group, Rect } from 'react-konva';
 import { Point, translate } from '../../geometry';
 import { BoundingBox, Dimensions } from '../../layout';
 
@@ -11,12 +12,6 @@ export enum FlexDirection {
 interface FlexItem {
   units: number;
   render: (box: BoundingBox) => ReactElement<any, any> | null;
-}
-
-interface FlexContainerProps {
-  box: BoundingBox;
-  direction: FlexDirection;
-  children?: FlexItem[];
 }
 
 const translateFlex: (
@@ -55,12 +50,14 @@ const renderItems: (
   items: FlexItem[],
   containerBox: BoundingBox,
   direction: FlexDirection,
-  unitLength: number
+  unitLength: number,
+  debug: boolean
 ) => ReactElement<any, any>[] = (
   items,
   { topLeft: containerTopLeft, dimensions: containerDimensions },
   direction,
-  unitLength
+  unitLength,
+  debug
 ) => {
   return items.reduce(
     ({ components, usedUnits }, { units, render }) => {
@@ -77,10 +74,27 @@ const renderItems: (
           unitLength
         ),
       };
+
       const component = render(box);
+      let newComponents = [] as ReactElement<any, any>[];
+
+      if (component) {
+        newComponents = newComponents.concat(component);
+      }
+      if (debug) {
+        newComponents = newComponents.concat(
+          <Rect
+            x={box.topLeft.x}
+            y={box.topLeft.y}
+            width={box.dimensions.width}
+            height={box.dimensions.height}
+            stroke={Konva.Util.getRandomColor()}
+          />
+        );
+      }
 
       return {
-        components: component ? components.concat(component) : components,
+        components: component ? components.concat(newComponents) : components,
         usedUnits: usedUnits + units,
       };
     },
@@ -91,10 +105,18 @@ const renderItems: (
   ).components;
 };
 
+interface FlexContainerProps {
+  box: BoundingBox;
+  direction: FlexDirection;
+  children?: FlexItem[];
+  debug?: boolean;
+}
+
 const FlexContainer: VoidFunctionComponent<FlexContainerProps> = ({
   box,
   direction,
   children,
+  debug = false,
 }) => {
   if (!children) {
     return null;
@@ -117,7 +139,9 @@ const FlexContainer: VoidFunctionComponent<FlexContainerProps> = ({
     .reduce((sum, prop) => sum + prop);
   const unitLength = flexDimension / totalUnits;
 
-  return <Group>{renderItems(children, box, direction, unitLength)}</Group>;
+  return (
+    <Group>{renderItems(children, box, direction, unitLength, debug)}</Group>
+  );
 };
 
 export default FlexContainer;
