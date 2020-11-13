@@ -4,6 +4,7 @@ import RoomStackControl from '../../controls/RoomStackControl';
 import { translate } from '../../geometry';
 import { BoundingBox, Dimensions } from '../../layout';
 import { useWindowDimensions } from '../../windowDimensions';
+import FlexContainer, { FlexDirection } from '../flex/FlexContainer';
 import StackRoom from './StackRoom';
 
 const yUnits = {
@@ -62,13 +63,15 @@ const getAreaBox: (windowDimensions: Dimensions) => BoundingBox = (
   };
 };
 
-const RoomStack: FunctionComponent<{}> = () => {
-  const windowDimensions = useWindowDimensions();
-  const areaBox = getAreaBox(windowDimensions);
+interface RoomStackProps {
+  box: BoundingBox;
+}
+
+const RoomStack: FunctionComponent<RoomStackProps> = ({ box }) => {
   const {
     topLeft,
     dimensions: { width, height },
-  } = areaBox;
+  } = box;
 
   const controlBox: BoundingBox = {
     topLeft: translate(
@@ -88,19 +91,30 @@ const RoomStack: FunctionComponent<{}> = () => {
   };
 
   return (
-    <Group>
-      <Rect
-        x={topLeft.x}
-        y={topLeft.y}
-        width={width + 20}
-        height={height + 20}
-        fill="grey"
-        stroke="black"
-        cornerRadius={10}
-      />
-      <StackRoom box={getRoomBox(areaBox)} />
-      <RoomStackControl box={controlBox} />
-    </Group>
+    <FlexContainer box={box} direction={FlexDirection.COLUMN}>
+      {[
+        {
+          units: 8,
+          render: ({
+            topLeft: flexTopLeft,
+            dimensions: { width: flexWidth, height: flexHeight },
+          }) => {
+            const roomSize = Math.min(flexWidth, flexHeight);
+            const stackBox: BoundingBox = {
+              topLeft: translate(
+                flexTopLeft,
+                flexWidth / 2 - roomSize / 2,
+                flexHeight / 2 - roomSize / 2
+              ),
+              dimensions: { width: roomSize, height: roomSize },
+            };
+            return <StackRoom box={stackBox} />;
+          },
+        },
+        { units: 1, render: () => null },
+        { units: 2, render: (box) => <RoomStackControl box={box} /> },
+      ]}
+    </FlexContainer>
   );
 };
 

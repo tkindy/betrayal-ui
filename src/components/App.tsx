@@ -7,7 +7,7 @@ import { useWindowDimensions } from './windowDimensions';
 import { moveBoard } from '../features/board';
 import { RootState } from '../store';
 import Players from './players/Players';
-import RoomStack from './sidebar/roomStack/RoomStack';
+import Sidebar from './sidebar/Sidebar';
 
 const App = () => {
   const { width, height } = useWindowDimensions();
@@ -37,7 +37,7 @@ const App = () => {
                 <Group name="overlay" />
               </Layer>
               <Layer>
-                <RoomStack />
+                <Sidebar />
               </Layer>
             </ReactReduxContext.Provider>
           </Stage>
