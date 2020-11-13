@@ -13,6 +13,10 @@ export enum PlayerColor {
 export interface Player {
   color: PlayerColor;
   loc: GridLoc;
+  speed: number;
+  might: number;
+  sanity: number;
+  knowledge: number;
 }
 
 export enum Feature {
