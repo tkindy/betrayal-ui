@@ -1,9 +1,9 @@
 import React, { FunctionComponent } from 'react';
 import { Group, Rect } from 'react-konva';
-import RoomStackControl from '../controls/RoomStackControl';
-import { translate } from '../geometry';
-import { BoundingBox, Dimensions } from '../layout';
-import { useWindowDimensions } from '../windowDimensions';
+import RoomStackControl from '../../controls/RoomStackControl';
+import { translate } from '../../geometry';
+import { BoundingBox, Dimensions } from '../../layout';
+import { useWindowDimensions } from '../../windowDimensions';
 import StackRoom from './StackRoom';
 
 const yUnits = {

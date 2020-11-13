@@ -3,11 +3,11 @@ import './App.css';
 import { Layer, Rect, Stage, Group } from 'react-konva';
 import Board from './board/Board';
 import { ReactReduxContext, useDispatch, useSelector } from 'react-redux';
-import RoomStack from './roomStack/RoomStack';
 import { useWindowDimensions } from './windowDimensions';
 import { moveBoard } from '../features/board';
 import { RootState } from '../store';
 import Players from './players/Players';
+import RoomStack from './sidebar/roomStack/RoomStack';
 
 const App = () => {
   const { width, height } = useWindowDimensions();

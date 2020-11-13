@@ -1,10 +1,10 @@
 import React, { FunctionComponent } from 'react';
-import { BoundingBox } from '../layout';
-import { Floor, StackRoom as StackRoomModel } from '../../features/models';
-import { Point, pointsToArray, translate } from '../geometry';
+import { BoundingBox } from '../../layout';
+import { Floor, StackRoom as StackRoomModel } from '../../../features/models';
+import { Point, pointsToArray, translate } from '../../geometry';
 import { Group, Line, Rect, Text } from 'react-konva';
 import { useSelector } from 'react-redux';
-import { RootState } from '../../store';
+import { RootState } from '../../../store';
 import FlippedStackRoom from './FlippedStackRoom';
 
 const getHousePoints: (
