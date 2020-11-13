@@ -19,6 +19,7 @@ const RoomStack: FunctionComponent<{}> = () => {
         width={width + 20}
         height={height + 20}
         fill="grey"
+        stroke="black"
         cornerRadius={10}
       />
       <StackRoom areaBox={areaBox} />
