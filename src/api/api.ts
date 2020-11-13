@@ -238,6 +238,6 @@ export const movePlayer: (
 
   players = players
     .filter((player) => player.color !== color)
-    .concat({ ...player, loc, color });
+    .concat({ ...player, loc });
   return getPlayers();
 };
