@@ -11,27 +11,25 @@ import { BoundingBox, getDoorDimensions } from '../layout';
 import Room, { Direction } from '../room/Room';
 import RoomFeatures from '../room/RoomFeatures';
 import RoomName from '../room/RoomName';
-import { getRoomBoundingBox } from './shared';
 
 interface FlippedStackRoomProps {
-  areaBox: BoundingBox;
+  box: BoundingBox;
   name: string;
   doorDirections: Direction[];
   features: Feature[];
 }
 
 const FlippedStackRoom: FunctionComponent<FlippedStackRoomProps> = ({
-  areaBox,
+  box,
   name,
   doorDirections,
   features,
 }) => {
-  const roomBox = getRoomBoundingBox(areaBox);
-  const { height: doorHeight } = getDoorDimensions(roomBox.dimensions);
+  const { height: doorHeight } = getDoorDimensions(box.dimensions);
   const {
     topLeft: roomTopLeft,
     dimensions: { width: roomWidth, height: roomHeight },
-  } = roomBox;
+  } = box;
   const innerTopLeft = translate(roomTopLeft, doorHeight, doorHeight);
   const innerWidth = roomWidth - 2 * doorHeight;
   const innerHeight = roomHeight - 2 * doorHeight;
@@ -70,7 +68,7 @@ const FlippedStackRoom: FunctionComponent<FlippedStackRoomProps> = ({
         render();
       }}
     >
-      <Room box={roomBox} doorDirections={doorDirections} />
+      <Room box={box} doorDirections={doorDirections} />
       <RoomName box={nameBox} name={name} />
       <RoomFeatures box={featuresBox} features={features} />
     </Group>

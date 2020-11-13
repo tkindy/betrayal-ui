@@ -3,7 +3,6 @@ import { BoundingBox } from '../layout';
 import { Floor, StackRoom as StackRoomModel } from '../../features/models';
 import { Point, pointsToArray, translate } from '../geometry';
 import { Group, Line, Rect, Text } from 'react-konva';
-import { getRoomBoundingBox } from './shared';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import FlippedStackRoom from './FlippedStackRoom';
@@ -125,15 +124,14 @@ const House: FunctionComponent<HouseProps> = ({ roomBox, nextRoom }) => {
 };
 
 interface StackRoomProps {
-  areaBox: BoundingBox;
+  box: BoundingBox;
 }
 
-const StackRoom: FunctionComponent<StackRoomProps> = ({ areaBox }) => {
-  const roomBox = getRoomBoundingBox(areaBox);
+const StackRoom: FunctionComponent<StackRoomProps> = ({ box }) => {
   const {
     topLeft: { x, y },
     dimensions: { width, height },
-  } = roomBox;
+  } = box;
 
   const { nextRoom, flippedRoom } = useSelector(
     (state: RootState) => state.roomStack
@@ -143,7 +141,7 @@ const StackRoom: FunctionComponent<StackRoomProps> = ({ areaBox }) => {
     const { name, doorDirections, features } = flippedRoom;
     return (
       <FlippedStackRoom
-        areaBox={areaBox}
+        box={box}
         name={name}
         doorDirections={doorDirections}
         features={features}
@@ -154,7 +152,7 @@ const StackRoom: FunctionComponent<StackRoomProps> = ({ areaBox }) => {
   return nextRoom ? (
     <Group>
       <Rect x={x} y={y} width={width} height={height} fill="black" />
-      <House roomBox={roomBox} nextRoom={nextRoom} />
+      <House roomBox={box} nextRoom={nextRoom} />
     </Group>
   ) : (
     <Text
