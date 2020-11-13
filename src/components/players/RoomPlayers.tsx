@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useState } from 'react';
-import { Circle, Group, Text } from 'react-konva';
+import { Circle, Group } from 'react-konva';
 import { partition } from '../../utils';
 import { translate } from '../geometry';
 import {
@@ -13,7 +13,6 @@ import { useDispatch } from 'react-redux';
 import { playerDropped } from '../../features/players';
 import { BoundingBox, getCenter, getPlayersBox } from '../layout';
 import { useRender } from '../hooks';
-import Hovercard, { CardDirection } from '../Hovercard';
 import PlayerHovercard from './PlayerHovercard';
 
 interface PlayerProps {
@@ -55,7 +54,7 @@ const Player: FunctionComponent<PlayerProps> = ({ box, color }) => {
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
       />
-      <PlayerHovercard hovered={hovered} playerBox={box} />
+      <PlayerHovercard hovered={hovered} playerBox={box} color={color} />
     </Group>
   );
 };
