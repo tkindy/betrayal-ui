@@ -14,8 +14,6 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import FlippedStackRoom from './FlippedStackRoom';
 
-const roofPaddingProp = 0.0;
-
 interface RoofPoints {
   peak: Point;
   left: Point;
@@ -44,11 +42,7 @@ const getHousePoints: (
     width,
     floorHeight
   );
-  const lowerLeft = translate(
-    upperLeft,
-    0,
-    (3 + roofPaddingProp) * floorHeight
-  );
+  const lowerLeft = translate(upperLeft, 0, 3 * floorHeight);
   const lowerRight = translate(lowerLeft, width, 0);
 
   return pointsToArray([peak, upperRight, lowerRight, lowerLeft, upperLeft]);
@@ -129,7 +123,7 @@ const drawFloor = (
   const incenter = translate(
     calcRoofIncenter({ topLeft, dimensions: { width, height } }),
     0,
-    height * (1 + roofPaddingProp)
+    height * 1
   );
 
   const adjust = (p: Point) =>
@@ -163,7 +157,7 @@ const House: FunctionComponent<HouseProps> = ({ roomBox, nextRoom }) => {
         drawFloor(
           floor,
           nextRoom.possibleFloors,
-          translate(topLeft, 0, (i + roofPaddingProp) * floorHeight),
+          translate(topLeft, 0, i * floorHeight),
           width,
           floorHeight
         )
