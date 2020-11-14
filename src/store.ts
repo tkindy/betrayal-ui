@@ -1,5 +1,4 @@
 import { configureStore } from '@reduxjs/toolkit';
-
 import { combineReducers } from '@reduxjs/toolkit';
 import zoomReducer from './features/zoom';
 import roomStackReducer from './features/roomStack';
