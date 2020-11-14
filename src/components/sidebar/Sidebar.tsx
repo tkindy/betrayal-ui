@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { Group, Rect } from 'react-konva';
+import ZoomControl from '../controls/ZoomControl';
 import { translate } from '../geometry';
 import { BoundingBox, Dimensions } from '../layout';
 import { useWindowDimensions } from '../windowDimensions';
@@ -58,8 +59,9 @@ const Sidebar: FunctionComponent<SidebarProps> = () => {
         direction={FlexDirection.COLUMN}
       >
         {[
-          { units: 3, render: () => null },
-          { units: 1, render: (box) => <RoomStack box={box} /> },
+          { units: 1, render: (box) => <ZoomControl box={box} /> },
+          { units: 6, render: () => null },
+          { units: 3, render: (box) => <RoomStack box={box} /> },
         ]}
       </FlexContainer>
     </Group>
