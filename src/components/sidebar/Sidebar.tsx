@@ -14,7 +14,7 @@ const getBox: (windowDimensions: Dimensions) => BoundingBox = ({
   width: windowWidth,
   height: windowHeight,
 }) => {
-  const width = Math.min(windowWidth / 4.5, 215);
+  const width = 215;
 
   return {
     topLeft: {
