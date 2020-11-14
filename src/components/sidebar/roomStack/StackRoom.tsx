@@ -1,21 +1,54 @@
 import React, { FunctionComponent } from 'react';
 import { BoundingBox } from '../../layout';
 import { Floor, StackRoom as StackRoomModel } from '../../../features/models';
-import { Point, pointsToArray, translate } from '../../geometry';
+import {
+  add,
+  multiply,
+  Point,
+  pointsToArray,
+  subtract,
+  translate,
+} from '../../geometry';
 import { Group, Line, Rect, Text } from 'react-konva';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../store';
 import FlippedStackRoom from './FlippedStackRoom';
+
+const roofPaddingProp = 0.0;
+
+interface RoofPoints {
+  peak: Point;
+  left: Point;
+  right: Point;
+}
+
+const getRoofPoints: (
+  topLeft: Point,
+  width: number,
+  floorHeight: number
+) => RoofPoints = (topLeft, width, floorHeight) => {
+  const peak = translate(topLeft, width / 2, 0);
+  const left = translate(topLeft, 0, floorHeight);
+  const right = translate(left, width, 0);
+
+  return { peak, left, right };
+};
 
 const getHousePoints: (
   topLeft: Point,
   width: number,
   floorHeight: number
 ) => number[] = (topLeft, width, floorHeight) => {
-  const peak = translate(topLeft, width / 2, 0);
-  const upperLeft = translate(topLeft, 0, floorHeight);
-  const lowerLeft = translate(upperLeft, 0, 3 * floorHeight);
-  const upperRight = translate(upperLeft, width, 0);
+  const { peak, left: upperLeft, right: upperRight } = getRoofPoints(
+    topLeft,
+    width,
+    floorHeight
+  );
+  const lowerLeft = translate(
+    upperLeft,
+    0,
+    (3 + roofPaddingProp) * floorHeight
+  );
   const lowerRight = translate(lowerLeft, width, 0);
 
   return pointsToArray([peak, upperRight, lowerRight, lowerLeft, upperLeft]);
@@ -45,6 +78,23 @@ const getHouseBoundingBox: (roomBox: BoundingBox) => BoundingBox = (
   };
 };
 
+const calcRoofIncenter: (box: BoundingBox) => Point = ({
+  topLeft,
+  dimensions: { width, height },
+}) => {
+  const { peak, left, right } = getRoofPoints(topLeft, width, height);
+  const sideLength = Math.sqrt((width * width) / 4 + height * height);
+
+  return multiply(
+    add(
+      multiply(peak, width),
+      multiply(left, sideLength),
+      multiply(right, sideLength)
+    ),
+    1 / (2 * sideLength + width)
+  );
+};
+
 const drawFloor = (
   floor: Floor,
   possibleFloors: Floor[],
@@ -53,10 +103,11 @@ const drawFloor = (
   height: number
 ) => {
   const fill = possibleFloors.includes(floor) ? 'gold' : 'gray';
+  const widthProp = 0.9;
+  const windowWidth = width * widthProp;
+  const windowHeight = height * 0.8;
 
   if ([Floor.UPPER, Floor.GROUND, Floor.BASEMENT].includes(floor)) {
-    const windowWidth = width * 0.9;
-    const windowHeight = height * 0.8;
     const windowXInset = (width - windowWidth) / 2;
     const windowYInset = (height - windowHeight) / 2;
 
@@ -74,17 +125,22 @@ const drawFloor = (
     );
   }
 
-  const top = translate(topLeft, width / 2, 0);
-  const left = translate(topLeft, 0, height);
-  const right = translate(left, width, 0);
+  const { peak, left, right } = getRoofPoints(topLeft, width, height);
+  const incenter = translate(
+    calcRoofIncenter({ topLeft, dimensions: { width, height } }),
+    0,
+    height * (1 + roofPaddingProp)
+  );
+
+  const adjust = (p: Point) =>
+    add(multiply(subtract(incenter, p), 1 - widthProp), p);
+
   return (
     <Line
       key={floor}
-      points={pointsToArray([top, right, left])}
+      points={pointsToArray([peak, right, left].map(adjust))}
       closed={true}
       fill={fill}
-      stroke="black"
-      strokeWidth={5}
     />
   );
 };
@@ -107,7 +163,7 @@ const House: FunctionComponent<HouseProps> = ({ roomBox, nextRoom }) => {
         drawFloor(
           floor,
           nextRoom.possibleFloors,
-          translate(topLeft, 0, i * floorHeight),
+          translate(topLeft, 0, (i + roofPaddingProp) * floorHeight),
           width,
           floorHeight
         )
