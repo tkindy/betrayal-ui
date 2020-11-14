@@ -3,11 +3,13 @@ export interface Point {
   y: number;
 }
 
-export const add: (p1: Point, p2: Point) => Point = (
-  { x: x1, y: y1 },
-  { x: x2, y: y2 }
-) => {
-  return { x: x1 + x2, y: y1 + y2 };
+export const add: (...points: Point[]) => Point = (...points) => {
+  return points.reduce(
+    ({ x: accX, y: accY }, { x, y }) => {
+      return { x: accX + x, y: accY + y };
+    },
+    { x: 0, y: 0 }
+  );
 };
 
 export const multiply: (p1: Point, c: number) => Point = ({ x, y }, c) => {

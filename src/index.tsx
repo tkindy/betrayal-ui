@@ -4,18 +4,13 @@ import { Provider } from 'react-redux';
 import './index.css';
 import App from './components/App';
 import * as serviceWorker from './serviceWorker';
-import { configureStore } from '@reduxjs/toolkit';
-import { rootReducer } from './rootReducer';
 import { getRooms } from './features/board';
 import { getStackRoom } from './features/roomStack';
 import { getPlayers } from './features/players';
 import { useStrictMode } from 'react-konva';
+import { store } from './store';
 
 useStrictMode(true);
-
-const store = configureStore({
-  reducer: rootReducer,
-});
 
 store.dispatch(getRooms());
 store.dispatch(getPlayers());

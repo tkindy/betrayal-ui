@@ -2,13 +2,12 @@ import React from 'react';
 import './App.css';
 import { Layer, Rect, Stage, Group } from 'react-konva';
 import Board from './board/Board';
-import Controls from './controls/Controls';
 import { ReactReduxContext, useDispatch, useSelector } from 'react-redux';
-import RoomStack from './roomStack/RoomStack';
 import { useWindowDimensions } from './windowDimensions';
 import { moveBoard } from '../features/board';
-import { RootState } from '../rootReducer';
+import { RootState } from '../store';
 import Players from './players/Players';
+import Sidebar from './sidebar/Sidebar';
 
 const App = () => {
   const { width, height } = useWindowDimensions();
@@ -17,7 +16,6 @@ const App = () => {
 
   return (
     <div>
-      <Controls />
       <ReactReduxContext.Consumer>
         {(reduxContext) => (
           <Stage width={width} height={height}>
@@ -39,7 +37,7 @@ const App = () => {
                 <Group name="overlay" />
               </Layer>
               <Layer>
-                <RoomStack />
+                <Sidebar />
               </Layer>
             </ReactReduxContext.Provider>
           </Stage>
