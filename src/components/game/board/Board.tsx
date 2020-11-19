@@ -4,7 +4,7 @@ import { Group } from 'react-konva';
 import { toString } from './grid';
 import OpenSpot from './OpenSpot';
 import { useSelector } from 'react-redux';
-import { getOpenNeighbors, getRooms } from '../../features/selectors';
+import { getOpenNeighbors, getRooms } from '../../../features/selectors';
 
 interface BoardProps {}
 

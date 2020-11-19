@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import { store } from '../../store';
+import { store } from '../../../store';
 
 // For drawing DOM elements from inside the react-konva tree
 // Adapted from https://konvajs.org/docs/react/DOM_Portal.html

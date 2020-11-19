@@ -1,18 +1,18 @@
 import React, { FunctionComponent, useState } from 'react';
 import { Circle, Group } from 'react-konva';
-import { partition } from '../../utils';
-import { translate } from '../geometry';
+import { partition } from '../../../utils';
+import { translate } from '../../geometry';
 import {
   GridLoc,
   pointToGridLoc,
   useGridBox,
   useGridSize,
 } from '../board/grid';
-import { Player as PlayerModel } from '../../features/models';
+import { Player as PlayerModel } from '../../../features/models';
 import { useDispatch } from 'react-redux';
-import { playerDropped } from '../../features/players';
-import { BoundingBox, getCenter, getPlayersBox } from '../layout';
-import { useRender } from '../hooks';
+import { playerDropped } from '../../../features/players';
+import { BoundingBox, getCenter, getPlayersBox } from '../../layout';
+import { useRender } from '../../hooks';
 import PlayerHovercard from './PlayerHovercard';
 
 interface PlayerProps {

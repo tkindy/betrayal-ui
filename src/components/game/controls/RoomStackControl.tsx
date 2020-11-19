@@ -4,9 +4,9 @@ import {
   flipRoomStack,
   rotateFlipped,
   skipRoom,
-} from '../../features/roomStack';
-import { RootState } from '../../store';
-import { BoundingBox } from '../layout';
+} from '../../../features/roomStack';
+import { RootState } from '../../../store';
+import { BoundingBox } from '../../layout';
 import DOMPortal from '../portal/DOMPortal';
 
 const StackButtons: FunctionComponent<{}> = () => {

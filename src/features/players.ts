@@ -6,7 +6,7 @@ import {
 } from '@reduxjs/toolkit';
 import { Player, PlayerColor } from './models';
 import * as api from '../api/api';
-import { equal, GridLoc } from '../components/board/grid';
+import { equal, GridLoc } from '../components/game/board/grid';
 import { RootState } from '../store';
 import { getBoardMap, getPlayers as selectPlayers } from './selectors';
 import { get } from '../board';

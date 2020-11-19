@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import { Text } from 'react-konva';
-import { Feature } from '../../features/models';
-import { BoundingBox } from '../layout';
+import { Feature } from '../../../features/models';
+import { BoundingBox } from '../../layout';
 
 interface RoomFeaturesProps {
   box: BoundingBox;

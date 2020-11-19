@@ -1,8 +1,8 @@
 import Konva from 'konva';
 import React, { ReactElement, VoidFunctionComponent } from 'react';
 import { Group, Rect } from 'react-konva';
-import { Point, translate } from '../../geometry';
-import { BoundingBox, Dimensions } from '../../layout';
+import { Point, translate } from '../../../geometry';
+import { BoundingBox, Dimensions } from '../../../layout';
 
 export enum FlexDirection {
   ROW = 'ROW',

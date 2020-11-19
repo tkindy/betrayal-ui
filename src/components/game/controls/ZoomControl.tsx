@@ -1,7 +1,7 @@
 import React, { CSSProperties, FunctionComponent } from 'react';
 import { useDispatch } from 'react-redux';
-import { zoomIn, zoomOut } from '../../features/zoom';
-import { BoundingBox } from '../layout';
+import { zoomIn, zoomOut } from '../../../features/zoom';
+import { BoundingBox } from '../../layout';
 import DOMPortal from '../portal/DOMPortal';
 
 interface ZoomControlProps {

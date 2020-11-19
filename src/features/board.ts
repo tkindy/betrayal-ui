@@ -5,14 +5,14 @@ import {
   PayloadAction,
   ThunkAction,
 } from '@reduxjs/toolkit';
-import { equal, GridLoc } from '../components/board/grid';
-import { Direction } from '../components/room/Room';
+import { equal, GridLoc } from '../components/game/board/grid';
 import { RootState } from '../store';
 import * as api from '../api/api';
 import { PlaceRoomResponse } from '../api/api';
 import { Room } from './models';
 import { Point } from '../components/geometry';
 import { getOpenNeighbors } from './selectors';
+import { Direction } from '../components/game/room/Room';
 
 export const getRooms = createAsyncThunk('board/getStatus', api.getRooms);
 

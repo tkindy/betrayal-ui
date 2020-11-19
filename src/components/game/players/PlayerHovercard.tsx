@@ -1,9 +1,9 @@
 import React, { FunctionComponent } from 'react';
-import Hovercard, { CardDirection } from '../Hovercard';
-import { BoundingBox, Dimensions } from '../layout';
+import Hovercard, { CardDirection } from '../../Hovercard';
+import { BoundingBox, Dimensions } from '../../layout';
 import { Group, Text } from 'react-konva';
-import { Player } from '../../features/models';
-import { translate } from '../geometry';
+import { Player } from '../../../features/models';
+import { translate } from '../../geometry';
 
 const DIMENSIONS: Dimensions = { width: 200, height: 100 };
 

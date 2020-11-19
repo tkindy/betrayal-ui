@@ -1,7 +1,7 @@
 import React, { FunctionComponent } from 'react';
 import RoomStackControl from '../../controls/RoomStackControl';
-import { translate } from '../../geometry';
-import { BoundingBox } from '../../layout';
+import { translate } from '../../../geometry';
+import { BoundingBox } from '../../../layout';
 import FlexContainer, { FlexDirection } from '../flex/FlexContainer';
 import StackRoom from './StackRoom';
 
