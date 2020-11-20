@@ -1,23 +1,36 @@
-import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { placeRoom } from './board';
 import { FlippedRoom, StackRoom } from './models';
 import * as api from '../api/api';
+import { getGameCode } from './selectors';
+import { createAsyncThunk } from './utils';
 
 export const getStackRoom = createAsyncThunk(
   'roomStack/getStatus',
-  api.getStackRoom
+  async (_, { getState }) => {
+    return api.getStackRoom(getGameCode(getState()));
+  }
 );
 
-export const skipRoom = createAsyncThunk('roomStack/skipStatus', api.skipRoom);
+export const skipRoom = createAsyncThunk(
+  'roomStack/skipStatus',
+  async (_, { getState }) => {
+    return api.skipRoom(getGameCode(getState()));
+  }
+);
 
 export const flipRoomStack = createAsyncThunk(
   'roomStack/flipStatus',
-  api.flipRoom
+  async (_, { getState }) => {
+    return api.flipRoom(getGameCode(getState()));
+  }
 );
 
 export const rotateFlipped = createAsyncThunk(
   'roomStack/rotateStatus',
-  api.rotateFlipped
+  async (_, { getState }) => {
+    return api.rotateFlipped(getGameCode(getState()));
+  }
 );
 
 export interface RoomStackState {

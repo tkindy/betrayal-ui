@@ -1,6 +1,5 @@
 import {
   Action,
-  createAsyncThunk,
   createSlice,
   PayloadAction,
   ThunkAction,
@@ -8,13 +7,13 @@ import {
 import { equal, GridLoc } from '../components/game/board/grid';
 import { RootState } from '../store';
 import * as api from '../api/api';
-import { PlaceRoomResponse } from '../api/api';
 import { Room } from './models';
 import { Point } from '../components/geometry';
 import { getGameCode, getOpenNeighbors } from './selectors';
 import { Direction } from '../components/game/room/Room';
+import { createAsyncThunk } from './utils';
 
-export const getRooms = createAsyncThunk<Room[], {}, { state: RootState }>(
+export const getRooms = createAsyncThunk(
   'board/getStatus',
   async (_, { getState }) => {
     return api.getRooms(getGameCode(getState()));
@@ -39,13 +38,12 @@ const getMatchingDoor: (dir: Direction) => Direction = (dir) => {
   }
 };
 
-export const placeRoom = createAsyncThunk<
-  PlaceRoomResponse,
-  GridLoc,
-  { state: RootState }
->('board/placeRoomStatus', async (loc, { getState }) => {
-  return api.placeRoom(getGameCode(getState()), loc);
-});
+export const placeRoom = createAsyncThunk(
+  'board/placeRoomStatus',
+  async (loc: GridLoc, { getState }) => {
+    return api.placeRoom(getGameCode(getState()), loc);
+  }
+);
 
 export const openSpotClicked: (
   loc: GridLoc,

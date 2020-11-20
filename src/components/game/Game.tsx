@@ -29,9 +29,9 @@ const Game: FC<GameProps> = ({ gameCode }) => {
     }
 
     dispatch(joinGame(gameCode));
-    dispatch(getRooms(gameCode));
-    dispatch(getPlayers(gameCode));
-    dispatch(getStackRoom(gameCode));
+    dispatch(getRooms());
+    dispatch(getPlayers());
+    dispatch(getStackRoom());
   }, [gameCode, dispatch, navigate]);
 
   return (

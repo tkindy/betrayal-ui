@@ -1,9 +1,4 @@
-import {
-  Action,
-  createAsyncThunk,
-  createSlice,
-  ThunkAction,
-} from '@reduxjs/toolkit';
+import { Action, createSlice, ThunkAction } from '@reduxjs/toolkit';
 import { Player, PlayerColor } from './models';
 import * as api from '../api/api';
 import { equal, GridLoc } from '../components/game/board/grid';
@@ -14,21 +9,26 @@ import {
   getPlayers as selectPlayers,
 } from './selectors';
 import { get } from '../board';
+import { createAsyncThunk } from './utils';
 
-export const getPlayers = createAsyncThunk('players/getStatus', api.getPlayers);
+export const getPlayers = createAsyncThunk(
+  'players/getStatus',
+  async (_, { getState }) => {
+    return api.getPlayers(getGameCode(getState()));
+  }
+);
 
 interface MovePlayerPayload {
   color: PlayerColor;
   loc: GridLoc;
 }
 
-export const movePlayer = createAsyncThunk<
-  Player[],
-  MovePlayerPayload,
-  { state: RootState }
->('board/movePlayerStatus', ({ color, loc }, { getState }) => {
-  return api.movePlayer(getGameCode(getState()), color, loc);
-});
+export const movePlayer = createAsyncThunk(
+  'board/movePlayerStatus',
+  ({ color, loc }: MovePlayerPayload, { getState }) => {
+    return api.movePlayer(getGameCode(getState()), color, loc);
+  }
+);
 
 export const playerDropped: (
   color: PlayerColor,
