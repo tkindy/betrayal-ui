@@ -23,7 +23,7 @@ const Game: FC<GameProps> = ({ gameId }) => {
   const { x, y } = useSelector((state: RootState) => state.board.topLeft);
 
   useEffect(() => {
-    if (!gameId) {
+    if (!gameId || !/^[A-Z]{6}$/.test(gameId)) {
       navigate('/');
       return;
     }

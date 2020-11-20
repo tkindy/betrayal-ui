@@ -31,8 +31,16 @@ const Home: FC<HomeProps> = () => {
           className="join-game"
           form="join-game-form"
           placeholder="Game ID"
+          pattern="[A-Z]{6}"
           value={gameId}
-          onChange={(e) => setGameId(e.target.value)}
+          onChange={(e) => {
+            const { value } = e.target;
+            const cleaned = value
+              .toUpperCase()
+              .replace(/[^A-Z]/g, '')
+              .substring(0, 6);
+            setGameId(cleaned);
+          }}
         />
         <button className="join-game" form="join-game-form">
           Join game
