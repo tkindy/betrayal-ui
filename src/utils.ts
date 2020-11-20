@@ -22,3 +22,9 @@ export const index: <T, K>(ts: T[], by: (t: T) => K) => Map<K, T[]> = <T, K>(
     return new Map(map).set(key, group.concat(t));
   }, new Map());
 };
+
+export const choices: <T>(array: T[], n: number) => T[] = (array, n) => {
+  return Array.from(Array(n).keys())
+    .map((_) => Math.floor(Math.random() * array.length))
+    .map((index) => array[index]);
+};

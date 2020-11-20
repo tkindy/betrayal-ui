@@ -9,6 +9,20 @@ import {
   Room,
   StackRoom,
 } from '../features/models';
+import { choices } from '../utils';
+
+export const createGame = async () => {
+  return choices(
+    Array.from(
+      Array('Z'.charCodeAt(0) - 'A'.charCodeAt(0) + 1).keys()
+    ).map((i) => String.fromCharCode(i + 'A'.charCodeAt(0))),
+    4
+  ).join('');
+};
+
+export const joinGame = async (gameCode: string) => {
+  return gameCode;
+};
 
 const mockStack: { stackRoom: StackRoom; flipped: FlippedRoom }[] = [
   {
