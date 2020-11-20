@@ -7,10 +7,10 @@ interface HomeProps extends RouteComponentProps {}
 
 const Home: FC<HomeProps> = () => {
   const navigate = useNavigate();
-  const [gameCode, setGameCode] = useState('');
+  const [gameId, setGameId] = useState('');
 
   const handleJoin = () => {
-    navigate(`/game/${gameCode}`);
+    navigate(`/game/${gameId}`);
   };
 
   return (
@@ -20,8 +20,8 @@ const Home: FC<HomeProps> = () => {
         <button
           className="new-game"
           onClick={async () => {
-            const gameCode = await createGame();
-            navigate(`/game/${gameCode}`);
+            const gameId = await createGame();
+            navigate(`/game/${gameId}`);
           }}
         >
           New game
@@ -30,9 +30,9 @@ const Home: FC<HomeProps> = () => {
         <input
           className="join-game"
           form="join-game-form"
-          placeholder="Game code"
-          value={gameCode}
-          onChange={(e) => setGameCode(e.target.value)}
+          placeholder="Game ID"
+          value={gameId}
+          onChange={(e) => setGameId(e.target.value)}
         />
         <button className="join-game" form="join-game-form">
           Join game

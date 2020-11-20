@@ -5,7 +5,7 @@ import { equal, GridLoc } from '../components/game/board/grid';
 import { RootState } from '../store';
 import {
   getBoardMap,
-  getGameCode,
+  getGameId,
   getPlayers as selectPlayers,
 } from './selectors';
 import { get } from '../board';
@@ -14,7 +14,7 @@ import { createAsyncThunk } from './utils';
 export const getPlayers = createAsyncThunk(
   'players/getStatus',
   async (_, { getState }) => {
-    return api.getPlayers(getGameCode(getState()));
+    return api.getPlayers(getGameId(getState()));
   }
 );
 
@@ -26,7 +26,7 @@ interface MovePlayerPayload {
 export const movePlayer = createAsyncThunk(
   'board/movePlayerStatus',
   ({ color, loc }: MovePlayerPayload, { getState }) => {
-    return api.movePlayer(getGameCode(getState()), color, loc);
+    return api.movePlayer(getGameId(getState()), color, loc);
   }
 );
 

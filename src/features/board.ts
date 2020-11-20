@@ -9,14 +9,14 @@ import { RootState } from '../store';
 import * as api from '../api/api';
 import { Room } from './models';
 import { Point } from '../components/geometry';
-import { getGameCode, getOpenNeighbors } from './selectors';
+import { getGameId, getOpenNeighbors } from './selectors';
 import { Direction } from '../components/game/room/Room';
 import { createAsyncThunk } from './utils';
 
 export const getRooms = createAsyncThunk(
   'board/getStatus',
   async (_, { getState }) => {
-    return api.getRooms(getGameCode(getState()));
+    return api.getRooms(getGameId(getState()));
   }
 );
 
@@ -41,7 +41,7 @@ const getMatchingDoor: (dir: Direction) => Direction = (dir) => {
 export const placeRoom = createAsyncThunk(
   'board/placeRoomStatus',
   async (loc: GridLoc, { getState }) => {
-    return api.placeRoom(getGameCode(getState()), loc);
+    return api.placeRoom(getGameId(getState()), loc);
   }
 );
 

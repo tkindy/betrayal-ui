@@ -13,26 +13,26 @@ import { getPlayers } from '../../features/players';
 import { getStackRoom } from '../../features/roomStack';
 
 interface GameProps extends RouteComponentProps {
-  gameCode?: string;
+  gameId?: string;
 }
 
-const Game: FC<GameProps> = ({ gameCode }) => {
+const Game: FC<GameProps> = ({ gameId }) => {
   const { width, height } = useWindowDimensions();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { x, y } = useSelector((state: RootState) => state.board.topLeft);
 
   useEffect(() => {
-    if (!gameCode) {
+    if (!gameId) {
       navigate('/');
       return;
     }
 
-    dispatch(joinGame(gameCode));
+    dispatch(joinGame(gameId));
     dispatch(getRooms());
     dispatch(getPlayers());
     dispatch(getStackRoom());
-  }, [gameCode, dispatch, navigate]);
+  }, [gameId, dispatch, navigate]);
 
   return (
     <div>

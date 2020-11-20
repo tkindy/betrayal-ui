@@ -1,7 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface GameState {
-  gameCode?: string;
+  gameId?: string;
 }
 
 const initialState: GameState = {};
@@ -10,8 +10,8 @@ const gameSlice = createSlice({
   name: 'game',
   initialState,
   reducers: {
-    joinGame(state, { payload: gameCode }: PayloadAction<string>) {
-      state.gameCode = gameCode;
+    joinGame(state, { payload: gameId }: PayloadAction<string>) {
+      state.gameId = gameId;
     },
   },
 });
