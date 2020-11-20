@@ -31,6 +31,7 @@ const Home: FC<HomeProps> = () => {
           className="join-game"
           form="join-game-form"
           placeholder="Game ID"
+          required
           pattern="[A-Z]{6}"
           value={gameId}
           onChange={(e) => {
