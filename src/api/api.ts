@@ -16,7 +16,7 @@ export const createGame = async () => {
     Array.from(
       Array('Z'.charCodeAt(0) - 'A'.charCodeAt(0) + 1).keys()
     ).map((i) => String.fromCharCode(i + 'A'.charCodeAt(0))),
-    4
+    6
   ).join('');
 };
 
