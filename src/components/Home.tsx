@@ -29,19 +29,21 @@ const Home: FC<HomeProps> = () => {
 
         <input
           className="join-game"
+          form="join-game-form"
           placeholder="Game code"
           value={gameCode}
           onChange={(e) => setGameCode(e.target.value)}
-          onKeyUp={(e) => {
-            if (e.key === 'Enter') {
-              e.preventDefault();
-              handleJoin();
-            }
-          }}
         />
-        <button className="join-game" onClick={handleJoin}>
+        <button className="join-game" form="join-game-form">
           Join game
         </button>
+        <form
+          id="join-game-form"
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleJoin();
+          }}
+        />
       </div>
     </div>
   );
