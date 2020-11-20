@@ -1,24 +1,29 @@
 import './Home.css';
-import { RouteComponentProps } from '@reach/router';
 import React, { FC, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { createGame, joinGame } from '../features/game';
+import { RouteComponentProps, useNavigate } from '@reach/router';
+import { createGame } from '../api/api';
 
 interface HomeProps extends RouteComponentProps {}
 
 const Home: FC<HomeProps> = () => {
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [gameCode, setGameCode] = useState('');
 
   const handleJoin = () => {
-    dispatch(joinGame(gameCode));
+    navigate(`/game/${gameCode}`);
   };
 
   return (
     <div>
       <h1>Betrayal at House on the Hill</h1>
       <div className="container">
-        <button className="new-game" onClick={() => dispatch(createGame())}>
+        <button
+          className="new-game"
+          onClick={async () => {
+            const gameCode = await createGame();
+            navigate(`/game/${gameCode}`);
+          }}
+        >
           New game
         </button>
 

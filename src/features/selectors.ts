@@ -3,6 +3,16 @@ import { buildBoardMap, findOpenNeighbors } from '../board';
 import { buildMultiCartMap } from '../map';
 import { RootState } from '../store';
 
+export const getGameCode = (state: RootState) => {
+  const { gameCode } = state.game;
+
+  if (!gameCode) {
+    throw new Error('Not in a game!');
+  }
+
+  return gameCode;
+};
+
 export const getRooms = (state: RootState) => state.board.rooms;
 
 export const getBoardMap = createSelector([getRooms], (rooms) => {

@@ -7,7 +7,7 @@ const App = () => {
   return (
     <Router>
       <Home path="/" />
-      <Game path="/game/:gameId" />
+      <Game path="/game/:gameCode" />
     </Router>
   );
 };

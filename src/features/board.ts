@@ -11,10 +11,15 @@ import * as api from '../api/api';
 import { PlaceRoomResponse } from '../api/api';
 import { Room } from './models';
 import { Point } from '../components/geometry';
-import { getOpenNeighbors } from './selectors';
+import { getGameCode, getOpenNeighbors } from './selectors';
 import { Direction } from '../components/game/room/Room';
 
-export const getRooms = createAsyncThunk('board/getStatus', api.getRooms);
+export const getRooms = createAsyncThunk<Room[], {}, { state: RootState }>(
+  'board/getStatus',
+  async (_, { getState }) => {
+    return api.getRooms(getGameCode(getState()));
+  }
+);
 
 interface BoardState {
   topLeft: Point;
@@ -38,7 +43,9 @@ export const placeRoom = createAsyncThunk<
   PlaceRoomResponse,
   GridLoc,
   { state: RootState }
->('board/placeRoomStatus', api.placeRoom);
+>('board/placeRoomStatus', async (loc, { getState }) => {
+  return api.placeRoom(getGameCode(getState()), loc);
+});
 
 export const openSpotClicked: (
   loc: GridLoc,

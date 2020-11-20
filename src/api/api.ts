@@ -20,10 +20,6 @@ export const createGame = async () => {
   ).join('');
 };
 
-export const joinGame = async (gameCode: string) => {
-  return gameCode;
-};
-
 const mockStack: { stackRoom: StackRoom; flipped: FlippedRoom }[] = [
   {
     stackRoom: { possibleFloors: [Floor.BASEMENT, Floor.GROUND] },
@@ -55,41 +51,41 @@ const mockStack: { stackRoom: StackRoom; flipped: FlippedRoom }[] = [
 
 let mockStackIndex = 0;
 
-const fixStackIndex = () => {
+const fixStackIndex = (gameCode: string) => {
   if (mockStackIndex >= mockStack.length) {
     mockStackIndex = 0;
   }
 };
 
-const advanceStack = () => {
+const advanceStack = (gameCode: string) => {
   if (mockStack.every((x) => x === undefined)) {
     return;
   }
 
   do {
     mockStackIndex += 1;
-    fixStackIndex();
+    fixStackIndex(gameCode);
   } while (mockStack[mockStackIndex] === undefined);
 };
 
-export const getStackRoom = async () => {
+export const getStackRoom = async (gameCode: string) => {
   return mockStack[mockStackIndex]
     ? mockStack[mockStackIndex].stackRoom
     : undefined;
 };
 
-export const skipRoom = async () => {
-  advanceStack();
-  return getStackRoom();
+export const skipRoom = async (gameCode: string) => {
+  advanceStack(gameCode);
+  return getStackRoom(gameCode);
 };
 
 let flippedRoom: FlippedRoom | undefined = undefined;
 
-export const flipRoom = async () => {
+export const flipRoom = async (gameCode: string) => {
   const { flipped } = mockStack[mockStackIndex];
   flippedRoom = flipped;
   delete mockStack[mockStackIndex];
-  advanceStack();
+  advanceStack(gameCode);
   return flipped;
 };
 
@@ -106,7 +102,7 @@ const rotateDirection = (dir: Direction) => {
   }
 };
 
-export const rotateFlipped = async () => {
+export const rotateFlipped = async (gameCode: string) => {
   if (!flippedRoom) {
     throw new Error("can't rotate since there's no flipped room");
   }
@@ -214,9 +210,10 @@ export interface PlaceRoomResponse {
   rooms: Room[];
   nextRoom?: StackRoom;
 }
-export const placeRoom: (loc: GridLoc) => Promise<PlaceRoomResponse> = async (
-  loc
-) => {
+export const placeRoom: (
+  gameCode: string,
+  loc: GridLoc
+) => Promise<PlaceRoomResponse> = async (gameCode, loc) => {
   if (!flippedRoom) {
     throw new Error("can't place room since there isn't one flipped");
   }
@@ -227,23 +224,28 @@ export const placeRoom: (loc: GridLoc) => Promise<PlaceRoomResponse> = async (
   });
 
   return {
-    rooms: await getRooms(),
-    nextRoom: await getStackRoom(),
+    rooms: await getRooms(gameCode),
+    nextRoom: await getStackRoom(gameCode),
   };
 };
 
-export const getRooms: () => Promise<Room[]> = async () => {
+export const getRooms: (gameCode: string) => Promise<Room[]> = async (
+  gameCode
+) => {
   return rooms;
 };
 
-export const getPlayers: () => Promise<Player[]> = async () => {
+export const getPlayers: (gameCode: string) => Promise<Player[]> = async (
+  gameCode
+) => {
   return players;
 };
 
 export const movePlayer: (
+  gameCode: string,
   color: PlayerColor,
   loc: GridLoc
-) => Promise<Player[]> = async (color, loc) => {
+) => Promise<Player[]> = async (gameCode, color, loc) => {
   const player = players.find((player) => player.color === color);
 
   if (!player) {
@@ -253,5 +255,5 @@ export const movePlayer: (
   players = players
     .filter((player) => player.color !== color)
     .concat({ ...player, loc });
-  return getPlayers();
+  return getPlayers(gameCode);
 };

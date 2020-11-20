@@ -8,7 +8,11 @@ import { Player, PlayerColor } from './models';
 import * as api from '../api/api';
 import { equal, GridLoc } from '../components/game/board/grid';
 import { RootState } from '../store';
-import { getBoardMap, getPlayers as selectPlayers } from './selectors';
+import {
+  getBoardMap,
+  getGameCode,
+  getPlayers as selectPlayers,
+} from './selectors';
 import { get } from '../board';
 
 export const getPlayers = createAsyncThunk('players/getStatus', api.getPlayers);
@@ -18,10 +22,13 @@ interface MovePlayerPayload {
   loc: GridLoc;
 }
 
-export const movePlayer = createAsyncThunk(
-  'board/movePlayerStatus',
-  ({ color, loc }: MovePlayerPayload) => api.movePlayer(color, loc)
-);
+export const movePlayer = createAsyncThunk<
+  Player[],
+  MovePlayerPayload,
+  { state: RootState }
+>('board/movePlayerStatus', ({ color, loc }, { getState }) => {
+  return api.movePlayer(getGameCode(getState()), color, loc);
+});
 
 export const playerDropped: (
   color: PlayerColor,
