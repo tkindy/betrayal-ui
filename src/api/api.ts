@@ -1,5 +1,5 @@
-import { GridLoc } from '../components/board/grid';
-import { Direction } from '../components/room/Room';
+import { GridLoc } from '../components/game/board/grid';
+import { Direction } from '../components/game/room/Room';
 import {
   Feature,
   FlippedRoom,
@@ -9,6 +9,16 @@ import {
   Room,
   StackRoom,
 } from '../features/models';
+import { choices } from '../utils';
+
+export const createGame = async () => {
+  return choices(
+    Array.from(
+      Array('Z'.charCodeAt(0) - 'A'.charCodeAt(0) + 1).keys()
+    ).map((i) => String.fromCharCode(i + 'A'.charCodeAt(0))),
+    6
+  ).join('');
+};
 
 const mockStack: { stackRoom: StackRoom; flipped: FlippedRoom }[] = [
   {
@@ -41,41 +51,41 @@ const mockStack: { stackRoom: StackRoom; flipped: FlippedRoom }[] = [
 
 let mockStackIndex = 0;
 
-const fixStackIndex = () => {
+const fixStackIndex = (gameId: string) => {
   if (mockStackIndex >= mockStack.length) {
     mockStackIndex = 0;
   }
 };
 
-const advanceStack = () => {
+const advanceStack = (gameId: string) => {
   if (mockStack.every((x) => x === undefined)) {
     return;
   }
 
   do {
     mockStackIndex += 1;
-    fixStackIndex();
+    fixStackIndex(gameId);
   } while (mockStack[mockStackIndex] === undefined);
 };
 
-export const getStackRoom = async () => {
+export const getStackRoom = async (gameId: string) => {
   return mockStack[mockStackIndex]
     ? mockStack[mockStackIndex].stackRoom
     : undefined;
 };
 
-export const skipRoom = async () => {
-  advanceStack();
-  return getStackRoom();
+export const skipRoom = async (gameId: string) => {
+  advanceStack(gameId);
+  return getStackRoom(gameId);
 };
 
 let flippedRoom: FlippedRoom | undefined = undefined;
 
-export const flipRoom = async () => {
+export const flipRoom = async (gameId: string) => {
   const { flipped } = mockStack[mockStackIndex];
   flippedRoom = flipped;
   delete mockStack[mockStackIndex];
-  advanceStack();
+  advanceStack(gameId);
   return flipped;
 };
 
@@ -92,7 +102,7 @@ const rotateDirection = (dir: Direction) => {
   }
 };
 
-export const rotateFlipped = async () => {
+export const rotateFlipped = async (gameId: string) => {
   if (!flippedRoom) {
     throw new Error("can't rotate since there's no flipped room");
   }
@@ -200,9 +210,10 @@ export interface PlaceRoomResponse {
   rooms: Room[];
   nextRoom?: StackRoom;
 }
-export const placeRoom: (loc: GridLoc) => Promise<PlaceRoomResponse> = async (
-  loc
-) => {
+export const placeRoom: (
+  gameId: string,
+  loc: GridLoc
+) => Promise<PlaceRoomResponse> = async (gameId, loc) => {
   if (!flippedRoom) {
     throw new Error("can't place room since there isn't one flipped");
   }
@@ -213,23 +224,26 @@ export const placeRoom: (loc: GridLoc) => Promise<PlaceRoomResponse> = async (
   });
 
   return {
-    rooms: await getRooms(),
-    nextRoom: await getStackRoom(),
+    rooms: await getRooms(gameId),
+    nextRoom: await getStackRoom(gameId),
   };
 };
 
-export const getRooms: () => Promise<Room[]> = async () => {
+export const getRooms: (gameId: string) => Promise<Room[]> = async (gameId) => {
   return rooms;
 };
 
-export const getPlayers: () => Promise<Player[]> = async () => {
+export const getPlayers: (gameId: string) => Promise<Player[]> = async (
+  gameId
+) => {
   return players;
 };
 
 export const movePlayer: (
+  gameId: string,
   color: PlayerColor,
   loc: GridLoc
-) => Promise<Player[]> = async (color, loc) => {
+) => Promise<Player[]> = async (gameId, color, loc) => {
   const player = players.find((player) => player.color === color);
 
   if (!player) {
@@ -239,5 +253,5 @@ export const movePlayer: (
   players = players
     .filter((player) => player.color !== color)
     .concat({ ...player, loc });
-  return getPlayers();
+  return getPlayers(gameId);
 };

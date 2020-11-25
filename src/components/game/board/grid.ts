@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
-import { RootState } from '../../store';
-import { Point, translate } from '../geometry';
-import { BoundingBox } from '../layout';
+import { RootState } from '../../../store';
+import { Point, translate } from '../../geometry';
+import { BoundingBox } from '../../layout';
 
 // (0, 0) is top-left square on first render
 export interface GridLoc {

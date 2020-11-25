@@ -1,9 +1,9 @@
 import React, { FunctionComponent } from 'react';
 import { Group, Rect } from 'react-konva';
 import ZoomControl from '../controls/ZoomControl';
-import { translate } from '../geometry';
-import { BoundingBox, Dimensions } from '../layout';
-import { useWindowDimensions } from '../windowDimensions';
+import { translate } from '../../geometry';
+import { BoundingBox, Dimensions } from '../../layout';
+import { useWindowDimensions } from '../../windowDimensions';
 import FlexContainer, { FlexDirection } from './flex/FlexContainer';
 import RoomStack from './roomStack/RoomStack';
 

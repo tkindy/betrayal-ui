@@ -1,8 +1,8 @@
 import React, { FunctionComponent, ReactElement } from 'react';
 import { Group, Line } from 'react-konva';
+import OverlayPortal from './game/portal/OverlayPortal';
 import { pointsToArray, translate } from './geometry';
 import { BoundingBox, Dimensions, getCenter } from './layout';
-import OverlayPortal from './portal/OverlayPortal';
 
 const MARGIN = 20;
 const PADDING = 15;

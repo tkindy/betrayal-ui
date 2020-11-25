@@ -1,5 +1,5 @@
-import { GridLoc } from './components/board/grid';
-import { Direction } from './components/room/Room';
+import { GridLoc } from './components/game/board/grid';
+import { Direction } from './components/game/room/Room';
 import { Room as RoomModel } from './features/models';
 import { buildCartMap, CartMap, getXY } from './map';
 import { index } from './utils';

@@ -3,10 +3,10 @@ import { Group } from 'react-konva';
 import Room from '../room/Room';
 import RoomName from '../room/RoomName';
 import { useGridBox } from './grid';
-import { Room as RoomModel } from '../../features/models';
-import { getRoomDetailsBox } from '../layout';
+import { Room as RoomModel } from '../../../features/models';
+import { getRoomDetailsBox } from '../../layout';
 import RoomFeatures from '../room/RoomFeatures';
-import { translate } from '../geometry';
+import { translate } from '../../geometry';
 
 const BoardRoom: FunctionComponent<RoomModel> = ({
   name,

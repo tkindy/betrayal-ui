@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { Text } from 'react-konva';
-import { BoundingBox } from '../layout';
+import { BoundingBox } from '../../layout';
 
 interface RoomNameProps {
   box: BoundingBox;

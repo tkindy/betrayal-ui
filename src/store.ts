@@ -4,8 +4,10 @@ import zoomReducer from './features/zoom';
 import roomStackReducer from './features/roomStack';
 import boardReducer from './features/board';
 import playersReducer from './features/players';
+import gameReducer from './features/game';
 
 const rootReducer = combineReducers({
+  game: gameReducer,
   zoom: zoomReducer,
   roomStack: roomStackReducer,
   board: boardReducer,

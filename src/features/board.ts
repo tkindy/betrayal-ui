@@ -1,20 +1,24 @@
 import {
   Action,
-  createAsyncThunk,
   createSlice,
   PayloadAction,
   ThunkAction,
 } from '@reduxjs/toolkit';
-import { equal, GridLoc } from '../components/board/grid';
-import { Direction } from '../components/room/Room';
+import { equal, GridLoc } from '../components/game/board/grid';
 import { RootState } from '../store';
 import * as api from '../api/api';
-import { PlaceRoomResponse } from '../api/api';
 import { Room } from './models';
 import { Point } from '../components/geometry';
-import { getOpenNeighbors } from './selectors';
+import { getGameId, getOpenNeighbors } from './selectors';
+import { Direction } from '../components/game/room/Room';
+import { createAsyncThunk } from './utils';
 
-export const getRooms = createAsyncThunk('board/getStatus', api.getRooms);
+export const getRooms = createAsyncThunk(
+  'board/getStatus',
+  async (_, { getState }) => {
+    return api.getRooms(getGameId(getState()));
+  }
+);
 
 interface BoardState {
   topLeft: Point;
@@ -34,11 +38,12 @@ const getMatchingDoor: (dir: Direction) => Direction = (dir) => {
   }
 };
 
-export const placeRoom = createAsyncThunk<
-  PlaceRoomResponse,
-  GridLoc,
-  { state: RootState }
->('board/placeRoomStatus', api.placeRoom);
+export const placeRoom = createAsyncThunk(
+  'board/placeRoomStatus',
+  async (loc: GridLoc, { getState }) => {
+    return api.placeRoom(getGameId(getState()), loc);
+  }
+);
 
 export const openSpotClicked: (
   loc: GridLoc,
