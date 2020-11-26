@@ -9,15 +9,16 @@ import {
   Room,
   StackRoom,
 } from '../features/models';
-import { choices } from '../utils';
+import axios from 'axios';
 
-export const createGame = async () => {
-  return choices(
-    Array.from(
-      Array('Z'.charCodeAt(0) - 'A'.charCodeAt(0) + 1).keys()
-    ).map((i) => String.fromCharCode(i + 'A'.charCodeAt(0))),
-    6
-  ).join('');
+const buildApiUrl = (path: string) => process.env.REACT_APP_API_ROOT + path;
+
+export const createGame: () => Promise<string> = async () => {
+  const response = await axios.post<{ id: string }>(buildApiUrl('/games'), {
+    name: 'Foo',
+    numPlayers: 6,
+  });
+  return response.data.id;
 };
 
 const mockStack: { stackRoom: StackRoom; flipped: FlippedRoom }[] = [
@@ -230,7 +231,10 @@ export const placeRoom: (
 };
 
 export const getRooms: (gameId: string) => Promise<Room[]> = async (gameId) => {
-  return rooms;
+  const response = await axios.get<Room[]>(
+    buildApiUrl(`/games/${gameId}/rooms`)
+  );
+  return response.data;
 };
 
 export const getPlayers: (gameId: string) => Promise<Player[]> = async (
