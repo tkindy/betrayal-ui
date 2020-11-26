@@ -4,11 +4,24 @@ import { Point, rotate, translate } from '../../geometry';
 import { BoundingBox, getCenter } from '../../layout';
 
 export enum Direction {
-  NORTH = 90,
-  SOUTH = 270,
-  EAST = 0,
-  WEST = 180,
+  NORTH = 'NORTH',
+  SOUTH = 'SOUTH',
+  EAST = 'EAST',
+  WEST = 'WEST',
 }
+
+const toDegrees: (d: Direction) => number = (d) => {
+  switch (d) {
+    case Direction.EAST:
+      return 0;
+    case Direction.NORTH:
+      return 90;
+    case Direction.WEST:
+      return 180;
+    case Direction.SOUTH:
+      return 270;
+  }
+};
 
 interface DoorProps {
   roomBox: BoundingBox;
@@ -39,7 +52,7 @@ const Door: FunctionComponent<DoorProps> = ({ roomBox, direction }) => {
     baseBottomRight,
     baseBottomLeft,
   ].map((corner) => {
-    return rotate(corner, roomCenter, direction);
+    return rotate(corner, roomCenter, toDegrees(direction));
   });
 
   return (

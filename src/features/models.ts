@@ -10,14 +10,20 @@ export enum PlayerColor {
   PURPLE = 'purple',
 }
 
+export interface Trait {
+  value: number;
+  index: number;
+}
+
 export interface Player {
-  name: string;
+  id: number;
+  characterName: string;
   color: PlayerColor;
   loc: GridLoc;
-  speed: number;
-  might: number;
-  sanity: number;
-  knowledge: number;
+  speed: Trait;
+  might: Trait;
+  sanity: Trait;
+  knowledge: Trait;
 }
 
 export enum Feature {
@@ -38,10 +44,10 @@ export interface Room extends RoomCore {
 }
 
 export enum Floor {
-  BASEMENT,
-  GROUND,
-  UPPER,
-  ROOF,
+  BASEMENT = 'BASEMENT',
+  GROUND = 'GROUND',
+  UPPER = 'UPPER',
+  ROOF = 'ROOF',
 }
 
 export interface StackRoom {

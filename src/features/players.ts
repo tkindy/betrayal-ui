@@ -1,5 +1,5 @@
 import { Action, createSlice, ThunkAction } from '@reduxjs/toolkit';
-import { Player, PlayerColor } from './models';
+import { Player } from './models';
 import * as api from '../api/api';
 import { equal, GridLoc } from '../components/game/board/grid';
 import { RootState } from '../store';
@@ -19,21 +19,21 @@ export const getPlayers = createAsyncThunk(
 );
 
 interface MovePlayerPayload {
-  color: PlayerColor;
+  id: number;
   loc: GridLoc;
 }
 
 export const movePlayer = createAsyncThunk(
   'board/movePlayerStatus',
-  ({ color, loc }: MovePlayerPayload, { getState }) => {
-    return api.movePlayer(getGameId(getState()), color, loc);
+  ({ id, loc }: MovePlayerPayload, { getState }) => {
+    return api.movePlayer(getGameId(getState()), id, loc);
   }
 );
 
 export const playerDropped: (
-  color: PlayerColor,
+  id: number,
   loc: GridLoc
-) => ThunkAction<void, RootState, unknown, Action<string>> = (color, loc) => (
+) => ThunkAction<void, RootState, unknown, Action<string>> = (id, loc) => (
   dispatch,
   getState
 ) => {
@@ -43,13 +43,13 @@ export const playerDropped: (
   }
 
   const { loc: originalLoc } = selectPlayers(getState())!!.find(
-    (player) => player.color === color
+    (player) => player.id === id
   )!!;
   if (equal(originalLoc, loc)) {
     return;
   }
 
-  dispatch(movePlayer({ color, loc }));
+  dispatch(movePlayer({ id, loc }));
 };
 
 interface PlayersState {
