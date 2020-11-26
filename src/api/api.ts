@@ -5,7 +5,6 @@ import {
   FlippedRoom,
   Floor,
   Player,
-  PlayerColor,
   Room,
   StackRoom,
 } from '../features/models';
@@ -191,9 +190,12 @@ export const getPlayers: (gameId: string) => Promise<Player[]> = async (
 
 export const movePlayer: (
   gameId: string,
-  color: PlayerColor,
+  playerId: number,
   loc: GridLoc
-) => Promise<Player[]> = async (gameId, color, loc) => {
-  // TODO:
+) => Promise<Player[]> = async (gameId, playerId, loc) => {
+  await axios.post(
+    buildApiUrl(`/games/${gameId}/players/${playerId}/move`),
+    loc
+  );
   return getPlayers(gameId);
 };

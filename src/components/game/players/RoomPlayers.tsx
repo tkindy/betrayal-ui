@@ -24,7 +24,7 @@ const Player: FunctionComponent<PlayerProps> = ({ box, player }) => {
   const { x, y } = getCenter(box);
   const { width, height } = box.dimensions;
   const radius = Math.min(width, height) / 2;
-  const { color } = player;
+  const { id, color } = player;
 
   const render = useRender();
   const dispatch = useDispatch();
@@ -46,7 +46,7 @@ const Player: FunctionComponent<PlayerProps> = ({ box, player }) => {
           e.cancelBubble = true; // avoid dragging the board
 
           dispatch(
-            playerDropped(color, pointToGridLoc(e.target.position(), gridSize))
+            playerDropped(id, pointToGridLoc(e.target.position(), gridSize))
           );
 
           render(); // to snap back if dropped in an invalid spot

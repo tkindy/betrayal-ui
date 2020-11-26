@@ -16,6 +16,7 @@ export interface Trait {
 }
 
 export interface Player {
+  id: number;
   characterName: string;
   color: PlayerColor;
   loc: GridLoc;
