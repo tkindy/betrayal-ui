@@ -10,7 +10,7 @@ import Sidebar from './sidebar/Sidebar';
 import { RouteComponentProps, useNavigate } from '@reach/router';
 import { joinGame } from '../../features/game';
 import { getPlayers } from '../../features/players';
-import { getStackRoom } from '../../features/roomStack';
+import { getRoomStack } from '../../features/roomStack';
 
 interface GameProps extends RouteComponentProps {
   gameId?: string;
@@ -31,7 +31,7 @@ const Game: FC<GameProps> = ({ gameId }) => {
     dispatch(joinGame(gameId));
     dispatch(getRooms());
     dispatch(getPlayers());
-    dispatch(getStackRoom());
+    dispatch(getRoomStack());
   }, [gameId, dispatch, navigate]);
 
   return (

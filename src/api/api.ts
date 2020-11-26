@@ -3,7 +3,6 @@ import { Direction } from '../components/game/room/Room';
 import {
   Feature,
   FlippedRoom,
-  Floor,
   Player,
   Room,
   StackRoom,
@@ -20,65 +19,17 @@ export const createGame: () => Promise<string> = async () => {
   return response.data.id;
 };
 
-const mockStack: { stackRoom: StackRoom; flipped: FlippedRoom }[] = [
-  {
-    stackRoom: { possibleFloors: [Floor.BASEMENT, Floor.GROUND] },
-    flipped: {
-      name: 'Graveyard',
-      doorDirections: [Direction.NORTH, Direction.EAST],
-      features: [Feature.EVENT],
-    },
-  },
-  {
-    stackRoom: { possibleFloors: [Floor.GROUND] },
-    flipped: {
-      name: 'Entrance Hall',
-      doorDirections: [Direction.NORTH],
-      features: [Feature.OMEN, Feature.DUMBWAITER],
-    },
-  },
-  {
-    stackRoom: {
-      possibleFloors: [Floor.BASEMENT, Floor.GROUND, Floor.UPPER, Floor.ROOF],
-    },
-    flipped: {
-      name: 'Mystic Elevator',
-      doorDirections: [Direction.SOUTH],
-      features: [Feature.ITEM, Feature.ITEM],
-    },
-  },
-];
-
-let mockStackIndex = 0;
-
-const fixStackIndex = (gameId: string) => {
-  if (mockStackIndex >= mockStack.length) {
-    mockStackIndex = 0;
-  }
-};
-
-const advanceStack = (gameId: string) => {
-  if (mockStack.every((x) => x === undefined)) {
-    return;
-  }
-
-  do {
-    mockStackIndex += 1;
-    fixStackIndex(gameId);
-  } while (mockStack[mockStackIndex] === undefined);
-};
-
 interface RoomStackResponse {
   nextRoom?: StackRoom;
   flippedRoom?: FlippedRoom;
 }
 
-export const getStackRoom = async (gameId: string) => {
+export const getRoomStack = async (gameId: string) => {
   const response = await axios.get<RoomStackResponse>(
     buildApiUrl(`/games/${gameId}/roomStack`)
   );
 
-  return response.data.nextRoom;
+  return response.data;
 };
 
 export const skipRoom = async (gameId: string) => {
@@ -92,39 +43,18 @@ export const skipRoom = async (gameId: string) => {
 let flippedRoom: FlippedRoom | undefined = undefined;
 
 export const flipRoom = async (gameId: string) => {
-  const { flipped } = mockStack[mockStackIndex];
-  flippedRoom = flipped;
-  delete mockStack[mockStackIndex];
-  advanceStack(gameId);
-  return flipped;
-};
+  const response = await axios.post<RoomStackResponse>(
+    buildApiUrl(`/games/${gameId}/roomStack/flip`)
+  );
 
-const rotateDirection = (dir: Direction) => {
-  switch (dir) {
-    case Direction.NORTH:
-      return Direction.EAST;
-    case Direction.EAST:
-      return Direction.SOUTH;
-    case Direction.SOUTH:
-      return Direction.WEST;
-    case Direction.WEST:
-      return Direction.NORTH;
-  }
+  return response.data.flippedRoom;
 };
 
 export const rotateFlipped = async (gameId: string) => {
-  if (!flippedRoom) {
-    throw new Error("can't rotate since there's no flipped room");
-  }
-
-  const { name, doorDirections, features } = flippedRoom;
-  flippedRoom = {
-    name,
-    doorDirections: doorDirections.map(rotateDirection),
-    features,
-  };
-
-  return flippedRoom;
+  const response = await axios.post<RoomStackResponse>(
+    buildApiUrl(`/games/${gameId}/roomStack/rotate`)
+  );
+  return response.data.flippedRoom;
 };
 
 let rooms: Room[] = [
@@ -178,7 +108,7 @@ export const placeRoom: (
 
   return {
     rooms: await getRooms(gameId),
-    nextRoom: await getStackRoom(gameId),
+    nextRoom: (await getRoomStack(gameId)).nextRoom,
   };
 };
 
