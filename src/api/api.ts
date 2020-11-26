@@ -68,15 +68,25 @@ const advanceStack = (gameId: string) => {
   } while (mockStack[mockStackIndex] === undefined);
 };
 
+interface RoomStackResponse {
+  nextRoom?: StackRoom;
+  flippedRoom?: FlippedRoom;
+}
+
 export const getStackRoom = async (gameId: string) => {
-  return mockStack[mockStackIndex]
-    ? mockStack[mockStackIndex].stackRoom
-    : undefined;
+  const response = await axios.get<RoomStackResponse>(
+    buildApiUrl(`/games/${gameId}/roomStack`)
+  );
+
+  return response.data.nextRoom;
 };
 
 export const skipRoom = async (gameId: string) => {
-  advanceStack(gameId);
-  return getStackRoom(gameId);
+  const response = await axios.post<RoomStackResponse>(
+    buildApiUrl(`/games/${gameId}/roomStack/skip`)
+  );
+
+  return response.data.nextRoom;
 };
 
 let flippedRoom: FlippedRoom | undefined = undefined;

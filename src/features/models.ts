@@ -44,10 +44,10 @@ export interface Room extends RoomCore {
 }
 
 export enum Floor {
-  BASEMENT,
-  GROUND,
-  UPPER,
-  ROOF,
+  BASEMENT = 'BASEMENT',
+  GROUND = 'GROUND',
+  UPPER = 'UPPER',
+  ROOF = 'ROOF',
 }
 
 export interface StackRoom {
