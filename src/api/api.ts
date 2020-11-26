@@ -1,12 +1,5 @@
 import { GridLoc } from '../components/game/board/grid';
-import { Direction } from '../components/game/room/Room';
-import {
-  Feature,
-  FlippedRoom,
-  Player,
-  Room,
-  StackRoom,
-} from '../features/models';
+import { FlippedRoom, Player, Room, StackRoom } from '../features/models';
 import axios from 'axios';
 
 const buildApiUrl = (path: string) => process.env.REACT_APP_API_ROOT + path;
@@ -40,8 +33,6 @@ export const skipRoom = async (gameId: string) => {
   return response.data.nextRoom;
 };
 
-let flippedRoom: FlippedRoom | undefined = undefined;
-
 export const flipRoom = async (gameId: string) => {
   const response = await axios.post<RoomStackResponse>(
     buildApiUrl(`/games/${gameId}/roomStack/flip`)
@@ -57,38 +48,6 @@ export const rotateFlipped = async (gameId: string) => {
   return response.data.flippedRoom;
 };
 
-let rooms: Room[] = [
-  {
-    name: 'Bloody Room',
-    loc: { gridX: 2, gridY: 2 },
-    doorDirections: [
-      Direction.SOUTH,
-      Direction.EAST,
-      Direction.NORTH,
-      Direction.WEST,
-    ],
-    features: [Feature.ITEM],
-  },
-  {
-    name: 'Statuary Corridor',
-    loc: { gridX: 1, gridY: 2 },
-    doorDirections: [Direction.EAST, Direction.SOUTH],
-    features: [Feature.EVENT, Feature.DUMBWAITER],
-  },
-  {
-    name: 'Master Bedroom',
-    loc: { gridX: 2, gridY: 3 },
-    doorDirections: [Direction.NORTH, Direction.SOUTH],
-    features: [Feature.OMEN],
-  },
-  {
-    name: 'Crypt',
-    loc: { gridX: 2, gridY: 1 },
-    doorDirections: [Direction.SOUTH],
-    features: [Feature.DUMBWAITER],
-  },
-];
-
 export interface PlaceRoomResponse {
   rooms: Room[];
   nextRoom?: StackRoom;
@@ -97,19 +56,11 @@ export const placeRoom: (
   gameId: string,
   loc: GridLoc
 ) => Promise<PlaceRoomResponse> = async (gameId, loc) => {
-  if (!flippedRoom) {
-    throw new Error("can't place room since there isn't one flipped");
-  }
-
-  rooms = rooms.concat({
-    ...flippedRoom,
-    loc,
-  });
-
-  return {
-    rooms: await getRooms(gameId),
-    nextRoom: (await getRoomStack(gameId)).nextRoom,
-  };
+  const response = await axios.post<PlaceRoomResponse>(
+    buildApiUrl(`/games/${gameId}/roomStack/place`),
+    loc
+  );
+  return response.data;
 };
 
 export const getRooms: (gameId: string) => Promise<Room[]> = async (gameId) => {
