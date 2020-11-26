@@ -57,7 +57,7 @@ interface PlayerHovercardProps {
 const PlayerHovercard: FunctionComponent<PlayerHovercardProps> = ({
   hovered,
   playerBox,
-  player: { name, speed, might, sanity, knowledge },
+  player: { characterName, speed, might, sanity, knowledge },
 }) => {
   return (
     <Hovercard
@@ -78,16 +78,16 @@ const PlayerHovercard: FunctionComponent<PlayerHovercardProps> = ({
               y={y}
               width={width}
               height={height / 2}
-              text={name}
+              text={characterName}
               fontSize={20}
               fontStyle="bold"
               align="center"
             />
             {[
-              { name: 'SPD', value: speed },
-              { name: 'MGT', value: might },
-              { name: 'SAN', value: sanity },
-              { name: 'KNO', value: knowledge },
+              { name: 'SPD', value: speed.value },
+              { name: 'MGT', value: might.value },
+              { name: 'SAN', value: sanity.value },
+              { name: 'KNO', value: knowledge.value },
             ].map(({ name, value }, i) => (
               <Trait
                 key={name}
