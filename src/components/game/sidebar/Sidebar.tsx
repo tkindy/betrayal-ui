@@ -1,6 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { Group, Rect } from 'react-konva';
-import ZoomControl from '../controls/ZoomControl';
+import ZoomControl from './ZoomControl';
 import { translate } from '../../geometry';
 import { BoundingBox, Dimensions } from '../../layout';
 import { useWindowDimensions } from '../../windowDimensions';

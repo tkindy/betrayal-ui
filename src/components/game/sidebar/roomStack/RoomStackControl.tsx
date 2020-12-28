@@ -4,10 +4,10 @@ import {
   flipRoomStack,
   rotateFlipped,
   skipRoom,
-} from '../../../features/roomStack';
-import { RootState } from '../../../store';
-import { BoundingBox } from '../../layout';
-import DOMPortal from '../portal/DOMPortal';
+} from '../../../../features/roomStack';
+import { RootState } from '../../../../store';
+import { BoundingBox } from '../../../layout';
+import DOMPortal from '../../portal/DOMPortal';
 
 const StackButtons: FunctionComponent<{}> = () => {
   const dispatch = useDispatch();
