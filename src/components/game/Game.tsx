@@ -60,6 +60,9 @@ const Game: FC<GameProps> = ({ gameId }) => {
                 <Group name="overlay" />
               </Layer>
               <Layer>
+                <DrawnCard />
+              </Layer>
+              <Layer>
                 <Sidebar />
               </Layer>
             </ReactReduxContext.Provider>
