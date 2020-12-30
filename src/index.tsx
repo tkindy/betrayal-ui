@@ -7,6 +7,8 @@ import * as serviceWorker from './serviceWorker';
 import { useStrictMode } from 'react-konva';
 import { store } from './store';
 
+// ESLint thinks this is a React hook
+// eslint-disable-next-line react-hooks/rules-of-hooks
 useStrictMode(true);
 
 ReactDOM.render(
