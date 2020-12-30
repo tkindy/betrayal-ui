@@ -1,5 +1,6 @@
 import { GridLoc } from '../components/game/board/grid';
 import {
+  Card,
   EventCard,
   FlippedRoom,
   ItemCard,
@@ -97,6 +98,20 @@ export const movePlayer: (
     loc
   );
   return getPlayers(gameId);
+};
+
+export const getDrawnCard: (gameId: string) => Promise<Card | null> = async (
+  gameId
+) => {
+  const response = await axios.get<Card>(
+    buildApiUrl(`/games/${gameId}/cards/drawn`)
+  );
+
+  if (response.status === 404) {
+    return null;
+  }
+
+  return response.data;
 };
 
 export const drawEvent: (gameId: string) => Promise<EventCard> = async (

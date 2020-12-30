@@ -11,6 +11,8 @@ import { RouteComponentProps, useNavigate } from '@reach/router';
 import { joinGame } from '../../features/game';
 import { getPlayers } from '../../features/players';
 import { getRoomStack } from '../../features/roomStack';
+import DrawnCard from './DrawnCard';
+import { getDrawnCard } from '../../features/cardStacks';
 
 interface GameProps extends RouteComponentProps {
   gameId?: string;
@@ -32,6 +34,7 @@ const Game: FC<GameProps> = ({ gameId }) => {
     dispatch(getRooms());
     dispatch(getPlayers());
     dispatch(getRoomStack());
+    dispatch(getDrawnCard());
   }, [gameId, dispatch, navigate]);
 
   return (
