@@ -1,4 +1,4 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
 import { placeRoom } from './board';
 import { FlippedRoom, StackRoom } from './models';
 import * as api from '../api/api';
@@ -43,11 +43,7 @@ const initialState: RoomStackState = {};
 const roomStackSlice = createSlice({
   name: 'roomStack',
   initialState,
-  reducers: {
-    nextRoom(state, action: PayloadAction<StackRoom>) {
-      state.nextRoom = action.payload;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(getRoomStack.fulfilled, (_state, { payload: newState }) => {
@@ -70,5 +66,4 @@ const roomStackSlice = createSlice({
   },
 });
 
-export const { nextRoom } = roomStackSlice.actions;
 export default roomStackSlice.reducer;
