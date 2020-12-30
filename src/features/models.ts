@@ -55,3 +55,57 @@ export interface StackRoom {
 }
 
 export interface FlippedRoom extends RoomCore {}
+
+export interface ExactRollTarget {
+  type: 'EXACT';
+  target: number;
+}
+
+export interface RangeRollTarget {
+  type: 'RANGE';
+  start: number;
+  end: number;
+}
+
+export interface MinRollTarget {
+  type: 'MIN';
+  minimum: number;
+}
+
+export type RollTarget = ExactRollTarget | RangeRollTarget | MinRollTarget;
+
+export interface RollTableRow {
+  target: RollTarget;
+  outcome: string;
+}
+
+export type RollTable = RollTableRow[];
+
+export interface EventCard {
+  type: 'EVENT';
+  name: string;
+  condition?: string;
+  flavorText?: string;
+  description: string;
+  rollTable?: RollTable;
+}
+
+export interface ItemCard {
+  type: 'ITEM';
+  name: string;
+  subtype?: string;
+  flavorText?: string;
+  description: string;
+  rollTable?: RollTable;
+}
+
+export interface OmenCard {
+  type: 'OMEN';
+  name: string;
+  subtype?: string;
+  flavorText?: string;
+  description: string;
+  rollTable?: RollTable;
+}
+
+export type Card = EventCard | ItemCard | OmenCard;

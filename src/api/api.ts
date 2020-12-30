@@ -1,5 +1,13 @@
 import { GridLoc } from '../components/game/board/grid';
-import { FlippedRoom, Player, Room, StackRoom } from '../features/models';
+import {
+  EventCard,
+  FlippedRoom,
+  ItemCard,
+  OmenCard,
+  Player,
+  Room,
+  StackRoom,
+} from '../features/models';
 import axios from 'axios';
 
 const buildApiUrl = (path: string) => process.env.REACT_APP_API_ROOT + path;
@@ -89,4 +97,31 @@ export const movePlayer: (
     loc
   );
   return getPlayers(gameId);
+};
+
+export const drawEvent: (gameId: string) => Promise<EventCard> = async (
+  gameId
+) => {
+  const response = await axios.post<EventCard>(
+    buildApiUrl(`/games/${gameId}/cards/events/draw`)
+  );
+  return response.data;
+};
+
+export const drawItem: (gameId: string) => Promise<ItemCard> = async (
+  gameId
+) => {
+  const response = await axios.post<ItemCard>(
+    buildApiUrl(`/games/${gameId}/cards/items/draw`)
+  );
+  return response.data;
+};
+
+export const drawOmen: (gameId: string) => Promise<OmenCard> = async (
+  gameId
+) => {
+  const response = await axios.post<OmenCard>(
+    buildApiUrl(`/games/${gameId}/cards/omens/draw`)
+  );
+  return response.data;
 };
