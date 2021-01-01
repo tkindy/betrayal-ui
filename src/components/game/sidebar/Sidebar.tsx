@@ -8,22 +8,21 @@ import FlexContainer, { FlexDirection } from './flex/FlexContainer';
 import RoomStack from './roomStack/RoomStack';
 import DrawControl from './DrawControl';
 
-const SIDEBAR_MARGIN = 10;
-const SIDEBAR_PADDING = 10;
+export const SIDEBAR_WIDTH = 215;
+export const SIDEBAR_MARGIN = 10;
+export const SIDEBAR_PADDING = 10;
 
 const getBox: (windowDimensions: Dimensions) => BoundingBox = ({
   width: windowWidth,
   height: windowHeight,
 }) => {
-  const width = 215;
-
   return {
     topLeft: {
-      x: windowWidth - SIDEBAR_MARGIN - width,
+      x: windowWidth - SIDEBAR_MARGIN - SIDEBAR_WIDTH,
       y: SIDEBAR_MARGIN,
     },
     dimensions: {
-      width,
+      width: SIDEBAR_WIDTH,
       height: windowHeight - 2 * SIDEBAR_MARGIN,
     },
   };

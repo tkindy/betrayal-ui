@@ -13,6 +13,7 @@ import { getPlayers } from '../../features/players';
 import { getRoomStack } from '../../features/roomStack';
 import DrawnCard from './DrawnCard';
 import { getDrawnCard } from '../../features/cardStacks';
+import PlayerInventoryBar from './inventory/PlayerInventoryBar';
 
 interface GameProps extends RouteComponentProps {
   gameId?: string;
@@ -61,6 +62,7 @@ const Game: FC<GameProps> = ({ gameId }) => {
               </Layer>
               <Layer>
                 <Sidebar />
+                <PlayerInventoryBar />
               </Layer>
             </ReactReduxContext.Provider>
           </Stage>
