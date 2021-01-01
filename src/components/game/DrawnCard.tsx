@@ -77,6 +77,14 @@ const renderRollTable = (rollTable: RollTable) => {
   );
 };
 
+const renderFlavorText = (card: Card) => (
+  <div className="cardFlavorText">
+    {card.flavorText?.split('\n').map((line) => (
+      <p>{line}</p>
+    ))}
+  </div>
+);
+
 const renderDescription = (card: Card) => (
   <div className="cardDescription">
     {card.description.split('\n').map((line) => {
@@ -93,7 +101,7 @@ const EventCard: FunctionComponent<EventCardProps> = ({ card }) => {
     <BaseCard color="#edd281">
       <p className="cardName">{card.name}</p>
       <p className="cardCondition">{card.condition}</p>
-      <p className="cardFlavorText">{card.flavorText}</p>
+      {renderFlavorText(card)}
       {renderDescription(card)}
     </BaseCard>
   );
