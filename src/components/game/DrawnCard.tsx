@@ -76,6 +76,7 @@ const EventCard: FunctionComponent<EventCardProps> = ({ card }) => {
   return (
     <BaseCard color="#a5c96c">
       <p className="cardName">{card.name}</p>
+      <p className="cardCondition">{card.condition}</p>
       <p className="cardFlavorText">{card.flavorText}</p>
       <div className="cardDescription">{renderDescription(card)}</div>
     </BaseCard>
