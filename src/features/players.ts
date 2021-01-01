@@ -74,9 +74,9 @@ const playersSlice = createSlice({
       .addCase(
         giveDrawnCardToPlayer.fulfilled,
         (state, { payload: player }) => {
-          state.players = state.players
-            ?.filter((p) => p.id !== player.id)
-            .concat(player);
+          state.players = state.players?.map((p) =>
+            p.id === player.id ? player : p
+          );
         }
       );
   },
