@@ -112,7 +112,14 @@ interface ItemCardProps {
 }
 
 const ItemCard: FunctionComponent<ItemCardProps> = ({ card }) => {
-  return <BaseCard color="#bc7043"></BaseCard>;
+  return (
+    <BaseCard color="#bc7043">
+      <p className="cardName">{card.name}</p>
+      <p className="cardSubtype">{card.subtype}</p>
+      {renderFlavorText(card)}
+      {renderDescription(card)}
+    </BaseCard>
+  );
 };
 
 interface OmenCardProps {
@@ -120,7 +127,15 @@ interface OmenCardProps {
 }
 
 const OmenCard: FunctionComponent<OmenCardProps> = ({ card }) => {
-  return <BaseCard color="#a5c96c"></BaseCard>;
+  return (
+    <BaseCard color="#a5c96c">
+      <p className="cardName">{card.name}</p>
+      <p className="cardSubtype">{card.subtype}</p>
+      {renderFlavorText(card)}
+      {renderDescription(card)}
+      <p>Make a haunt roll now.</p>
+    </BaseCard>
+  );
 };
 
 interface DrawnCardProps {}
