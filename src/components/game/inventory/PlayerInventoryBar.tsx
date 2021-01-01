@@ -15,6 +15,7 @@ import {
   SIDEBAR_PADDING,
   SIDEBAR_WIDTH,
 } from '../sidebar/Sidebar';
+import './PlayerInventoryBar.css';
 
 const INVENTORY_BAR_HEIGHT = SIDEBAR_WIDTH;
 const INVENTORY_BAR_MARGIN = SIDEBAR_MARGIN;
@@ -40,7 +41,15 @@ const PlayerSelect: FunctionComponent<{}> = () => {
   );
 };
 
-const PlayerInventory: FunctionComponent<{}> = () => {
+interface PlayerInventoryProps {
+  barBox: BoundingBox;
+}
+
+const PlayerInventory: FunctionComponent<PlayerInventoryProps> = ({
+  barBox: {
+    dimensions: { width: barWidth },
+  },
+}) => {
   const cards = useSelector(getSelectedPlayer)?.cards;
 
   if (!cards || cards.length === 0) {
@@ -48,12 +57,25 @@ const PlayerInventory: FunctionComponent<{}> = () => {
   }
 
   return (
-    <div>
-      {cards.map((card) => (
-        <div className="inventoryCard" key={card.id}>
-          {card.card.name}
-        </div>
-      ))}
+    <div
+      className="inventoryContents"
+      style={{ width: barWidth - 2 * INVENTORY_BAR_PADDING }}
+    >
+      {cards.map((card) => {
+        const className = 'inventoryCard ' + card.card.type;
+
+        return (
+          <div
+            className={className}
+            key={card.id}
+            style={{
+              height: INVENTORY_BAR_HEIGHT - 2 * INVENTORY_BAR_PADDING - 50,
+            }}
+          >
+            {card.card.name}
+          </div>
+        );
+      })}
     </div>
   );
 };
@@ -78,10 +100,11 @@ const getBox: (windowDimensions: Dimensions) => BoundingBox = ({
 interface PlayerInventoryBarProps {}
 
 const PlayerInventoryBar: FunctionComponent<PlayerInventoryBarProps> = () => {
+  const box = getBox(useWindowDimensions());
   const {
     topLeft: { x, y },
     dimensions: { width, height },
-  } = getBox(useWindowDimensions());
+  } = box;
 
   return (
     <Group>
@@ -104,7 +127,7 @@ const PlayerInventoryBar: FunctionComponent<PlayerInventoryBarProps> = () => {
           }}
         >
           <PlayerSelect />
-          <PlayerInventory />
+          <PlayerInventory barBox={box} />
         </div>
       </DOMPortal>
     </Group>
