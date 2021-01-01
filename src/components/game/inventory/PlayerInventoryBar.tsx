@@ -26,20 +26,17 @@ const PlayerSelect: FunctionComponent<{}> = () => {
   const selectedPlayerId = useSelector(getSelectedPlayerId);
 
   return (
-    <div>
-      <select
-        onChange={(e) =>
-          dispatch(switchSelectedPlayer(parseInt(e.target.value)))
-        }
-        defaultValue={selectedPlayerId}
-      >
-        {players?.map((player) => (
-          <option key={player.id} value={player.id}>
-            {player.characterName}
-          </option>
-        ))}
-      </select>
-    </div>
+    <select
+      onChange={(e) => dispatch(switchSelectedPlayer(parseInt(e.target.value)))}
+      defaultValue={selectedPlayerId}
+      style={{ display: 'block' }}
+    >
+      {players?.map((player) => (
+        <option key={player.id} value={player.id}>
+          {player.characterName}
+        </option>
+      ))}
+    </select>
   );
 };
 
