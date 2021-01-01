@@ -30,6 +30,13 @@ export const drawOmen = createAsyncThunk(
   }
 );
 
+export const discardDrawnCard = createAsyncThunk(
+  'cardStacks/drawn/discard',
+  async (_, { getState }) => {
+    return api.discardDrawnCard(getGameId(getState()));
+  }
+);
+
 interface CardStacksState {
   drawnCard: Card | null;
 }
@@ -55,6 +62,9 @@ const cardStacksSlice = createSlice({
       })
       .addCase(drawOmen.fulfilled, (state, { payload: card }) => {
         state.drawnCard = card;
+      })
+      .addCase(discardDrawnCard.fulfilled, (state) => {
+        state.drawnCard = null;
       });
   },
 });

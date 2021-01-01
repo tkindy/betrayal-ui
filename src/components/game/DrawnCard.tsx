@@ -1,5 +1,5 @@
 import React, { FunctionComponent } from 'react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   Card,
   EventCard as EventCardModel,
@@ -12,12 +12,15 @@ import {
 import { RootState } from '../../store';
 import DOMPortal from './portal/DOMPortal';
 import './DrawnCard.css';
+import { discardDrawnCard } from '../../features/cardStacks';
 
 interface BaseCardProps {
   color: string;
 }
 
 const BaseCard: FunctionComponent<BaseCardProps> = ({ color, children }) => {
+  const dispatch = useDispatch();
+
   return (
     <div className="drawnCardBackground">
       <div className="drawnCardWrapper">
@@ -30,7 +33,12 @@ const BaseCard: FunctionComponent<BaseCardProps> = ({ color, children }) => {
           <div className="cardContentsContainer">{children}</div>
         </div>
         <div className="drawnCardControls">
-          <button className="discardButton">Discard</button>
+          <button
+            className="discardButton"
+            onClick={() => dispatch(discardDrawnCard())}
+          >
+            Discard
+          </button>
         </div>
       </div>
     </div>

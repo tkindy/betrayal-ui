@@ -140,3 +140,9 @@ export const drawOmen: (gameId: string) => Promise<OmenCard> = async (
   );
   return response.data;
 };
+
+export const discardDrawnCard: (gameId: string) => Promise<void> = async (
+  gameId
+) => {
+  await axios.post<void>(buildApiUrl(`/games/${gameId}/cards/drawn/discard`));
+};
