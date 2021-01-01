@@ -11,38 +11,64 @@ import {
 } from '../../features/models';
 import { RootState } from '../../store';
 import './DrawnCard.css';
-import { discardDrawnCard } from '../../features/cardStacks';
+import {
+  discardDrawnCard,
+  giveDrawnCardToPlayer,
+} from '../../features/cardStacks';
+
+const DiscardControl: FunctionComponent<{}> = () => {
+  const dispatch = useDispatch();
+
+  return (
+    <button
+      className="discardButton"
+      onClick={() => dispatch(discardDrawnCard())}
+    >
+      Discard
+    </button>
+  );
+};
+
+const GiveToPlayerControl: FunctionComponent<{}> = () => {
+  const dispatch = useDispatch();
+  const players = useSelector((state: RootState) => state.players.players)!!;
+
+  return (
+    <select
+      onChange={(e) =>
+        dispatch(giveDrawnCardToPlayer({ playerId: parseInt(e.target.value) }))
+      }
+    >
+      <option value="">Give card to...</option>
+      {players.map((player) => (
+        <option value={player.id}>{player.characterName}</option>
+      ))}
+    </select>
+  );
+};
 
 interface BaseCardProps {
   color: string;
 }
 
-const BaseCard: FunctionComponent<BaseCardProps> = ({ color, children }) => {
-  const dispatch = useDispatch();
-
-  return (
-    <div className="drawnCardBackground">
-      <div className="drawnCardWrapper">
-        <div
-          className="drawnCard"
-          style={{
-            backgroundColor: color,
-          }}
-        >
-          <div className="cardContentsContainer">{children}</div>
-        </div>
-        <div className="drawnCardControls">
-          <button
-            className="discardButton"
-            onClick={() => dispatch(discardDrawnCard())}
-          >
-            Discard
-          </button>
-        </div>
+const BaseCard: FunctionComponent<BaseCardProps> = ({ color, children }) => (
+  <div className="drawnCardBackground">
+    <div className="drawnCardWrapper">
+      <div
+        className="drawnCard"
+        style={{
+          backgroundColor: color,
+        }}
+      >
+        <div className="cardContentsContainer">{children}</div>
+      </div>
+      <div className="drawnCardControls">
+        <DiscardControl />
+        <GiveToPlayerControl />
       </div>
     </div>
-  );
-};
+  </div>
+);
 
 interface EventCardProps {
   card: EventCardModel;
