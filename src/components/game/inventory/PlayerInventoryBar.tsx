@@ -31,9 +31,10 @@ const PlayerSelect: FunctionComponent<{}> = () => {
         onChange={(e) =>
           dispatch(switchSelectedPlayer(parseInt(e.target.value)))
         }
+        defaultValue={selectedPlayerId}
       >
         {players?.map((player) => (
-          <option value={player.id} selected={player.id === selectedPlayerId}>
+          <option key={player.id} value={player.id}>
             {player.characterName}
           </option>
         ))}
@@ -52,7 +53,9 @@ const PlayerInventory: FunctionComponent<{}> = () => {
   return (
     <div>
       {cards.map((card) => (
-        <div className="inventoryCard">{card.card.name}</div>
+        <div className="inventoryCard" key={card.id}>
+          {card.card.name}
+        </div>
       ))}
     </div>
   );
