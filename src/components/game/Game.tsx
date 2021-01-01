@@ -11,7 +11,7 @@ import { RouteComponentProps, useNavigate } from '@reach/router';
 import { joinGame } from '../../features/game';
 import { getPlayers } from '../../features/players';
 import { getRoomStack } from '../../features/roomStack';
-import DrawnCard from './DrawnCard';
+import DrawnCard from './cards/DrawnCard';
 import { getDrawnCard } from '../../features/cardStacks';
 import PlayerInventoryBar from './inventory/PlayerInventoryBar';
 

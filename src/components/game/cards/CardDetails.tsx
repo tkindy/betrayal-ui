@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   discardDrawnCard,
   giveDrawnCardToPlayer,
-} from '../../features/cardStacks';
+} from '../../../features/cardStacks';
 import {
   RollTarget,
   RollTableRow,
@@ -12,8 +12,8 @@ import {
   EventCard as EventCardModel,
   ItemCard as ItemCardModel,
   OmenCard as OmenCardModel,
-} from '../../features/models';
-import { RootState } from '../../store';
+} from '../../../features/models';
+import { RootState } from '../../../store';
 import './CardDetails.css';
 
 const DiscardControl: FunctionComponent<{}> = () => {
