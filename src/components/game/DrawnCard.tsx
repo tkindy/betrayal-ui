@@ -69,13 +69,16 @@ const renderRollTable = (rollTable: RollTable) => {
   );
 };
 
-const renderDescription = (card: Card) =>
-  card.description.split('\n').map((line) => {
-    if (line === '<rollTable>') {
-      return renderRollTable(card.rollTable!!);
-    }
-    return <p>{line}</p>;
-  });
+const renderDescription = (card: Card) => (
+  <div className="cardDescription">
+    {card.description.split('\n').map((line) => {
+      if (line === '<rollTable>') {
+        return renderRollTable(card.rollTable!!);
+      }
+      return <p>{line}</p>;
+    })}
+  </div>
+);
 
 const EventCard: FunctionComponent<EventCardProps> = ({ card }) => {
   return (
@@ -83,7 +86,7 @@ const EventCard: FunctionComponent<EventCardProps> = ({ card }) => {
       <p className="cardName">{card.name}</p>
       <p className="cardCondition">{card.condition}</p>
       <p className="cardFlavorText">{card.flavorText}</p>
-      <div className="cardDescription">{renderDescription(card)}</div>
+      {renderDescription(card)}
     </BaseCard>
   );
 };
