@@ -20,13 +20,18 @@ interface BaseCardProps {
 const BaseCard: FunctionComponent<BaseCardProps> = ({ color, children }) => {
   return (
     <div className="drawnCardBackground">
-      <div
-        className="drawnCard"
-        style={{
-          backgroundColor: color,
-        }}
-      >
-        <div className="cardContentsContainer">{children}</div>
+      <div className="drawnCardWrapper">
+        <div
+          className="drawnCard"
+          style={{
+            backgroundColor: color,
+          }}
+        >
+          <div className="cardContentsContainer">{children}</div>
+        </div>
+        <div className="drawnCardControls">
+          <button className="discardButton">Discard</button>
+        </div>
       </div>
     </div>
   );

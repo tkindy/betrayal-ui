@@ -12,18 +12,21 @@
   grid-template-rows: auto;
 }
 
-.drawnCard {
+.drawnCardWrapper {
   grid-column: 1;
   grid-row: 1;
   place-self: center;
-  width: 35%;
+}
+
+.drawnCard {
   min-width: 300px;
   max-width: 400px;
   border-radius: 25px;
+  border: 3px solid black;
 }
 
 .cardContentsContainer {
-  margin: 20px;
+  padding: 20px;
 }
 
 .cardName {
@@ -36,9 +39,17 @@
   text-align: center;
 }
 
-.cardDescription {
-}
-
 .rollTable {
   border-spacing: 25px 10px;
+}
+
+.drawnCardControls {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  padding: 20px;
+}
+
+.drawnCardControls > * {
+  height: 50px;
 }
