@@ -24,6 +24,7 @@ export interface Player {
   might: Trait;
   sanity: Trait;
   knowledge: Trait;
+  cards: HeldCard[];
 }
 
 export enum Feature {
@@ -109,3 +110,8 @@ export interface OmenCard {
 }
 
 export type Card = EventCard | ItemCard | OmenCard;
+
+export interface HeldCard {
+  id: number;
+  card: Card;
+}

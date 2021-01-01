@@ -146,3 +146,14 @@ export const discardDrawnCard: (gameId: string) => Promise<void> = async (
 ) => {
   await axios.post<void>(buildApiUrl(`/games/${gameId}/cards/drawn/discard`));
 };
+
+export const giveDrawnCardToPlayer: (
+  gameId: string,
+  playerId: number
+) => Promise<Player> = async (gameId, playerId) => {
+  const response = await axios.post<Player>(
+    buildApiUrl(`/games/${gameId}/cards/drawn/giveToPlayer`),
+    { playerId }
+  );
+  return response.data;
+};
