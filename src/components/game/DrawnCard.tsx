@@ -93,7 +93,7 @@ interface ItemCardProps {
 }
 
 const ItemCard: FunctionComponent<ItemCardProps> = ({ card }) => {
-  return null;
+  return <BaseCard color="#bc7043"></BaseCard>;
 };
 
 interface OmenCardProps {
@@ -101,7 +101,7 @@ interface OmenCardProps {
 }
 
 const OmenCard: FunctionComponent<OmenCardProps> = ({ card }) => {
-  return null;
+  return <BaseCard color="#a5c96c"></BaseCard>;
 };
 
 interface DrawnCardProps {}
