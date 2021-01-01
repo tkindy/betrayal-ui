@@ -1,6 +1,7 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import { Group, Rect } from 'react-konva';
 import { useDispatch, useSelector } from 'react-redux';
+import { Card } from '../../../features/models';
 import { switchSelectedPlayer } from '../../../features/players';
 import {
   getPlayers,
@@ -9,6 +10,7 @@ import {
 } from '../../../features/selectors';
 import { BoundingBox, Dimensions } from '../../layout';
 import { useWindowDimensions } from '../../windowDimensions';
+import CardDetails from '../cards/CardDetails';
 import DOMPortal from '../portal/DOMPortal';
 import {
   SIDEBAR_MARGIN,
@@ -41,6 +43,26 @@ const PlayerSelect: FunctionComponent<{}> = () => {
   );
 };
 
+interface CardHovercardProps {
+  card: Card;
+}
+
+const CardHovercard: FunctionComponent<CardHovercardProps> = ({ card }) => {
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        bottom: 200,
+        left: 0,
+        width: '100%',
+        display: 'grid',
+      }}
+    >
+      <CardDetails card={card} />
+    </div>
+  );
+};
+
 interface PlayerInventoryProps {
   barBox: BoundingBox;
 }
@@ -51,31 +73,46 @@ const PlayerInventory: FunctionComponent<PlayerInventoryProps> = ({
   },
 }) => {
   const cards = useSelector(getSelectedPlayer)?.cards;
+  const [focusedCardId, setFocusedCardId] = useState<number | null>(null);
 
   if (!cards || cards.length === 0) {
     return <i>Inventory empty</i>;
   }
 
   return (
-    <div
-      className="inventoryContents"
-      style={{ width: barWidth - 2 * INVENTORY_BAR_PADDING }}
-    >
-      {cards.map((card) => {
-        const className = 'inventoryCard ' + card.card.type;
+    <div>
+      <div
+        className="inventoryContents"
+        style={{ width: barWidth - 2 * INVENTORY_BAR_PADDING }}
+      >
+        {cards.map((card) => {
+          const className = 'inventoryCard ' + card.card.type;
 
-        return (
-          <div
-            className={className}
-            key={card.id}
-            style={{
-              height: INVENTORY_BAR_HEIGHT - 2 * INVENTORY_BAR_PADDING - 50,
-            }}
-          >
-            <div>{card.card.name}</div>
-          </div>
-        );
-      })}
+          return (
+            <div
+              className={className}
+              key={card.id}
+              onClick={() => {
+                if (focusedCardId === card.id) {
+                  setFocusedCardId(null);
+                } else {
+                  setFocusedCardId(card.id);
+                }
+              }}
+              style={{
+                height: INVENTORY_BAR_HEIGHT - 2 * INVENTORY_BAR_PADDING - 50,
+              }}
+            >
+              <div>{card.card.name}</div>
+            </div>
+          );
+        })}
+      </div>
+      {focusedCardId && (
+        <CardHovercard
+          card={cards.find((card) => card.id === focusedCardId)!!.card}
+        />
+      )}
     </div>
   );
 };
