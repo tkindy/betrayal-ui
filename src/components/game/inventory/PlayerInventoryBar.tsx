@@ -7,7 +7,6 @@ import {
   getSelectedPlayer,
   getSelectedPlayerId,
 } from '../../../features/selectors';
-import { Point, translate } from '../../geometry';
 import { BoundingBox, Dimensions } from '../../layout';
 import { useWindowDimensions } from '../../windowDimensions';
 import DOMPortal from '../portal/DOMPortal';
@@ -53,7 +52,7 @@ const PlayerInventory: FunctionComponent<{}> = () => {
   return (
     <div>
       {cards.map((card) => (
-        <p>{card.card.name}</p>
+        <div className="inventoryCard">{card.card.name}</div>
       ))}
     </div>
   );
@@ -80,10 +79,9 @@ interface PlayerInventoryBarProps {}
 
 const PlayerInventoryBar: FunctionComponent<PlayerInventoryBarProps> = () => {
   const {
-    topLeft,
+    topLeft: { x, y },
     dimensions: { width, height },
   } = getBox(useWindowDimensions());
-  const { x, y } = topLeft;
 
   return (
     <Group>
@@ -98,7 +96,7 @@ const PlayerInventoryBar: FunctionComponent<PlayerInventoryBarProps> = () => {
       />
       <DOMPortal name="playerInventory">
         <div
-          className="playerInventory"
+          className="playerInventoryWrapper"
           style={{
             position: 'absolute',
             top: y + INVENTORY_BAR_PADDING,
