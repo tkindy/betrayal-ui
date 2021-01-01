@@ -72,7 +72,7 @@ const PlayerInventory: FunctionComponent<PlayerInventoryProps> = ({
               height: INVENTORY_BAR_HEIGHT - 2 * INVENTORY_BAR_PADDING - 50,
             }}
           >
-            {card.card.name}
+            <div>{card.card.name}</div>
           </div>
         );
       })}

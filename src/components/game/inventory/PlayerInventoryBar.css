@@ -10,7 +10,16 @@
   width: 100px;
   margin: 0px 5px;
   border: 2px solid black;
+
+  display: grid;
+  grid-template: auto;
+}
+
+.inventoryCard > * {
+  grid-column: 1;
+  grid-row: 1;
   text-align: center;
+  place-self: center;
 }
 
 .inventoryCard.EVENT {
