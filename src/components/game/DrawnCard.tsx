@@ -10,7 +10,6 @@ import {
   RollTarget,
 } from '../../features/models';
 import { RootState } from '../../store';
-import DOMPortal from './portal/DOMPortal';
 import './DrawnCard.css';
 import { discardDrawnCard } from '../../features/cardStacks';
 
