@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import * as api from '../api/api';
-import { Card } from './models';
+import { Card, Player } from './models';
 import { getGameId } from './selectors';
 import { createAsyncThunk } from './utils';
 
@@ -37,6 +37,13 @@ export const discardDrawnCard = createAsyncThunk(
   }
 );
 
+export const giveDrawnCardToPlayer = createAsyncThunk<
+  Player,
+  { playerId: number }
+>('cardStacks/drawn/giveToPlayer', async ({ playerId }, { getState }) => {
+  return api.giveDrawnCardToPlayer(getGameId(getState()), playerId);
+});
+
 interface CardStacksState {
   drawnCard: Card | null;
 }
@@ -64,6 +71,9 @@ const cardStacksSlice = createSlice({
         state.drawnCard = card;
       })
       .addCase(discardDrawnCard.fulfilled, (state) => {
+        state.drawnCard = null;
+      })
+      .addCase(giveDrawnCardToPlayer.fulfilled, (state) => {
         state.drawnCard = null;
       });
   },

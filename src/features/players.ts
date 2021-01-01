@@ -10,6 +10,7 @@ import {
 } from './selectors';
 import { get } from '../board';
 import { createAsyncThunk } from './utils';
+import { giveDrawnCardToPlayer } from './cardStacks';
 
 export const getPlayers = createAsyncThunk(
   'players/getStatus',
@@ -69,7 +70,15 @@ const playersSlice = createSlice({
       })
       .addCase(movePlayer.fulfilled, (state, { payload: players }) => {
         state.players = players;
-      });
+      })
+      .addCase(
+        giveDrawnCardToPlayer.fulfilled,
+        (state, { payload: player }) => {
+          state.players = state.players
+            ?.filter((p) => p.id !== player.id)
+            .concat(player);
+        }
+      );
   },
 });
 
