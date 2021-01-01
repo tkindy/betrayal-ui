@@ -58,7 +58,7 @@ const CardHovercard: FunctionComponent<CardHovercardProps> = ({ card }) => {
         display: 'grid',
       }}
     >
-      <CardDetails card={card} />
+      <CardDetails card={card} renderControls={() => []} />
     </div>
   );
 };

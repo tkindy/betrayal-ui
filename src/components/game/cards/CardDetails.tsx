@@ -1,9 +1,4 @@
-import React, { FunctionComponent } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-import {
-  discardDrawnCard,
-  giveDrawnCardToPlayer,
-} from '../../../features/cardStacks';
+import React, { FunctionComponent, ReactElement } from 'react';
 import {
   RollTarget,
   RollTableRow,
@@ -13,47 +8,17 @@ import {
   ItemCard as ItemCardModel,
   OmenCard as OmenCardModel,
 } from '../../../features/models';
-import { RootState } from '../../../store';
 import './CardDetails.css';
-
-const DiscardControl: FunctionComponent<{}> = () => {
-  const dispatch = useDispatch();
-
-  return (
-    <button
-      className="discardButton"
-      onClick={() => dispatch(discardDrawnCard())}
-    >
-      Discard
-    </button>
-  );
-};
-
-const GiveToPlayerControl: FunctionComponent<{}> = () => {
-  const dispatch = useDispatch();
-  const players = useSelector((state: RootState) => state.players.players)!!;
-
-  return (
-    <select
-      onChange={(e) =>
-        dispatch(giveDrawnCardToPlayer({ playerId: parseInt(e.target.value) }))
-      }
-    >
-      <option value="">Give card to...</option>
-      {players.map((player) => (
-        <option value={player.id}>{player.characterName}</option>
-      ))}
-    </select>
-  );
-};
 
 interface BaseCardDetailsProps {
   color: string;
+  renderControls: () => ReactElement<any, any>[];
 }
 
 const BaseCardDetails: FunctionComponent<BaseCardDetailsProps> = ({
   color,
   children,
+  renderControls,
 }) => (
   <div className="cardDetailsWrapper">
     <div
@@ -64,15 +29,13 @@ const BaseCardDetails: FunctionComponent<BaseCardDetailsProps> = ({
     >
       <div className="cardContentsContainer">{children}</div>
     </div>
-    <div className="cardDetailsControls">
-      <DiscardControl />
-      <GiveToPlayerControl />
-    </div>
+    <div className="cardDetailsControls">{renderControls()}</div>
   </div>
 );
 
 interface EventCardDetailsProps {
   card: EventCardModel;
+  renderControls: () => ReactElement<any, any>[];
 }
 
 const renderRollTarget = (target: RollTarget) => {
@@ -124,9 +87,10 @@ const renderDescription = (card: Card) => (
 
 const EventCardDetails: FunctionComponent<EventCardDetailsProps> = ({
   card,
+  renderControls,
 }) => {
   return (
-    <BaseCardDetails color="#edd281">
+    <BaseCardDetails color="#edd281" renderControls={renderControls}>
       <p className="cardName">{card.name}</p>
       <p className="cardCondition">{card.condition}</p>
       {renderFlavorText(card)}
@@ -137,11 +101,15 @@ const EventCardDetails: FunctionComponent<EventCardDetailsProps> = ({
 
 interface ItemCardDetailsProps {
   card: ItemCardModel;
+  renderControls: () => ReactElement<any, any>[];
 }
 
-const ItemCardDetails: FunctionComponent<ItemCardDetailsProps> = ({ card }) => {
+const ItemCardDetails: FunctionComponent<ItemCardDetailsProps> = ({
+  card,
+  renderControls,
+}) => {
   return (
-    <BaseCardDetails color="#bc7043">
+    <BaseCardDetails color="#bc7043" renderControls={renderControls}>
       <p className="cardName">{card.name}</p>
       <p className="cardSubtype">{card.subtype}</p>
       {renderFlavorText(card)}
@@ -152,11 +120,15 @@ const ItemCardDetails: FunctionComponent<ItemCardDetailsProps> = ({ card }) => {
 
 interface OmenCardDetailsProps {
   card: OmenCardModel;
+  renderControls: () => ReactElement<any, any>[];
 }
 
-const OmenCardDetails: FunctionComponent<OmenCardDetailsProps> = ({ card }) => {
+const OmenCardDetails: FunctionComponent<OmenCardDetailsProps> = ({
+  card,
+  renderControls,
+}) => {
   return (
-    <BaseCardDetails color="#a5c96c">
+    <BaseCardDetails color="#a5c96c" renderControls={renderControls}>
       <p className="cardName">{card.name}</p>
       <p className="cardSubtype">{card.subtype}</p>
       {renderFlavorText(card)}
@@ -168,16 +140,20 @@ const OmenCardDetails: FunctionComponent<OmenCardDetailsProps> = ({ card }) => {
 
 interface CardDetailsProps {
   card: Card;
+  renderControls: () => ReactElement<any, any>[];
 }
 
-const CardDetails: FunctionComponent<CardDetailsProps> = ({ card }) => {
+const CardDetails: FunctionComponent<CardDetailsProps> = ({
+  card,
+  renderControls,
+}) => {
   switch (card.type) {
     case 'EVENT':
-      return <EventCardDetails card={card} />;
+      return <EventCardDetails card={card} renderControls={renderControls} />;
     case 'ITEM':
-      return <ItemCardDetails card={card} />;
+      return <ItemCardDetails card={card} renderControls={renderControls} />;
     case 'OMEN':
-      return <OmenCardDetails card={card} />;
+      return <OmenCardDetails card={card} renderControls={renderControls} />;
   }
 };
 
