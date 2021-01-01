@@ -42,3 +42,17 @@ export const getPlayerMap = createSelector([getPlayers], (players) => {
     return { x, y };
   });
 });
+
+export const getSelectedPlayerId = (state: RootState) =>
+  state.players.selectedPlayerId;
+
+export const getSelectedPlayer = createSelector(
+  [getPlayers, getSelectedPlayerId],
+  (players, selectedPlayerId) => {
+    if (!players || !selectedPlayerId) {
+      return;
+    }
+
+    return players.find((player) => player.id === selectedPlayerId);
+  }
+);

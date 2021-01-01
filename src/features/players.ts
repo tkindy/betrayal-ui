@@ -1,4 +1,9 @@
-import { Action, createSlice, ThunkAction } from '@reduxjs/toolkit';
+import {
+  Action,
+  createSlice,
+  PayloadAction,
+  ThunkAction,
+} from '@reduxjs/toolkit';
 import { Player } from './models';
 import * as api from '../api/api';
 import { equal, GridLoc } from '../components/game/board/grid';
@@ -55,6 +60,7 @@ export const playerDropped: (
 
 interface PlayersState {
   players?: Player[];
+  selectedPlayerId?: number;
 }
 
 const initialState: PlayersState = {};
@@ -62,11 +68,16 @@ const initialState: PlayersState = {};
 const playersSlice = createSlice({
   name: 'players',
   initialState,
-  reducers: {},
+  reducers: {
+    switchSelectedPlayer(state, { payload: playerId }: PayloadAction<number>) {
+      state.selectedPlayerId = playerId;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getPlayers.fulfilled, (state, { payload: players }) => {
         state.players = players;
+        state.selectedPlayerId = players[0].id;
       })
       .addCase(movePlayer.fulfilled, (state, { payload: players }) => {
         state.players = players;
@@ -82,4 +93,5 @@ const playersSlice = createSlice({
   },
 });
 
+export const { switchSelectedPlayer } = playersSlice.actions;
 export default playersSlice.reducer;
