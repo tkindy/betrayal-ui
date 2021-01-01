@@ -60,15 +60,13 @@ const Game: FC<GameProps> = ({ gameId }) => {
                 <Group name="overlay" />
               </Layer>
               <Layer>
-                <DrawnCard />
-              </Layer>
-              <Layer>
                 <Sidebar />
               </Layer>
             </ReactReduxContext.Provider>
           </Stage>
         )}
       </ReactReduxContext.Consumer>
+      <DrawnCard />
     </div>
   );
 };

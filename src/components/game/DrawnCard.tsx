@@ -161,7 +161,7 @@ const DrawnCard: FunctionComponent<DrawnCardProps> = () => {
       break;
   }
 
-  return <DOMPortal name="drawnCard">{cardElement}</DOMPortal>;
+  return cardElement;
 };
 
 export default DrawnCard;
