@@ -1,124 +1,86 @@
 import React, { FunctionComponent } from 'react';
-import { Group, Rect, Text } from 'react-konva';
 import { useSelector } from 'react-redux';
 import {
+  Card,
   EventCard as EventCardModel,
   ItemCard as ItemCardModel,
   OmenCard as OmenCardModel,
   RollTable,
   RollTableRow,
+  RollTarget,
 } from '../../features/models';
 import { RootState } from '../../store';
-import { BoundingBox } from '../layout';
-import { useWindowDimensions } from '../windowDimensions';
-import FlexContainer, { FlexDirection } from './sidebar/flex/FlexContainer';
+import DOMPortal from './portal/DOMPortal';
+import './DrawnCard.css';
 
 interface BaseCardProps {
-  box: BoundingBox;
   color: string;
 }
 
-const BaseCard: FunctionComponent<BaseCardProps> = ({
-  box: {
-    topLeft: { x, y },
-    dimensions: { width, height },
-  },
-  color,
-}) => {
+const BaseCard: FunctionComponent<BaseCardProps> = ({ color, children }) => {
   return (
-    <Rect
-      x={x}
-      y={y}
-      width={width}
-      height={height}
-      cornerRadius={10}
-      fill={color}
-      stroke="black"
-    />
+    <div className="drawnCardBackground">
+      <div
+        className="drawnCard"
+        style={{
+          backgroundColor: color,
+        }}
+      >
+        <div className="cardContentsContainer">{children}</div>
+      </div>
+    </div>
   );
 };
 
 interface EventCardProps {
-  box: BoundingBox;
   card: EventCardModel;
 }
 
-const renderRollTableRow = (row: RollTableRow) => {
-  switch (row.target.type) {
+const renderRollTarget = (target: RollTarget) => {
+  switch (target.type) {
     case 'EXACT':
-      return `${row.target.target}\t${row.outcome}`;
+      return `${target.target}`;
     case 'RANGE':
-      return `${row.target.start}-${row.target.end}\t${row.outcome}`;
+      return `${target.start}-${target.end}`;
     case 'MIN':
-      return `${row.target.minimum}+\t${row.outcome}`;
+      return `${target.minimum}+`;
   }
 };
 
-const renderRollTable = (rollTable: RollTable | undefined) => {
-  return rollTable?.reduce((acc, row) => {
-    return acc + '\n\n' + renderRollTableRow(row);
-  }, '');
+const renderRollTableRow = (row: RollTableRow) => {
+  return (
+    <tr className="rollTableRow">
+      <td className="rollTarget">{renderRollTarget(row.target)}</td>
+      <td className="rollOutcome">{row.outcome}</td>
+    </tr>
+  );
 };
 
-const EventCard: FunctionComponent<EventCardProps> = ({ box, card }) => {
+const renderRollTable = (rollTable: RollTable) => {
   return (
-    <Group>
-      <BaseCard box={box} color="#a5c96c" />
-      <FlexContainer debug={true} box={box} direction={FlexDirection.COLUMN}>
-        {[
-          {
-            units: 2,
-            render: ({ topLeft: { x, y }, dimensions: { width, height } }) => (
-              <Text
-                x={x}
-                y={y}
-                width={width}
-                height={height}
-                text={card.name}
-                fontSize={20}
-                fontStyle="bold"
-                align="center"
-                verticalAlign="middle"
-              />
-            ),
-          },
-          {
-            units: 3,
-            render: ({ topLeft: { x, y }, dimensions: { width, height } }) => (
-              <Text
-                x={x}
-                y={y}
-                width={width}
-                height={height}
-                text={card.flavorText?.replace(/\n/g, '\n\n')}
-                fontSize={16}
-                fontStyle="italic"
-                align="center"
-                verticalAlign="middle"
-              />
-            ),
-          },
-          {
-            units: 15,
-            render: ({ topLeft: { x, y }, dimensions: { width, height } }) => (
-              <Text
-                x={x}
-                y={y}
-                width={width}
-                height={height}
-                text={card.description
-                  .replace(/\n/g, '\n\n')
-                  .replace(
-                    '<rollTable>',
-                    renderRollTable(card.rollTable) || 'MISSING ROW TABLE'
-                  )}
-                fontSize={16}
-              />
-            ),
-          },
-        ]}
-      </FlexContainer>
-    </Group>
+    <table className="rollTable">
+      <tbody>{rollTable.map(renderRollTableRow)}</tbody>
+    </table>
+  );
+};
+
+const renderDescription = (card: Card) =>
+  card.description.split('\n').map((line) => {
+    if (line === '<rollTable>') {
+      return renderRollTable(card.rollTable!!);
+    }
+    return <p>{line}</p>;
+  });
+
+const EventCard: FunctionComponent<EventCardProps> = ({ card }) => {
+  return (
+    <div>
+      <BaseCard color="#a5c96c">
+        <p className="cardName">{card.name}</p>
+        <p className="cardFlavorText">{card.flavorText}</p>
+        <div className="cardDescription">{renderDescription(card)}</div>
+      </BaseCard>
+    </div>
   );
 };
 
@@ -141,29 +103,17 @@ const OmenCard: FunctionComponent<OmenCardProps> = ({ card }) => {
 interface DrawnCardProps {}
 
 const DrawnCard: FunctionComponent<DrawnCardProps> = () => {
-  const { width, height } = useWindowDimensions();
   const drawnCard = useSelector(
     (state: RootState) => state.cardStacks.drawnCard
   );
-
   if (!drawnCard) {
     return null;
   }
 
-  const cardHeight = height * 0.75;
-  const cardWidth = cardHeight / 2;
-  const cardBox: BoundingBox = {
-    topLeft: {
-      x: width / 2 - cardWidth / 2,
-      y: height / 2 - cardHeight / 2,
-    },
-    dimensions: { width: cardWidth, height: cardHeight },
-  };
-
   let cardElement;
   switch (drawnCard.type) {
     case 'EVENT':
-      cardElement = <EventCard box={cardBox} card={drawnCard} />;
+      cardElement = <EventCard card={drawnCard} />;
       break;
     case 'ITEM':
       cardElement = <ItemCard card={drawnCard} />;
@@ -173,12 +123,7 @@ const DrawnCard: FunctionComponent<DrawnCardProps> = () => {
       break;
   }
 
-  return (
-    <Group>
-      <Rect width={width} height={height} fill="gray" opacity={0.8} />
-      {cardElement}
-    </Group>
-  );
+  return <DOMPortal name="drawnCard">{cardElement}</DOMPortal>;
 };
 
 export default DrawnCard;
