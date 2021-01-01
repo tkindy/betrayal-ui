@@ -2,12 +2,15 @@ import React, { FunctionComponent } from 'react';
 import { Group, Rect } from 'react-konva';
 import { useDispatch, useSelector } from 'react-redux';
 import { switchSelectedPlayer } from '../../../features/players';
-import { getPlayers, getSelectedPlayerId } from '../../../features/selectors';
+import {
+  getPlayers,
+  getSelectedPlayer,
+  getSelectedPlayerId,
+} from '../../../features/selectors';
 import { Point, translate } from '../../geometry';
 import { BoundingBox, Dimensions } from '../../layout';
 import { useWindowDimensions } from '../../windowDimensions';
 import DOMPortal from '../portal/DOMPortal';
-import FlexContainer, { FlexDirection } from '../sidebar/flex/FlexContainer';
 import {
   SIDEBAR_MARGIN,
   SIDEBAR_PADDING,
@@ -18,28 +21,41 @@ const INVENTORY_BAR_HEIGHT = SIDEBAR_WIDTH;
 const INVENTORY_BAR_MARGIN = SIDEBAR_MARGIN;
 const INVENTORY_BAR_PADDING = SIDEBAR_PADDING;
 
-interface PlayerSelectProps {
-  topLeft: Point;
-}
-
-const PlayerSelect: FunctionComponent<PlayerSelectProps> = ({
-  topLeft: { x, y },
-}) => {
+const PlayerSelect: FunctionComponent<{}> = () => {
   const dispatch = useDispatch();
   const players = useSelector(getPlayers);
   const selectedPlayerId = useSelector(getSelectedPlayerId);
 
   return (
-    <select
-      onChange={(e) => dispatch(switchSelectedPlayer(parseInt(e.target.value)))}
-      style={{ position: 'absolute', top: y, left: x }}
-    >
-      {players?.map((player) => (
-        <option value={player.id} selected={player.id === selectedPlayerId}>
-          {player.characterName}
-        </option>
+    <div>
+      <select
+        onChange={(e) =>
+          dispatch(switchSelectedPlayer(parseInt(e.target.value)))
+        }
+      >
+        {players?.map((player) => (
+          <option value={player.id} selected={player.id === selectedPlayerId}>
+            {player.characterName}
+          </option>
+        ))}
+      </select>
+    </div>
+  );
+};
+
+const PlayerInventory: FunctionComponent<{}> = () => {
+  const cards = useSelector(getSelectedPlayer)?.cards;
+
+  if (!cards || cards.length === 0) {
+    return <i>Inventory empty</i>;
+  }
+
+  return (
+    <div>
+      {cards.map((card) => (
+        <p>{card.card.name}</p>
       ))}
-    </select>
+    </div>
   );
 };
 
@@ -80,14 +96,18 @@ const PlayerInventoryBar: FunctionComponent<PlayerInventoryBarProps> = () => {
         stroke="black"
         cornerRadius={10}
       />
-      <DOMPortal name="playerInventoryControl">
-        <PlayerSelect
-          topLeft={translate(
-            topLeft,
-            INVENTORY_BAR_PADDING,
-            INVENTORY_BAR_PADDING
-          )}
-        />
+      <DOMPortal name="playerInventory">
+        <div
+          className="playerInventory"
+          style={{
+            position: 'absolute',
+            top: y + INVENTORY_BAR_PADDING,
+            left: x + INVENTORY_BAR_PADDING,
+          }}
+        >
+          <PlayerSelect />
+          <PlayerInventory />
+        </div>
       </DOMPortal>
     </Group>
   );
