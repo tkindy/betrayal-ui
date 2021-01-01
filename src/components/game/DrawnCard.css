@@ -35,6 +35,10 @@
   font-size: 28px;
 }
 
+.cardSubtype {
+  text-align: center;
+}
+
 .cardFlavorText {
   font-style: italic;
   text-align: center;
