@@ -74,13 +74,11 @@ const renderDescription = (card: Card) =>
 
 const EventCard: FunctionComponent<EventCardProps> = ({ card }) => {
   return (
-    <div>
-      <BaseCard color="#a5c96c">
-        <p className="cardName">{card.name}</p>
-        <p className="cardFlavorText">{card.flavorText}</p>
-        <div className="cardDescription">{renderDescription(card)}</div>
-      </BaseCard>
-    </div>
+    <BaseCard color="#a5c96c">
+      <p className="cardName">{card.name}</p>
+      <p className="cardFlavorText">{card.flavorText}</p>
+      <div className="cardDescription">{renderDescription(card)}</div>
+    </BaseCard>
   );
 };
 
