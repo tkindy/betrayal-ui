@@ -1,8 +1,12 @@
-import React, { FunctionComponent, useState } from 'react';
+import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Group, Rect } from 'react-konva';
 import { useDispatch, useSelector } from 'react-redux';
-import { Card } from '../../../features/models';
-import { switchSelectedPlayer } from '../../../features/players';
+import { HeldCard } from '../../../features/models';
+import {
+  discardHeldCard,
+  giveHeldCardToPlayer,
+  switchSelectedPlayer,
+} from '../../../features/players';
 import {
   getPlayers,
   getSelectedPlayer,
@@ -11,6 +15,8 @@ import {
 import { BoundingBox, Dimensions } from '../../layout';
 import { useWindowDimensions } from '../../windowDimensions';
 import CardDetails from '../cards/CardDetails';
+import DiscardControl from '../cards/DiscardControl';
+import GiveToPlayerControl from '../cards/GiveToPlayerControl';
 import DOMPortal from '../portal/DOMPortal';
 import {
   SIDEBAR_MARGIN,
@@ -44,10 +50,20 @@ const PlayerSelect: FunctionComponent<{}> = () => {
 };
 
 interface CardHovercardProps {
-  card: Card;
+  card?: HeldCard;
+  close: () => void;
 }
 
-const CardHovercard: FunctionComponent<CardHovercardProps> = ({ card }) => {
+const CardHovercard: FunctionComponent<CardHovercardProps> = ({
+  card,
+  close,
+}) => {
+  const dispatch = useDispatch();
+
+  if (!card) {
+    return null;
+  }
+
   return (
     <div
       style={{
@@ -58,7 +74,23 @@ const CardHovercard: FunctionComponent<CardHovercardProps> = ({ card }) => {
         display: 'grid',
       }}
     >
-      <CardDetails card={card} renderControls={() => []} />
+      <CardDetails
+        card={card.card}
+        renderControls={() => [
+          <DiscardControl
+            onClick={() => {
+              close();
+              dispatch(discardHeldCard({ cardId: card.id }));
+            }}
+          />,
+          <GiveToPlayerControl
+            onChange={(toPlayerId) => {
+              close();
+              dispatch(giveHeldCardToPlayer({ cardId: card.id, toPlayerId }));
+            }}
+          />,
+        ]}
+      />
     </div>
   );
 };
@@ -74,6 +106,8 @@ const PlayerInventory: FunctionComponent<PlayerInventoryProps> = ({
 }) => {
   const cards = useSelector(getSelectedPlayer)?.cards;
   const [focusedCardId, setFocusedCardId] = useState<number | null>(null);
+
+  useEffect(() => setFocusedCardId(null), [cards]);
 
   if (!cards || cards.length === 0) {
     return <i>Inventory empty</i>;
@@ -110,7 +144,8 @@ const PlayerInventory: FunctionComponent<PlayerInventoryProps> = ({
       </div>
       {focusedCardId && (
         <CardHovercard
-          card={cards.find((card) => card.id === focusedCardId)!!.card}
+          card={cards.find((card) => card.id === focusedCardId)}
+          close={() => setFocusedCardId(null)}
         />
       )}
     </div>
