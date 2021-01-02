@@ -184,3 +184,25 @@ export const giveHeldCardToPlayer: (
 
   return response.data;
 };
+
+export const rollDice: (
+  gameId: string,
+  numDice: number
+) => Promise<number[]> = async (gameId, numDice) => {
+  const response = await axios.post<number[]>(
+    buildApiUrl(`/games/${gameId}/dice`),
+    { numDice }
+  );
+
+  return response.data;
+};
+
+export const getLatestRoll: (
+  gameId: string
+) => Promise<number[] | null> = async (gameId) => {
+  const response = await axios.get<number[]>(
+    buildApiUrl(`/games/${gameId}/dice`)
+  );
+
+  return response.data;
+};

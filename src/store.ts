@@ -6,6 +6,7 @@ import cardStacksReducer from './features/cardStacks';
 import boardReducer from './features/board';
 import playersReducer from './features/players';
 import gameReducer from './features/game';
+import diceRollsReducer from './features/diceRolls';
 import reduxWebsocket from '@giantmachines/redux-websocket';
 import { GameUpdate } from './features/models';
 
@@ -16,6 +17,7 @@ const rootReducer = combineReducers({
   cardStacks: cardStacksReducer,
   board: boardReducer,
   players: playersReducer,
+  diceRolls: diceRollsReducer,
 });
 
 export const store = configureStore({
