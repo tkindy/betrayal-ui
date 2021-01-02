@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Group, Rect } from 'react-konva';
 import { useDispatch, useSelector } from 'react-redux';
-import { HeldCard } from '../../../features/models';
+import { HeldCard, Trait as TraitModel } from '../../../features/models';
 import {
   discardHeldCard,
   giveHeldCardToPlayer,
@@ -101,13 +101,9 @@ const CardHovercard: FunctionComponent<CardHovercardProps> = ({
   );
 };
 
-interface PlayerInventoryProps {
-  width: number;
-}
+interface PlayerInventoryProps {}
 
-const PlayerInventory: FunctionComponent<PlayerInventoryProps> = ({
-  width,
-}) => {
+const PlayerInventory: FunctionComponent<PlayerInventoryProps> = () => {
   const cards = useSelector(getSelectedPlayer)?.cards;
   const [focusedCardId, setFocusedCardId] = useState<number | null>(null);
 
@@ -118,8 +114,8 @@ const PlayerInventory: FunctionComponent<PlayerInventoryProps> = ({
   }
 
   return (
-    <div>
-      <div className="inventoryContents" style={{ width }}>
+    <div style={{ overflowX: 'auto' }}>
+      <div className="inventoryContents">
         {cards.map((card) => {
           const className = 'inventoryCard ' + card.card.type;
 
@@ -149,6 +145,66 @@ const PlayerInventory: FunctionComponent<PlayerInventoryProps> = ({
           close={() => setFocusedCardId(null)}
         />
       )}
+    </div>
+  );
+};
+
+interface TraitProps {
+  name: string;
+  trait: TraitModel;
+  column: number;
+  row: number;
+}
+
+const Trait: FunctionComponent<TraitProps> = ({ name, trait, column, row }) => {
+  return (
+    <div style={{ gridRow: row, gridColumn: column, padding: '5px' }}>
+      <div style={{ textAlign: 'center' }}>{name.toUpperCase()}</div>
+      {trait.scale.map((value, index) => (
+        <button
+          style={{
+            padding: '5px',
+            fontWeight: index === trait.index ? 'bold' : 'normal',
+            border: 0,
+          }}
+        >
+          {value}
+        </button>
+      ))}
+    </div>
+  );
+};
+
+const traitLayout: {
+  trait: 'speed' | 'might' | 'sanity' | 'knowledge';
+  column: number;
+  row: number;
+}[] = [
+  { trait: 'speed', column: 1, row: 1 },
+  { trait: 'might', column: 2, row: 1 },
+  { trait: 'sanity', column: 1, row: 2 },
+  { trait: 'knowledge', column: 2, row: 2 },
+];
+
+interface TraitsProps {}
+
+const Traits: FunctionComponent<TraitsProps> = () => {
+  const player = useSelector(getSelectedPlayer);
+  if (!player) {
+    return null;
+  }
+
+  return (
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateRows: '1 1',
+        gridTemplateColumns: '1 1',
+      }}
+    >
+      {traitLayout.map(({ trait, column, row }) => (
+        <Trait name={trait} trait={player[trait]} column={column} row={row} />
+      ))}
     </div>
   );
 };
@@ -200,7 +256,17 @@ const CharacterBar: FunctionComponent<CharacterBarProps> = () => {
           }}
         >
           <PlayerSelect />
-          <PlayerInventory width={width - 2 * CHARACTER_BAR_PADDING} />
+          <div
+            style={{
+              display: 'flex',
+              width: width - 2 * CHARACTER_BAR_PADDING,
+              height: height - 2 * CHARACTER_BAR_PADDING - 10,
+              overflowX: 'hidden',
+            }}
+          >
+            <Traits />
+            <PlayerInventory />
+          </div>
         </div>
       </DOMPortal>
     </Group>
