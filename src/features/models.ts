@@ -14,6 +14,7 @@ export enum PlayerColor {
 export interface Trait {
   value: number;
   index: number;
+  scale: number[];
 }
 
 export interface Player {
