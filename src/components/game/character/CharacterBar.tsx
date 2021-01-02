@@ -1,10 +1,16 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Group, Rect } from 'react-konva';
 import { useDispatch, useSelector } from 'react-redux';
-import { HeldCard, Trait as TraitModel } from '../../../features/models';
+import {
+  HeldCard,
+  Player,
+  Trait as TraitModel,
+  TraitName,
+} from '../../../features/models';
 import {
   discardHeldCard,
   giveHeldCardToPlayer,
+  setTrait,
   switchSelectedPlayer,
 } from '../../../features/players';
 import {
@@ -150,18 +156,21 @@ const PlayerInventory: FunctionComponent<PlayerInventoryProps> = () => {
 };
 
 interface TraitProps {
-  name: string;
+  name: TraitName;
   trait: TraitModel;
   column: number;
   row: number;
 }
 
 const Trait: FunctionComponent<TraitProps> = ({ name, trait, column, row }) => {
+  const dispatch = useDispatch();
+
   return (
     <div style={{ gridRow: row, gridColumn: column, padding: '5px' }}>
       <div style={{ textAlign: 'center' }}>{name.toUpperCase()}</div>
       {trait.scale.map((value, index) => (
         <button
+          onClick={() => dispatch(setTrait({ trait: name, index }))}
           style={{
             padding: '5px',
             fontWeight: index === trait.index ? 'bold' : 'normal',
@@ -176,14 +185,15 @@ const Trait: FunctionComponent<TraitProps> = ({ name, trait, column, row }) => {
 };
 
 const traitLayout: {
-  trait: 'speed' | 'might' | 'sanity' | 'knowledge';
+  name: TraitName;
+  select: (player: Player) => TraitModel;
   column: number;
   row: number;
 }[] = [
-  { trait: 'speed', column: 1, row: 1 },
-  { trait: 'might', column: 2, row: 1 },
-  { trait: 'sanity', column: 1, row: 2 },
-  { trait: 'knowledge', column: 2, row: 2 },
+  { name: 'SPEED', select: (p) => p.speed, column: 1, row: 1 },
+  { name: 'MIGHT', select: (p) => p.might, column: 2, row: 1 },
+  { name: 'SANITY', select: (p) => p.sanity, column: 1, row: 2 },
+  { name: 'KNOWLEDGE', select: (p) => p.knowledge, column: 2, row: 2 },
 ];
 
 interface TraitsProps {}
@@ -202,8 +212,8 @@ const Traits: FunctionComponent<TraitsProps> = () => {
         gridTemplateColumns: '1 1',
       }}
     >
-      {traitLayout.map(({ trait, column, row }) => (
-        <Trait name={trait} trait={player[trait]} column={column} row={row} />
+      {traitLayout.map(({ name, select, column, row }) => (
+        <Trait name={name} trait={select(player)} column={column} row={row} />
       ))}
     </div>
   );

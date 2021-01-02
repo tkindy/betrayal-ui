@@ -11,6 +11,8 @@ export enum PlayerColor {
   PURPLE = 'purple',
 }
 
+export type TraitName = 'SPEED' | 'MIGHT' | 'SANITY' | 'KNOWLEDGE';
+
 export interface Trait {
   value: number;
   index: number;

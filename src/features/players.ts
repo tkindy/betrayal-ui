@@ -4,7 +4,7 @@ import {
   PayloadAction,
   ThunkAction,
 } from '@reduxjs/toolkit';
-import { Player } from './models';
+import { Player, TraitName } from './models';
 import * as api from '../api/api';
 import { equal, GridLoc } from '../components/game/board/grid';
 import { RootState } from '../store';
@@ -59,6 +59,27 @@ export const playerDropped: (
   dispatch(movePlayer({ id, loc }));
 };
 
+export const setTrait = createAsyncThunk(
+  'players/setTrait',
+  async (
+    {
+      trait,
+      index,
+    }: {
+      trait: TraitName;
+      index: number;
+    },
+    { getState }
+  ) => {
+    return api.setTrait(
+      getGameId(getState()),
+      getSelectedPlayerId(getState())!!,
+      trait,
+      index
+    );
+  }
+);
+
 export const discardHeldCard = createAsyncThunk(
   'players/discardHeld',
   async ({ cardId }: { cardId: number }, { getState }) => {
@@ -84,6 +105,13 @@ export const giveHeldCardToPlayer = createAsyncThunk(
     );
   }
 );
+
+const replacePlayer: (players: Player[], player: Player) => Player[] = (
+  players,
+  player
+) => {
+  return players.map((p) => (p.id === player.id ? player : p));
+};
 
 interface PlayersState {
   players?: Player[];
@@ -112,22 +140,21 @@ const playersSlice = createSlice({
       .addCase(
         giveDrawnCardToPlayer.fulfilled,
         (state, { payload: player }) => {
-          state.players = state.players?.map((p) =>
-            p.id === player.id ? player : p
-          );
+          state.players = replacePlayer(state.players!!, player);
         }
       )
       .addCase(discardHeldCard.fulfilled, (state, { payload: player }) => {
-        state.players = state.players?.map((p) =>
-          p.id === player.id ? player : p
-        );
+        state.players = replacePlayer(state.players!!, player);
       })
       .addCase(
         giveHeldCardToPlayer.fulfilled,
         (state, { payload: players }) => {
           state.players = players;
         }
-      );
+      )
+      .addCase(setTrait.fulfilled, (state, { payload: player }) => {
+        state.players = replacePlayer(state.players!!, player);
+      });
 
     addUpdateCase(builder, (state, { payload: { message } }) => {
       state.players = message.players;
