@@ -1,16 +1,15 @@
 import React, { FunctionComponent } from 'react';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../store';
+import { Player } from '../../../features/models';
 
 interface GiveToPlayerControlProps {
+  players?: Player[];
   onChange: (playerId: number) => void;
 }
 
 const GiveToPlayerControl: FunctionComponent<GiveToPlayerControlProps> = ({
+  players,
   onChange,
 }) => {
-  const players = useSelector((state: RootState) => state.players.players);
-
   if (!players) {
     return null;
   }

@@ -9,6 +9,7 @@ import {
   discardDrawnCard,
   giveDrawnCardToPlayer,
 } from '../../../features/cardStacks';
+import { getPlayers } from '../../../features/selectors';
 
 interface DrawnCardProps {}
 
@@ -17,6 +18,7 @@ const DrawnCard: FunctionComponent<DrawnCardProps> = () => {
   const drawnCard = useSelector(
     (state: RootState) => state.cardStacks.drawnCard
   );
+  const players = useSelector(getPlayers);
 
   if (!drawnCard) {
     return null;
@@ -29,6 +31,7 @@ const DrawnCard: FunctionComponent<DrawnCardProps> = () => {
         renderControls={() => [
           <DiscardControl onClick={() => dispatch(discardDrawnCard())} />,
           <GiveToPlayerControl
+            players={players}
             onChange={(playerId) =>
               dispatch(giveDrawnCardToPlayer({ playerId }))
             }

@@ -8,6 +8,7 @@ import {
   switchSelectedPlayer,
 } from '../../../features/players';
 import {
+  getPlayerMap,
   getPlayers,
   getSelectedPlayer,
   getSelectedPlayerId,
@@ -59,6 +60,10 @@ const CardHovercard: FunctionComponent<CardHovercardProps> = ({
   close,
 }) => {
   const dispatch = useDispatch();
+  const selectedPlayerId = useSelector(getSelectedPlayerId);
+  const possiblePlayersToGiveTo = useSelector(getPlayers)?.filter(
+    (player) => player.id !== selectedPlayerId
+  );
 
   if (!card) {
     return null;
@@ -85,6 +90,7 @@ const CardHovercard: FunctionComponent<CardHovercardProps> = ({
             }}
           />,
           <GiveToPlayerControl
+            players={possiblePlayersToGiveTo}
             onChange={(toPlayerId) => {
               close();
               dispatch(giveHeldCardToPlayer({ cardId: card.id, toPlayerId }));
