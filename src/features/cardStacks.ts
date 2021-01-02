@@ -1,7 +1,7 @@
 import { createSlice } from '@reduxjs/toolkit';
 import * as api from '../api/api';
 import { GameUpdatePayload } from '../store';
-import { Card, GameUpdate, Player } from './models';
+import { Card, Player } from './models';
 import { getGameId } from './selectors';
 import { createAsyncThunk } from './utils';
 

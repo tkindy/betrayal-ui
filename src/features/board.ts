@@ -7,7 +7,7 @@ import {
 import { equal, GridLoc } from '../components/game/board/grid';
 import { GameUpdatePayload, RootState } from '../store';
 import * as api from '../api/api';
-import { GameUpdate, Room } from './models';
+import { Room } from './models';
 import { Point } from '../components/geometry';
 import { getGameId, getOpenNeighbors } from './selectors';
 import { Direction } from '../components/game/room/Room';

@@ -4,7 +4,7 @@ import {
   PayloadAction,
   ThunkAction,
 } from '@reduxjs/toolkit';
-import { GameUpdate, Player } from './models';
+import { Player } from './models';
 import * as api from '../api/api';
 import { equal, GridLoc } from '../components/game/board/grid';
 import { GameUpdatePayload, RootState } from '../store';

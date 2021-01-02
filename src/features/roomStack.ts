@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 import { placeRoom } from './board';
-import { FlippedRoom, GameUpdate, StackRoom } from './models';
+import { FlippedRoom, StackRoom } from './models';
 import * as api from '../api/api';
 import { getGameId } from './selectors';
 import { createAsyncThunk } from './utils';
