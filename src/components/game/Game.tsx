@@ -40,11 +40,11 @@ const Game: FC<GameProps> = ({ gameId }) => {
     }
 
     dispatch(joinGame(gameId));
+    dispatch(connect(buildWebsocketUrl(gameId)));
     dispatch(getRooms());
     dispatch(getPlayers());
     dispatch(getRoomStack());
     dispatch(getDrawnCard());
-    dispatch(connect(buildWebsocketUrl(gameId)));
     dispatch(getLatestRoll());
 
     return () => {
