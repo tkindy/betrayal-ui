@@ -9,7 +9,11 @@ interface GiveToPlayerControlProps {
 const GiveToPlayerControl: FunctionComponent<GiveToPlayerControlProps> = ({
   onChange,
 }) => {
-  const players = useSelector((state: RootState) => state.players.players)!!;
+  const players = useSelector((state: RootState) => state.players.players);
+
+  if (!players) {
+    return null;
+  }
 
   return (
     <select onChange={(e) => onChange(parseInt(e.target.value))}>
