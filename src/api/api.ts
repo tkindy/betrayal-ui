@@ -146,3 +146,41 @@ export const discardDrawnCard: (gameId: string) => Promise<void> = async (
 ) => {
   await axios.post<void>(buildApiUrl(`/games/${gameId}/cards/drawn/discard`));
 };
+
+export const giveDrawnCardToPlayer: (
+  gameId: string,
+  playerId: number
+) => Promise<Player> = async (gameId, playerId) => {
+  const response = await axios.post<Player>(
+    buildApiUrl(`/games/${gameId}/cards/drawn/giveToPlayer`),
+    { playerId }
+  );
+  return response.data;
+};
+
+export const discardHeldCard: (
+  gameId: string,
+  playerId: number,
+  cardId: number
+) => Promise<Player> = async (gameId, playerId, cardId) => {
+  const response = await axios.post<Player>(
+    buildApiUrl(`/games/${gameId}/players/${playerId}/cards/${cardId}/discard`)
+  );
+  return response.data;
+};
+
+export const giveHeldCardToPlayer: (
+  gameId: string,
+  fromPlayerId: number,
+  cardId: number,
+  toPlayerId: number
+) => Promise<Player[]> = async (gameId, fromPlayerId, cardId, toPlayerId) => {
+  const response = await axios.post<Player[]>(
+    buildApiUrl(
+      `/games/${gameId}/players/${fromPlayerId}/cards/${cardId}/giveToPlayer`
+    ),
+    { toPlayerId }
+  );
+
+  return response.data;
+};
