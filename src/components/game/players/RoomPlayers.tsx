@@ -10,7 +10,7 @@ import {
 } from '../board/grid';
 import { Player as PlayerModel } from '../../../features/models';
 import { useDispatch } from 'react-redux';
-import { playerDropped } from '../../../features/players';
+import { playerDropped, switchSelectedPlayer } from '../../../features/players';
 import { BoundingBox, getCenter, getPlayersBox } from '../../layout';
 import { useRender } from '../../hooks';
 import PlayerHovercard from './PlayerHovercard';
@@ -40,6 +40,7 @@ const Player: FunctionComponent<PlayerProps> = ({ box, player }) => {
         radius={radius}
         fill={color}
         stroke="white"
+        onDblClick={() => dispatch(switchSelectedPlayer(player.id))}
         draggable
         onDragStart={() => setHovered(false)}
         onDragEnd={(e) => {

@@ -37,7 +37,7 @@ const PlayerSelect: FunctionComponent<{}> = () => {
   return (
     <select
       onChange={(e) => dispatch(switchSelectedPlayer(parseInt(e.target.value)))}
-      defaultValue={selectedPlayerId}
+      value={selectedPlayerId}
       style={{ display: 'block' }}
     >
       {players?.map((player) => (
