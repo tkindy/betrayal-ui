@@ -62,8 +62,8 @@ const Sidebar: FunctionComponent<SidebarProps> = () => {
         {[
           { units: 1, render: (box) => <ZoomControl box={box} /> },
           { units: 2, render: (box) => <DrawControl box={box} /> },
-          { units: 0.5, render: (box) => <RollDiceControl box={box} /> },
-          { units: 3.5, render: () => null },
+          { units: 2, render: (box) => <RollDiceControl box={box} /> },
+          { units: 2, render: () => null },
           { units: 3, render: (box) => <RoomStack box={box} /> },
         ]}
       </FlexContainer>
