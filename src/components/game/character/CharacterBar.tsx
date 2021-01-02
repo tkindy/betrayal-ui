@@ -102,13 +102,11 @@ const CardHovercard: FunctionComponent<CardHovercardProps> = ({
 };
 
 interface PlayerInventoryProps {
-  barBox: BoundingBox;
+  width: number;
 }
 
 const PlayerInventory: FunctionComponent<PlayerInventoryProps> = ({
-  barBox: {
-    dimensions: { width: barWidth },
-  },
+  width,
 }) => {
   const cards = useSelector(getSelectedPlayer)?.cards;
   const [focusedCardId, setFocusedCardId] = useState<number | null>(null);
@@ -121,10 +119,7 @@ const PlayerInventory: FunctionComponent<PlayerInventoryProps> = ({
 
   return (
     <div>
-      <div
-        className="inventoryContents"
-        style={{ width: barWidth - 2 * CHARACTER_BAR_PADDING }}
-      >
+      <div className="inventoryContents" style={{ width }}>
         {cards.map((card) => {
           const className = 'inventoryCard ' + card.card.type;
 
@@ -205,7 +200,7 @@ const CharacterBar: FunctionComponent<CharacterBarProps> = () => {
           }}
         >
           <PlayerSelect />
-          <PlayerInventory barBox={box} />
+          <PlayerInventory width={width - 2 * CHARACTER_BAR_PADDING} />
         </div>
       </DOMPortal>
     </Group>
