@@ -77,6 +77,7 @@ const CardHovercard: FunctionComponent<CardHovercardProps> = ({
       <CardDetails
         card={card.card}
         renderControls={() => [
+          <button onClick={close}>Close</button>,
           <DiscardControl
             onClick={() => {
               close();
