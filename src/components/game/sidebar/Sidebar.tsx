@@ -7,6 +7,7 @@ import { useWindowDimensions } from '../../windowDimensions';
 import FlexContainer, { FlexDirection } from './flex/FlexContainer';
 import RoomStack from './roomStack/RoomStack';
 import DrawControl from './DrawControl';
+import RollDiceControl from './RollDiceControl';
 
 export const SIDEBAR_WIDTH = 215;
 export const SIDEBAR_MARGIN = 10;
@@ -61,7 +62,8 @@ const Sidebar: FunctionComponent<SidebarProps> = () => {
         {[
           { units: 1, render: (box) => <ZoomControl box={box} /> },
           { units: 2, render: (box) => <DrawControl box={box} /> },
-          { units: 4, render: () => null },
+          { units: 2, render: (box) => <RollDiceControl box={box} /> },
+          { units: 2, render: () => null },
           { units: 3, render: (box) => <RoomStack box={box} /> },
         ]}
       </FlexContainer>

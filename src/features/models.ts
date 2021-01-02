@@ -122,4 +122,5 @@ export interface GameUpdate {
   players: Player[];
   roomStack: RoomStackState;
   drawnCard: Card | null;
+  latestRoll: number[] | null;
 }
