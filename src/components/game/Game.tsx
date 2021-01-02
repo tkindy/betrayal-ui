@@ -15,6 +15,7 @@ import DrawnCard from './cards/DrawnCard';
 import { getDrawnCard } from '../../features/cardStacks';
 import PlayerInventoryBar from './inventory/PlayerInventoryBar';
 import { connect, disconnect } from '@giantmachines/redux-websocket/dist';
+import { getLatestRoll } from '../../features/diceRolls';
 
 const buildWebsocketUrl = (gameId: string) => {
   const httpRoot = process.env.REACT_APP_API_ROOT!!;
@@ -44,6 +45,7 @@ const Game: FC<GameProps> = ({ gameId }) => {
     dispatch(getRoomStack());
     dispatch(getDrawnCard());
     dispatch(connect(buildWebsocketUrl(gameId)));
+    dispatch(getLatestRoll());
 
     return () => {
       dispatch(disconnect());
