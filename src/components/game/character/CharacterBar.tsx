@@ -23,11 +23,11 @@ import {
   SIDEBAR_PADDING,
   SIDEBAR_WIDTH,
 } from '../sidebar/Sidebar';
-import './PlayerInventoryBar.css';
+import './CharacterBar.css';
 
-const INVENTORY_BAR_HEIGHT = SIDEBAR_WIDTH;
-const INVENTORY_BAR_MARGIN = SIDEBAR_MARGIN;
-const INVENTORY_BAR_PADDING = SIDEBAR_PADDING;
+const CHARACTER_BAR_HEIGHT = SIDEBAR_WIDTH;
+const CHARACTER_BAR_MARGIN = SIDEBAR_MARGIN;
+const CHARACTER_BAR_PADDING = SIDEBAR_PADDING;
 
 const PlayerSelect: FunctionComponent<{}> = () => {
   const dispatch = useDispatch();
@@ -123,7 +123,7 @@ const PlayerInventory: FunctionComponent<PlayerInventoryProps> = ({
     <div>
       <div
         className="inventoryContents"
-        style={{ width: barWidth - 2 * INVENTORY_BAR_PADDING }}
+        style={{ width: barWidth - 2 * CHARACTER_BAR_PADDING }}
       >
         {cards.map((card) => {
           const className = 'inventoryCard ' + card.card.type;
@@ -140,7 +140,7 @@ const PlayerInventory: FunctionComponent<PlayerInventoryProps> = ({
                 }
               }}
               style={{
-                height: INVENTORY_BAR_HEIGHT - 2 * INVENTORY_BAR_PADDING - 50,
+                height: CHARACTER_BAR_HEIGHT - 2 * CHARACTER_BAR_PADDING - 50,
               }}
             >
               <div>{card.card.name}</div>
@@ -164,20 +164,20 @@ const getBox: (windowDimensions: Dimensions) => BoundingBox = ({
 }) => {
   return {
     topLeft: {
-      x: INVENTORY_BAR_MARGIN,
-      y: windowHeight - INVENTORY_BAR_MARGIN - INVENTORY_BAR_HEIGHT,
+      x: CHARACTER_BAR_MARGIN,
+      y: windowHeight - CHARACTER_BAR_MARGIN - CHARACTER_BAR_HEIGHT,
     },
     dimensions: {
       width:
-        windowWidth - 2 * INVENTORY_BAR_MARGIN - SIDEBAR_WIDTH - SIDEBAR_MARGIN,
-      height: INVENTORY_BAR_HEIGHT,
+        windowWidth - 2 * CHARACTER_BAR_MARGIN - SIDEBAR_WIDTH - SIDEBAR_MARGIN,
+      height: CHARACTER_BAR_HEIGHT,
     },
   };
 };
 
-interface PlayerInventoryBarProps {}
+interface CharacterBarProps {}
 
-const PlayerInventoryBar: FunctionComponent<PlayerInventoryBarProps> = () => {
+const CharacterBar: FunctionComponent<CharacterBarProps> = () => {
   const box = getBox(useWindowDimensions());
   const {
     topLeft: { x, y },
@@ -195,13 +195,13 @@ const PlayerInventoryBar: FunctionComponent<PlayerInventoryBarProps> = () => {
         stroke="black"
         cornerRadius={10}
       />
-      <DOMPortal name="playerInventory">
+      <DOMPortal name="characterBar">
         <div
-          className="playerInventoryWrapper"
+          className="characterBarWrapper"
           style={{
             position: 'absolute',
-            top: y + INVENTORY_BAR_PADDING,
-            left: x + INVENTORY_BAR_PADDING,
+            top: y + CHARACTER_BAR_PADDING,
+            left: x + CHARACTER_BAR_PADDING,
           }}
         >
           <PlayerSelect />
@@ -212,4 +212,4 @@ const PlayerInventoryBar: FunctionComponent<PlayerInventoryBarProps> = () => {
   );
 };
 
-export default PlayerInventoryBar;
+export default CharacterBar;
