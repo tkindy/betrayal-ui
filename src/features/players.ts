@@ -15,7 +15,7 @@ import {
   getSelectedPlayerId,
 } from './selectors';
 import { get } from '../board';
-import { createAsyncThunk } from './utils';
+import { addUpdateCase, createAsyncThunk } from './utils';
 import { giveDrawnCardToPlayer } from './cardStacks';
 
 export const getPlayers = createAsyncThunk(
@@ -128,6 +128,10 @@ const playersSlice = createSlice({
           state.players = players;
         }
       );
+
+    addUpdateCase(builder, (state, { payload: { message } }) => {
+      state.players = message.players;
+    });
   },
 });
 

@@ -14,6 +14,13 @@ import { getRoomStack } from '../../features/roomStack';
 import DrawnCard from './cards/DrawnCard';
 import { getDrawnCard } from '../../features/cardStacks';
 import PlayerInventoryBar from './inventory/PlayerInventoryBar';
+import { connect, disconnect } from '@giantmachines/redux-websocket/dist';
+
+const buildWebsocketUrl = (gameId: string) => {
+  const httpRoot = process.env.REACT_APP_API_ROOT!!;
+  const wsRoot = httpRoot.replace(/^http/, 'ws');
+  return `${wsRoot}/games/${gameId}`;
+};
 
 interface GameProps extends RouteComponentProps {
   gameId?: string;
@@ -36,6 +43,11 @@ const Game: FC<GameProps> = ({ gameId }) => {
     dispatch(getPlayers());
     dispatch(getRoomStack());
     dispatch(getDrawnCard());
+    dispatch(connect(buildWebsocketUrl(gameId)));
+
+    return () => {
+      dispatch(disconnect());
+    };
   }, [gameId, dispatch, navigate]);
 
   return (

@@ -1,9 +1,11 @@
 import {
+  ActionReducerMapBuilder,
   AsyncThunk,
   AsyncThunkPayloadCreator,
+  CaseReducer,
   createAsyncThunk as CAT,
 } from '@reduxjs/toolkit';
-import { RootState } from '../store';
+import { GameUpdatePayload, RootState } from '../store';
 
 export const createAsyncThunk: <Returned, ThunkArg = void>(
   typePrefix: string,
@@ -17,4 +19,14 @@ export const createAsyncThunk: <Returned, ThunkArg = void>(
   payloadCreator
 ) => {
   return CAT(typePrefix, payloadCreator);
+};
+
+export const addUpdateCase: <S>(
+  builder: ActionReducerMapBuilder<S>,
+  reducer: CaseReducer<
+    S,
+    { type: 'REDUX_WEBSOCKET::MESSAGE'; payload: GameUpdatePayload }
+  >
+) => void = (builder, reducer) => {
+  builder.addCase('REDUX_WEBSOCKET::MESSAGE', reducer);
 };
