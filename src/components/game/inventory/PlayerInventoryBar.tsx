@@ -8,7 +8,6 @@ import {
   switchSelectedPlayer,
 } from '../../../features/players';
 import {
-  getPlayerMap,
   getPlayers,
   getSelectedPlayer,
   getSelectedPlayerId,
