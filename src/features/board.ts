@@ -5,13 +5,13 @@ import {
   ThunkAction,
 } from '@reduxjs/toolkit';
 import { equal, GridLoc } from '../components/game/board/grid';
-import { GameUpdatePayload, RootState } from '../store';
+import { RootState } from '../store';
 import * as api from '../api/api';
 import { Room } from './models';
 import { Point } from '../components/geometry';
 import { getGameId, getOpenNeighbors } from './selectors';
 import { Direction } from '../components/game/room/Room';
-import { createAsyncThunk } from './utils';
+import { addUpdateCase, createAsyncThunk } from './utils';
 
 export const getRooms = createAsyncThunk(
   'board/getStatus',
@@ -105,13 +105,11 @@ const boardSlice = createSlice({
       })
       .addCase(placeRoom.fulfilled, (state, { payload: { rooms } }) => {
         state.rooms = rooms;
-      })
-      .addCase<
-        'REDUX_WEBSOCKET::MESSAGE',
-        { type: 'REDUX_WEBSOCKET::MESSAGE'; payload: GameUpdatePayload }
-      >('REDUX_WEBSOCKET::MESSAGE', (state, { payload: { message } }) => {
-        state.rooms = message.rooms;
       });
+
+    addUpdateCase(builder, (state, { payload: { message } }) => {
+      state.rooms = message.rooms;
+    });
   },
 });
 

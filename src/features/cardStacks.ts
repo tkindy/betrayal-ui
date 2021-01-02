@@ -1,9 +1,8 @@
 import { createSlice } from '@reduxjs/toolkit';
 import * as api from '../api/api';
-import { GameUpdatePayload } from '../store';
 import { Card, Player } from './models';
 import { getGameId } from './selectors';
-import { createAsyncThunk } from './utils';
+import { addUpdateCase, createAsyncThunk } from './utils';
 
 export const getDrawnCard = createAsyncThunk(
   'cards/drawn/get',
@@ -76,13 +75,11 @@ const cardStacksSlice = createSlice({
       })
       .addCase(giveDrawnCardToPlayer.fulfilled, (state) => {
         state.drawnCard = null;
-      })
-      .addCase<
-        'REDUX_WEBSOCKET::MESSAGE',
-        { type: 'REDUX_WEBSOCKET::MESSAGE'; payload: GameUpdatePayload }
-      >('REDUX_WEBSOCKET::MESSAGE', (state, { payload: { message } }) => {
-        state.drawnCard = message.drawnCard;
       });
+
+    addUpdateCase(builder, (state, { payload: { message } }) => {
+      state.drawnCard = message.drawnCard;
+    });
   },
 });
 

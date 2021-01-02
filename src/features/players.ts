@@ -7,7 +7,7 @@ import {
 import { Player } from './models';
 import * as api from '../api/api';
 import { equal, GridLoc } from '../components/game/board/grid';
-import { GameUpdatePayload, RootState } from '../store';
+import { RootState } from '../store';
 import {
   getBoardMap,
   getGameId,
@@ -15,7 +15,7 @@ import {
   getSelectedPlayerId,
 } from './selectors';
 import { get } from '../board';
-import { createAsyncThunk } from './utils';
+import { addUpdateCase, createAsyncThunk } from './utils';
 import { giveDrawnCardToPlayer } from './cardStacks';
 
 export const getPlayers = createAsyncThunk(
@@ -127,13 +127,11 @@ const playersSlice = createSlice({
         (state, { payload: players }) => {
           state.players = players;
         }
-      )
-      .addCase<
-        'REDUX_WEBSOCKET::MESSAGE',
-        { type: 'REDUX_WEBSOCKET::MESSAGE'; payload: GameUpdatePayload }
-      >('REDUX_WEBSOCKET::MESSAGE', (state, { payload: { message } }) => {
-        state.players = message.players;
-      });
+      );
+
+    addUpdateCase(builder, (state, { payload: { message } }) => {
+      state.players = message.players;
+    });
   },
 });
 
