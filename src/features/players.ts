@@ -12,6 +12,7 @@ import {
   getBoardMap,
   getGameId,
   getPlayers as selectPlayers,
+  getSelectedPlayerId,
 } from './selectors';
 import { get } from '../board';
 import { createAsyncThunk } from './utils';
@@ -58,6 +59,32 @@ export const playerDropped: (
   dispatch(movePlayer({ id, loc }));
 };
 
+export const discardHeldCard = createAsyncThunk(
+  'players/discardHeld',
+  async ({ cardId }: { cardId: number }, { getState }) => {
+    return api.discardHeldCard(
+      getGameId(getState()),
+      getSelectedPlayerId(getState())!!,
+      cardId
+    );
+  }
+);
+
+export const giveHeldCardToPlayer = createAsyncThunk(
+  'players/giveHeldCardToPlayer',
+  async (
+    { cardId, toPlayerId }: { cardId: number; toPlayerId: number },
+    { getState }
+  ) => {
+    return api.giveHeldCardToPlayer(
+      getGameId(getState()),
+      getSelectedPlayerId(getState())!!,
+      cardId,
+      toPlayerId
+    );
+  }
+);
+
 interface PlayersState {
   players?: Player[];
   selectedPlayerId?: number;
@@ -88,6 +115,17 @@ const playersSlice = createSlice({
           state.players = state.players?.map((p) =>
             p.id === player.id ? player : p
           );
+        }
+      )
+      .addCase(discardHeldCard.fulfilled, (state, { payload: player }) => {
+        state.players = state.players?.map((p) =>
+          p.id === player.id ? player : p
+        );
+      })
+      .addCase(
+        giveHeldCardToPlayer.fulfilled,
+        (state, { payload: players }) => {
+          state.players = players;
         }
       );
   },
