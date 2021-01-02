@@ -4,10 +4,10 @@ import {
   PayloadAction,
   ThunkAction,
 } from '@reduxjs/toolkit';
-import { Player } from './models';
+import { GameUpdate, Player } from './models';
 import * as api from '../api/api';
 import { equal, GridLoc } from '../components/game/board/grid';
-import { RootState } from '../store';
+import { GameUpdatePayload, RootState } from '../store';
 import {
   getBoardMap,
   getGameId,
@@ -127,7 +127,13 @@ const playersSlice = createSlice({
         (state, { payload: players }) => {
           state.players = players;
         }
-      );
+      )
+      .addCase<
+        'REDUX_WEBSOCKET::MESSAGE',
+        { type: 'REDUX_WEBSOCKET::MESSAGE'; payload: GameUpdatePayload }
+      >('REDUX_WEBSOCKET::MESSAGE', (state, { payload: { message } }) => {
+        state.players = message.players;
+      });
   },
 });
 
