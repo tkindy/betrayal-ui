@@ -20,6 +20,13 @@ export const getRooms = createAsyncThunk(
   }
 );
 
+export const moveRoom = createAsyncThunk(
+  'board/moveRoom',
+  async ({ id, loc }: { id: number; loc: GridLoc }, { getState }) => {
+    return api.moveRoom(getGameId(getState()), id, loc);
+  }
+);
+
 interface BoardState {
   topLeft: Point;
   rooms?: Room[];
