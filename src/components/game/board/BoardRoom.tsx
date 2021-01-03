@@ -36,7 +36,7 @@ const RoomHovercard: FunctionComponent<RoomHovercardProps> = ({
               x={0}
               y={0}
               width={width}
-              height={height / 10}
+              height={height / 5}
               text={name}
               align="center"
               verticalAlign="middle"
@@ -45,9 +45,9 @@ const RoomHovercard: FunctionComponent<RoomHovercardProps> = ({
             />
             <Text
               x={0}
-              y={(2 * height) / 10}
+              y={(3 * height) / 10}
               width={width}
-              height={(8 * height) / 10}
+              height={(7 * height) / 10}
               text={description}
               align="center"
               verticalAlign="middle"
