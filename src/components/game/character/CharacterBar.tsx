@@ -1,10 +1,16 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
 import { Group, Rect } from 'react-konva';
 import { useDispatch, useSelector } from 'react-redux';
-import { HeldCard } from '../../../features/models';
+import {
+  HeldCard,
+  Player,
+  Trait as TraitModel,
+  TraitName,
+} from '../../../features/models';
 import {
   discardHeldCard,
   giveHeldCardToPlayer,
+  setTrait,
   switchSelectedPlayer,
 } from '../../../features/players';
 import {
@@ -23,11 +29,11 @@ import {
   SIDEBAR_PADDING,
   SIDEBAR_WIDTH,
 } from '../sidebar/Sidebar';
-import './PlayerInventoryBar.css';
+import './CharacterBar.css';
 
-const INVENTORY_BAR_HEIGHT = SIDEBAR_WIDTH;
-const INVENTORY_BAR_MARGIN = SIDEBAR_MARGIN;
-const INVENTORY_BAR_PADDING = SIDEBAR_PADDING;
+const CHARACTER_BAR_HEIGHT = SIDEBAR_WIDTH;
+const CHARACTER_BAR_MARGIN = SIDEBAR_MARGIN;
+const CHARACTER_BAR_PADDING = SIDEBAR_PADDING;
 
 const PlayerSelect: FunctionComponent<{}> = () => {
   const dispatch = useDispatch();
@@ -101,15 +107,9 @@ const CardHovercard: FunctionComponent<CardHovercardProps> = ({
   );
 };
 
-interface PlayerInventoryProps {
-  barBox: BoundingBox;
-}
+interface PlayerInventoryProps {}
 
-const PlayerInventory: FunctionComponent<PlayerInventoryProps> = ({
-  barBox: {
-    dimensions: { width: barWidth },
-  },
-}) => {
+const PlayerInventory: FunctionComponent<PlayerInventoryProps> = () => {
   const cards = useSelector(getSelectedPlayer)?.cards;
   const [focusedCardId, setFocusedCardId] = useState<number | null>(null);
 
@@ -120,11 +120,8 @@ const PlayerInventory: FunctionComponent<PlayerInventoryProps> = ({
   }
 
   return (
-    <div>
-      <div
-        className="inventoryContents"
-        style={{ width: barWidth - 2 * INVENTORY_BAR_PADDING }}
-      >
+    <div style={{ overflowX: 'auto' }}>
+      <div className="inventoryContents">
         {cards.map((card) => {
           const className = 'inventoryCard ' + card.card.type;
 
@@ -140,7 +137,7 @@ const PlayerInventory: FunctionComponent<PlayerInventoryProps> = ({
                 }
               }}
               style={{
-                height: INVENTORY_BAR_HEIGHT - 2 * INVENTORY_BAR_PADDING - 50,
+                height: CHARACTER_BAR_HEIGHT - 2 * CHARACTER_BAR_PADDING - 50,
               }}
             >
               <div>{card.card.name}</div>
@@ -158,26 +155,92 @@ const PlayerInventory: FunctionComponent<PlayerInventoryProps> = ({
   );
 };
 
+interface TraitProps {
+  name: TraitName;
+  trait: TraitModel;
+  column: number;
+  row: number;
+}
+
+const Trait: FunctionComponent<TraitProps> = ({ name, trait, column, row }) => {
+  const dispatch = useDispatch();
+
+  return (
+    <div style={{ gridRow: row, gridColumn: column, padding: '5px' }}>
+      <div style={{ textAlign: 'center' }}>{name.toUpperCase()}</div>
+      {trait.scale.map((value, index) => (
+        <button
+          onClick={() => dispatch(setTrait({ trait: name, index }))}
+          style={{
+            padding: '5px',
+            fontWeight: index === trait.index ? 'bold' : 'normal',
+            color: index === trait.index ? 'red' : 'black',
+            border: 0,
+          }}
+        >
+          {value}
+        </button>
+      ))}
+    </div>
+  );
+};
+
+const traitLayout: {
+  name: TraitName;
+  select: (player: Player) => TraitModel;
+  column: number;
+  row: number;
+}[] = [
+  { name: 'SPEED', select: (p) => p.speed, column: 1, row: 1 },
+  { name: 'MIGHT', select: (p) => p.might, column: 2, row: 1 },
+  { name: 'SANITY', select: (p) => p.sanity, column: 1, row: 2 },
+  { name: 'KNOWLEDGE', select: (p) => p.knowledge, column: 2, row: 2 },
+];
+
+interface TraitsProps {}
+
+const Traits: FunctionComponent<TraitsProps> = () => {
+  const player = useSelector(getSelectedPlayer);
+  if (!player) {
+    return null;
+  }
+
+  return (
+    <div
+      style={{
+        display: 'grid',
+        gridTemplateRows: '1 1',
+        gridTemplateColumns: '1 1',
+        flex: '0 0 content',
+      }}
+    >
+      {traitLayout.map(({ name, select, column, row }) => (
+        <Trait name={name} trait={select(player)} column={column} row={row} />
+      ))}
+    </div>
+  );
+};
+
 const getBox: (windowDimensions: Dimensions) => BoundingBox = ({
   width: windowWidth,
   height: windowHeight,
 }) => {
   return {
     topLeft: {
-      x: INVENTORY_BAR_MARGIN,
-      y: windowHeight - INVENTORY_BAR_MARGIN - INVENTORY_BAR_HEIGHT,
+      x: CHARACTER_BAR_MARGIN,
+      y: windowHeight - CHARACTER_BAR_MARGIN - CHARACTER_BAR_HEIGHT,
     },
     dimensions: {
       width:
-        windowWidth - 2 * INVENTORY_BAR_MARGIN - SIDEBAR_WIDTH - SIDEBAR_MARGIN,
-      height: INVENTORY_BAR_HEIGHT,
+        windowWidth - 2 * CHARACTER_BAR_MARGIN - SIDEBAR_WIDTH - SIDEBAR_MARGIN,
+      height: CHARACTER_BAR_HEIGHT,
     },
   };
 };
 
-interface PlayerInventoryBarProps {}
+interface CharacterBarProps {}
 
-const PlayerInventoryBar: FunctionComponent<PlayerInventoryBarProps> = () => {
+const CharacterBar: FunctionComponent<CharacterBarProps> = () => {
   const box = getBox(useWindowDimensions());
   const {
     topLeft: { x, y },
@@ -195,21 +258,31 @@ const PlayerInventoryBar: FunctionComponent<PlayerInventoryBarProps> = () => {
         stroke="black"
         cornerRadius={10}
       />
-      <DOMPortal name="playerInventory">
+      <DOMPortal name="characterBar">
         <div
-          className="playerInventoryWrapper"
+          className="characterBarWrapper"
           style={{
             position: 'absolute',
-            top: y + INVENTORY_BAR_PADDING,
-            left: x + INVENTORY_BAR_PADDING,
+            top: y + CHARACTER_BAR_PADDING,
+            left: x + CHARACTER_BAR_PADDING,
           }}
         >
           <PlayerSelect />
-          <PlayerInventory barBox={box} />
+          <div
+            style={{
+              display: 'flex',
+              width: width - 2 * CHARACTER_BAR_PADDING,
+              height: height - 2 * CHARACTER_BAR_PADDING - 10,
+              overflowX: 'hidden',
+            }}
+          >
+            <Traits />
+            <PlayerInventory />
+          </div>
         </div>
       </DOMPortal>
     </Group>
   );
 };
 
-export default PlayerInventoryBar;
+export default CharacterBar;

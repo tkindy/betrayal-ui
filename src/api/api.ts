@@ -8,6 +8,7 @@ import {
   Player,
   Room,
   StackRoom,
+  TraitName,
 } from '../features/models';
 import axios from 'axios';
 
@@ -98,6 +99,20 @@ export const movePlayer: (
     loc
   );
   return getPlayers(gameId);
+};
+
+export const setTrait: (
+  gameId: string,
+  playerId: number,
+  trait: TraitName,
+  index: number
+) => Promise<Player> = async (gameId, playerId, trait, index) => {
+  const response = await axios.post(
+    buildApiUrl(`/games/${gameId}/players/${playerId}/setTrait`),
+    { trait, index }
+  );
+
+  return response.data;
 };
 
 export const getDrawnCard: (gameId: string) => Promise<Card | null> = async (

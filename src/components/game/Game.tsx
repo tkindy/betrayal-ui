@@ -13,7 +13,7 @@ import { getPlayers } from '../../features/players';
 import { getRoomStack } from '../../features/roomStack';
 import DrawnCard from './cards/DrawnCard';
 import { getDrawnCard } from '../../features/cardStacks';
-import PlayerInventoryBar from './inventory/PlayerInventoryBar';
+import CharacterBar from './character/CharacterBar';
 import { connect, disconnect } from '@giantmachines/redux-websocket/dist';
 import { getLatestRoll } from '../../features/diceRolls';
 
@@ -76,7 +76,7 @@ const Game: FC<GameProps> = ({ gameId }) => {
               </Layer>
               <Layer>
                 <Sidebar />
-                <PlayerInventoryBar />
+                <CharacterBar />
               </Layer>
             </ReactReduxContext.Provider>
           </Stage>

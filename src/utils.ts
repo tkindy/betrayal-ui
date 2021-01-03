@@ -28,3 +28,24 @@ export const choices: <T>(array: T[], n: number) => T[] = (array, n) => {
     .map((_) => Math.floor(Math.random() * array.length))
     .map((index) => array[index]);
 };
+
+export const sortBy: <T>(array: T[], select: (t: T) => string) => T[] = (
+  array,
+  select
+) => {
+  const mapped = array.map((t, i) => {
+    return { index: i, value: select(t) };
+  });
+
+  mapped.sort((a, b) => {
+    if (a.value > b.value) {
+      return 1;
+    }
+    if (a.value < b.value) {
+      return -1;
+    }
+    return 0;
+  });
+
+  return mapped.map(({ index }) => array[index]);
+};
