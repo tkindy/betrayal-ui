@@ -174,6 +174,7 @@ const Trait: FunctionComponent<TraitProps> = ({ name, trait, column, row }) => {
           style={{
             padding: '5px',
             fontWeight: index === trait.index ? 'bold' : 'normal',
+            color: index === trait.index ? 'red' : 'black',
             border: 0,
           }}
         >
@@ -210,6 +211,7 @@ const Traits: FunctionComponent<TraitsProps> = () => {
         display: 'grid',
         gridTemplateRows: '1 1',
         gridTemplateColumns: '1 1',
+        flex: '0 0 content',
       }}
     >
       {traitLayout.map(({ name, select, column, row }) => (
