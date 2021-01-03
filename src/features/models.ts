@@ -36,6 +36,7 @@ export enum Feature {
   ITEM = 'ITEM',
   OMEN = 'OMEN',
   DUMBWAITER = 'DUMBWAITER',
+  ANY = 'ANY',
 }
 
 export interface Barrier {

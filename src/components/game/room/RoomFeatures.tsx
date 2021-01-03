@@ -18,6 +18,8 @@ const renderFeature: (f: Feature) => string = (f) => {
       return 'O';
     case Feature.DUMBWAITER:
       return 'D';
+    case Feature.ANY:
+      return 'A';
   }
 };
 
