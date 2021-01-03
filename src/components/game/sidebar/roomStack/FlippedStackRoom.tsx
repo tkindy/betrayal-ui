@@ -34,8 +34,8 @@ const FlippedStackRoom: FunctionComponent<FlippedStackRoomProps> = ({
   const innerWidth = roomWidth - 2 * doorHeight;
   const innerHeight = roomHeight - 2 * doorHeight;
   const nameBox = {
-    topLeft: translate(innerTopLeft, 0, innerHeight / 3),
-    dimensions: { width: innerWidth, height: innerHeight / 6 },
+    topLeft: translate(innerTopLeft, 0, innerHeight / 6),
+    dimensions: { width: innerWidth, height: innerHeight / 3 },
   };
   const featuresBox = {
     topLeft: translate(innerTopLeft, 0, innerHeight / 2),
