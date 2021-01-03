@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useState } from 'react';
-import { Circle, Group, Rect } from 'react-konva';
+import { Circle, Group, Rect, Text } from 'react-konva';
 import { partition } from '../../../utils';
 import { translate } from '../../geometry';
 import {
@@ -25,7 +25,10 @@ interface MonsterProps {
   monster: MonsterModel;
 }
 
-const Monster: FunctionComponent<MonsterProps> = ({ box, monster: { id } }) => {
+const Monster: FunctionComponent<MonsterProps> = ({
+  box,
+  monster: { id, number },
+}) => {
   const { width, height } = box.dimensions;
   const side = Math.min(width, height);
   const center = getCenter(box);
@@ -36,13 +39,9 @@ const Monster: FunctionComponent<MonsterProps> = ({ box, monster: { id } }) => {
   const gridSize = useGridSize();
 
   return (
-    <Rect
+    <Group
       x={x}
       y={y}
-      width={width}
-      height={height}
-      fill="orange"
-      stroke="white"
       draggable
       onDragEnd={(e) => {
         e.cancelBubble = true; // avoid dragging the board
@@ -53,7 +52,26 @@ const Monster: FunctionComponent<MonsterProps> = ({ box, monster: { id } }) => {
 
         render(); // to snap back if dropped in an invalid spot
       }}
-    />
+    >
+      <Rect
+        x={0}
+        y={0}
+        width={width}
+        height={height}
+        fill="orange"
+        stroke="white"
+      />
+      <Text
+        x={0}
+        y={0}
+        width={width}
+        height={height}
+        text={number.toString()}
+        align="center"
+        verticalAlign="middle"
+        fontStyle="bold"
+      />
+    </Group>
   );
 };
 
