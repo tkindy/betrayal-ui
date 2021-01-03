@@ -126,6 +126,7 @@ export interface GameUpdate {
   roomStack: RoomStackState;
   drawnCard: Card | null;
   latestRoll: number[] | null;
+  monsters: Monster[];
 }
 
 export interface Monster {
