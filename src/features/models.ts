@@ -133,3 +133,7 @@ export interface Monster {
   number: number;
   loc: GridLoc;
 }
+
+export type Agent =
+  | (Player & { type: 'player' })
+  | (Monster & { type: 'monster' });

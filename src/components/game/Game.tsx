@@ -5,7 +5,7 @@ import { ReactReduxContext, useDispatch, useSelector } from 'react-redux';
 import { useWindowDimensions } from '../windowDimensions';
 import { getRooms, moveBoard } from '../../features/board';
 import { RootState } from '../../store';
-import Players from './players/Players';
+import Agents from './players/Agents';
 import Sidebar from './sidebar/Sidebar';
 import { RouteComponentProps, useNavigate } from '@reach/router';
 import { joinGame } from '../../features/game';
@@ -71,7 +71,7 @@ const Game: FC<GameProps> = ({ gameId }) => {
               >
                 <Rect x={x} y={y} width={width} height={height} />
                 <Board />
-                <Players />
+                <Agents />
                 <Group name="overlay" />
               </Layer>
               <Layer>
