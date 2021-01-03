@@ -50,6 +50,7 @@ interface RoomCore {
 }
 
 export interface Room extends RoomCore {
+  id: number;
   loc: GridLoc;
   description?: string;
 }

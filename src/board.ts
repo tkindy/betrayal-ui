@@ -1,4 +1,4 @@
-import { GridLoc } from './components/game/board/grid';
+import { GridLoc, toString } from './components/game/board/grid';
 import { Direction } from './components/game/room/Room';
 import { Room as RoomModel } from './features/models';
 import { buildCartMap, CartMap, getXY } from './map';
@@ -64,7 +64,7 @@ export const findOpenNeighbors: (map: BoardMap) => Neighbor[] = (map) => {
     .flatMap(getNeighbors)
     .filter(({ loc }) => isOpen(loc, map));
 
-  const locIndex = index(openNeighbors, (neighbor) => neighbor.loc);
+  const locIndex = index(openNeighbors, (neighbor) => toString(neighbor.loc));
 
   return Array.from(locIndex.values()).map((neighbors) =>
     neighbors.reduce(({ loc, from }, cur) => {

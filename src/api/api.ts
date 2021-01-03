@@ -255,3 +255,23 @@ export const moveMonster: (
 
   return response.data;
 };
+
+export const moveRoom: (
+  gameId: string,
+  roomId: number,
+  loc: GridLoc
+) => Promise<void> = async (gameId, roomId, loc) => {
+  await axios.post<void>(
+    buildApiUrl(`/games/${gameId}/rooms/${roomId}/move`),
+    loc
+  );
+};
+
+export const rotateRoom: (
+  gameId: string,
+  roomId: number
+) => Promise<void> = async (gameId, roomId) => {
+  await axios.post<void>(
+    buildApiUrl(`/games/${gameId}/rooms/${roomId}/rotate`)
+  );
+};

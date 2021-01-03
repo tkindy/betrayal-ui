@@ -2,12 +2,15 @@ import React, { FunctionComponent, useState } from 'react';
 import { Group, Text } from 'react-konva';
 import Room from '../room/Room';
 import RoomName from '../room/RoomName';
-import { useGridBox } from './grid';
+import { pointToGridLoc, useGridBox, useGridSize } from './grid';
 import { Room as RoomModel } from '../../../features/models';
 import { BoundingBox, Dimensions, getRoomDetailsBox } from '../../layout';
 import RoomFeatures from '../room/RoomFeatures';
-import { translate } from '../../geometry';
+import { Point, subtract, translate } from '../../geometry';
 import Hovercard, { CardDirection } from '../../Hovercard';
+import { useDispatch } from 'react-redux';
+import { useRender } from '../../hooks';
+import { moveRoom, rotateRoom } from '../../../features/board';
 
 const hovercardDimensions: Dimensions = { width: 200, height: 200 };
 
@@ -61,13 +64,13 @@ const RoomHovercard: FunctionComponent<RoomHovercardProps> = ({
 };
 
 const BoardRoom: FunctionComponent<RoomModel> = (room) => {
-  const { name, loc, doorDirections, features, barrier } = room;
+  const { id, name, loc, doorDirections, features, barrier } = room;
   const box = useGridBox(loc);
   const detailsBox = getRoomDetailsBox(box);
   const {
-    topLeft: detailsTopLeft,
     dimensions: { width: detailsWidth, height: detailsHeight },
   } = detailsBox;
+  const detailsTopLeft = subtract(detailsBox.topLeft, box.topLeft);
   const nameBox = {
     topLeft: detailsTopLeft,
     dimensions: { width: detailsWidth, height: detailsHeight / 2 },
@@ -77,15 +80,41 @@ const BoardRoom: FunctionComponent<RoomModel> = (room) => {
     dimensions: { width: detailsWidth, height: detailsHeight / 2 },
   };
   const [hovered, setHovered] = useState(false);
+  const dispatch = useDispatch();
+  const render = useRender();
+  const gridSize = useGridSize();
 
   return (
     <Group>
       <Group
+        x={box.topLeft.x}
+        y={box.topLeft.y}
+        width={box.dimensions.width}
+        height={box.dimensions.height}
         onTap={() => setHovered(!hovered)}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={() => setHovered(false)}
+        draggable
+        onDragStart={() => setHovered(false)}
+        onDragEnd={(e) => {
+          e.cancelBubble = true; // avoid dragging the board
+
+          const center: Point = {
+            x: e.target.position().x + box.dimensions.width / 2,
+            y: e.target.position().y + box.dimensions.height / 2,
+          };
+
+          dispatch(moveRoom({ id, loc: pointToGridLoc(center, gridSize) }));
+
+          render(); // to snap back if dropped in an invalid spot
+        }}
+        onDblClick={() => dispatch(rotateRoom({ id }))}
+        onDblTap={() => dispatch(rotateRoom({ id }))}
       >
-        <Room box={box} doorDirections={doorDirections} />
+        <Room
+          box={{ ...box, topLeft: { x: 0, y: 0 } }}
+          doorDirections={doorDirections}
+        />
         <RoomName box={nameBox} name={name} />
         <RoomFeatures
           box={featuresBox}

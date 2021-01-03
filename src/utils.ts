@@ -11,10 +11,10 @@ export const partition: <T>(ts: T[], size: number) => T[][] = <T>(
   }, [] as T[][]);
 };
 
-export const index: <T, K>(ts: T[], by: (t: T) => K) => Map<K, T[]> = <T, K>(
+export const index: <T, K extends number | string | boolean>(
   ts: T[],
   by: (t: T) => K
-) => {
+) => Map<K, T[]> = <T, K>(ts: T[], by: (t: T) => K) => {
   return ts.reduce((map, t) => {
     const key = by(t);
     const group = map.get(key) || [];
