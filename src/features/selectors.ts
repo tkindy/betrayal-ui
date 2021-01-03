@@ -40,7 +40,12 @@ export const getPlayers = createSelector(
   (players) => players && sortBy(players, (p) => p.characterName.toLowerCase())
 );
 
-export const getMonsters = (state: RootState) => state.monsters.monsters;
+const getMonstersRaw = (state: RootState) => state.monsters.monsters;
+
+export const getMonsters = createSelector(
+  getMonstersRaw,
+  (monsters) => monsters && sortBy(monsters, (m) => m.number)
+);
 
 export const getAgentMap = createSelector<
   RootState,

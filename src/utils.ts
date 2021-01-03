@@ -29,10 +29,10 @@ export const choices: <T>(array: T[], n: number) => T[] = (array, n) => {
     .map((index) => array[index]);
 };
 
-export const sortBy: <T>(array: T[], select: (t: T) => string) => T[] = (
-  array,
-  select
-) => {
+export const sortBy: <T>(
+  array: T[],
+  select: (t: T) => string | number
+) => T[] = (array, select) => {
   const mapped = array.map((t, i) => {
     return { index: i, value: select(t) };
   });
