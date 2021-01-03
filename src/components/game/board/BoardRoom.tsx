@@ -61,7 +61,7 @@ const RoomHovercard: FunctionComponent<RoomHovercardProps> = ({
 };
 
 const BoardRoom: FunctionComponent<RoomModel> = (room) => {
-  const { name, loc, doorDirections, features } = room;
+  const { name, loc, doorDirections, features, barrier } = room;
   const box = useGridBox(loc);
   const detailsBox = getRoomDetailsBox(box);
   const {
@@ -87,7 +87,10 @@ const BoardRoom: FunctionComponent<RoomModel> = (room) => {
       >
         <Room box={box} doorDirections={doorDirections} />
         <RoomName box={nameBox} name={name} />
-        <RoomFeatures box={featuresBox} features={features} />
+        <RoomFeatures
+          box={featuresBox}
+          features={features.concat(barrier?.features || [])}
+        />
       </Group>
       <RoomHovercard hovered={hovered} roomBox={box} room={room} />
     </Group>

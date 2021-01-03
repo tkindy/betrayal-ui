@@ -38,10 +38,15 @@ export enum Feature {
   DUMBWAITER = 'DUMBWAITER',
 }
 
+export interface Barrier {
+  features: Feature[];
+}
+
 interface RoomCore {
   name: string;
   doorDirections: Direction[];
   features: Feature[];
+  barrier?: Barrier;
 }
 
 export interface Room extends RoomCore {

@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react';
 import { Group } from 'react-konva';
 import { useDispatch, useSelector } from 'react-redux';
 import { flippedRoomDropped } from '../../../../features/board';
-import { Feature } from '../../../../features/models';
+import { Feature, FlippedRoom } from '../../../../features/models';
 import { RootState } from '../../../../store';
 import { translate } from '../../../geometry';
 import { useRender } from '../../../hooks';
@@ -14,16 +14,12 @@ import RoomName from '../../room/RoomName';
 
 interface FlippedStackRoomProps {
   box: BoundingBox;
-  name: string;
-  doorDirections: Direction[];
-  features: Feature[];
+  flippedRoom: FlippedRoom;
 }
 
 const FlippedStackRoom: FunctionComponent<FlippedStackRoomProps> = ({
   box,
-  name,
-  doorDirections,
-  features,
+  flippedRoom: { name, doorDirections, features, barrier },
 }) => {
   const { height: doorHeight } = getDoorDimensions(box.dimensions);
   const {
@@ -70,7 +66,10 @@ const FlippedStackRoom: FunctionComponent<FlippedStackRoomProps> = ({
     >
       <Room box={box} doorDirections={doorDirections} />
       <RoomName box={nameBox} name={name} />
-      <RoomFeatures box={featuresBox} features={features} />
+      <RoomFeatures
+        box={featuresBox}
+        features={features.concat(barrier?.features || [])}
+      />
     </Group>
   );
 };
