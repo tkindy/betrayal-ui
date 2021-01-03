@@ -12,7 +12,7 @@ import { useDispatch } from 'react-redux';
 import { useRender } from '../../hooks';
 import { moveRoom, rotateRoom } from '../../../features/board';
 
-const hovercardDimensions: Dimensions = { width: 200, height: 200 };
+const hovercardDimensions: Dimensions = { width: 200, height: 250 };
 
 interface RoomHovercardProps {
   hovered: boolean;
