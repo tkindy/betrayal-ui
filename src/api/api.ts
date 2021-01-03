@@ -12,7 +12,6 @@ import {
   TraitName,
 } from '../features/models';
 import axios from 'axios';
-import game from '../features/game';
 
 const buildApiUrl = (path: string) => process.env.REACT_APP_API_ROOT + path;
 
