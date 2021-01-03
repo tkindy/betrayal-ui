@@ -17,7 +17,6 @@ export const getLatestRoll = createAsyncThunk(
 export const rollDice = createAsyncThunk(
   'rollDice',
   async (payload: RollDicePayload, { getState }) => {
-    debugger;
     return api.rollDice(getGameId(getState()), payload.numDice);
   }
 );
