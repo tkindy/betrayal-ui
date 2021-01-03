@@ -67,6 +67,10 @@ const monstersSlice = createSlice({
         state.monsters = monsters;
       })
       .addCase(addMonster.fulfilled, (state, { payload: monster }) => {
+        if (state.monsters?.map((m) => m.id).includes(monster.id)) {
+          return;
+        }
+
         state.monsters = (state.monsters || []).concat(monster);
       })
       .addCase(moveMonster.fulfilled, (state, { payload: monster }) => {
