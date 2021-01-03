@@ -33,3 +33,25 @@
 .inventoryCard.OMEN {
   background-color: #a5c96c;
 }
+
+.traitValue {
+  padding: 5px;
+  border: 0;
+}
+
+.traitValue:hover {
+  background-color: lightgray;
+}
+
+.traitValue.active {
+  font-weight: bold;
+  color: red;
+}
+
+.traitValue.starting {
+  background-color: lightblue;
+}
+
+.traitValue.starting:hover {
+  background-color: lightgray;
+}

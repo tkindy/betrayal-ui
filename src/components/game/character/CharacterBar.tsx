@@ -168,19 +168,26 @@ const Trait: FunctionComponent<TraitProps> = ({ name, trait, column, row }) => {
   return (
     <div style={{ gridRow: row, gridColumn: column, padding: '5px' }}>
       <div style={{ textAlign: 'center' }}>{name.toUpperCase()}</div>
-      {trait.scale.map((value, index) => (
-        <button
-          onClick={() => dispatch(setTrait({ trait: name, index }))}
-          style={{
-            padding: '5px',
-            fontWeight: index === trait.index ? 'bold' : 'normal',
-            color: index === trait.index ? 'red' : 'black',
-            border: 0,
-          }}
-        >
-          {value}
-        </button>
-      ))}
+      {trait.scale.map((value, index) => {
+        const starting = index === trait.startingIndex;
+        const active = index === trait.index;
+        const className = [
+          'traitValue',
+          starting && 'starting',
+          active && 'active',
+        ]
+          .filter((c) => c)
+          .join(' ');
+
+        return (
+          <button
+            className={className}
+            onClick={() => dispatch(setTrait({ trait: name, index }))}
+          >
+            {value}
+          </button>
+        );
+      })}
     </div>
   );
 };

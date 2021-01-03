@@ -17,6 +17,7 @@ export interface Trait {
   value: number;
   index: number;
   scale: number[];
+  startingIndex: number;
 }
 
 export interface Player {
