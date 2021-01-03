@@ -127,3 +127,13 @@ export interface GameUpdate {
   drawnCard: Card | null;
   latestRoll: number[] | null;
 }
+
+export interface Monster {
+  id: number;
+  number: number;
+  loc: GridLoc;
+}
+
+export type Agent =
+  | (Player & { type: 'player' })
+  | (Monster & { type: 'monster' });

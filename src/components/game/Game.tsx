@@ -5,7 +5,7 @@ import { ReactReduxContext, useDispatch, useSelector } from 'react-redux';
 import { useWindowDimensions } from '../windowDimensions';
 import { getRooms, moveBoard } from '../../features/board';
 import { RootState } from '../../store';
-import Players from './players/Players';
+import Agents from './players/Agents';
 import Sidebar from './sidebar/Sidebar';
 import { RouteComponentProps, useNavigate } from '@reach/router';
 import { joinGame } from '../../features/game';
@@ -16,6 +16,7 @@ import { getDrawnCard } from '../../features/cardStacks';
 import CharacterBar from './character/CharacterBar';
 import { connect, disconnect } from '@giantmachines/redux-websocket/dist';
 import { getLatestRoll } from '../../features/diceRolls';
+import { getMonsters } from '../../features/monsters';
 
 const buildWebsocketUrl = (gameId: string) => {
   const httpRoot = process.env.REACT_APP_API_ROOT!!;
@@ -43,6 +44,7 @@ const Game: FC<GameProps> = ({ gameId }) => {
     dispatch(connect(buildWebsocketUrl(gameId)));
     dispatch(getRooms());
     dispatch(getPlayers());
+    dispatch(getMonsters());
     dispatch(getRoomStack());
     dispatch(getDrawnCard());
     dispatch(getLatestRoll());
@@ -71,7 +73,7 @@ const Game: FC<GameProps> = ({ gameId }) => {
               >
                 <Rect x={x} y={y} width={width} height={height} />
                 <Board />
-                <Players />
+                <Agents />
                 <Group name="overlay" />
               </Layer>
               <Layer>

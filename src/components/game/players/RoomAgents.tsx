@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useState } from 'react';
-import { Circle, Group } from 'react-konva';
+import { Circle, Group, Rect, Text } from 'react-konva';
 import { partition } from '../../../utils';
 import { translate } from '../../geometry';
 import {
@@ -8,12 +8,72 @@ import {
   useGridBox,
   useGridSize,
 } from '../board/grid';
-import { Player as PlayerModel } from '../../../features/models';
+import {
+  Player as PlayerModel,
+  Agent as AgentModel,
+  Monster as MonsterModel,
+} from '../../../features/models';
 import { useDispatch } from 'react-redux';
 import { playerDropped, switchSelectedPlayer } from '../../../features/players';
 import { BoundingBox, getCenter, getPlayersBox } from '../../layout';
 import { useRender } from '../../hooks';
 import PlayerHovercard from './PlayerHovercard';
+import { monsterDropped } from '../../../features/monsters';
+
+interface MonsterProps {
+  box: BoundingBox;
+  monster: MonsterModel;
+}
+
+const Monster: FunctionComponent<MonsterProps> = ({
+  box,
+  monster: { id, number },
+}) => {
+  const { width, height } = box.dimensions;
+  const side = Math.min(width, height);
+  const center = getCenter(box);
+  const { x, y } = translate(center, side / -2, side / -2);
+
+  const dispatch = useDispatch();
+  const render = useRender();
+  const gridSize = useGridSize();
+
+  return (
+    <Group
+      x={x}
+      y={y}
+      draggable
+      onDragEnd={(e) => {
+        e.cancelBubble = true; // avoid dragging the board
+
+        dispatch(
+          monsterDropped(id, pointToGridLoc(e.target.position(), gridSize))
+        );
+
+        render(); // to snap back if dropped in an invalid spot
+      }}
+    >
+      <Rect
+        x={0}
+        y={0}
+        width={width}
+        height={height}
+        fill="orange"
+        stroke="white"
+      />
+      <Text
+        x={0}
+        y={0}
+        width={width}
+        height={height}
+        text={number.toString()}
+        align="center"
+        verticalAlign="middle"
+        fontStyle="bold"
+      />
+    </Group>
+  );
+};
 
 interface PlayerProps {
   box: BoundingBox;
@@ -61,13 +121,27 @@ const Player: FunctionComponent<PlayerProps> = ({ box, player }) => {
   );
 };
 
-interface PlayersRowProps {
+interface AgentProps {
   box: BoundingBox;
-  players: PlayerModel[];
+  agent: AgentModel;
 }
 
-const PlayersRow: FunctionComponent<PlayersRowProps> = ({
-  players,
+const Agent: FunctionComponent<AgentProps> = ({ box, agent }) => {
+  switch (agent.type) {
+    case 'player':
+      return <Player box={box} player={agent} />;
+    case 'monster':
+      return <Monster box={box} monster={agent} />;
+  }
+};
+
+interface AgentsRowProps {
+  box: BoundingBox;
+  agents: AgentModel[];
+}
+
+const AgentsRow: FunctionComponent<AgentsRowProps> = ({
+  agents,
   box: {
     topLeft,
     dimensions: { width, height },
@@ -76,8 +150,8 @@ const PlayersRow: FunctionComponent<PlayersRowProps> = ({
   const playerWidth = width / 6;
   const playerHeight = playerWidth;
   const playerSpacing = playerWidth / 2;
-  const totalPlayersWidth = players.length * playerWidth;
-  const totalInterPlayerDistance = (players.length - 1) * playerSpacing;
+  const totalPlayersWidth = agents.length * playerWidth;
+  const totalInterPlayerDistance = (agents.length - 1) * playerSpacing;
   const firstTopLeft = translate(
     topLeft,
     (width - (totalPlayersWidth + totalInterPlayerDistance)) / 2,
@@ -85,9 +159,9 @@ const PlayersRow: FunctionComponent<PlayersRowProps> = ({
   );
   return (
     <Group>
-      {players.map((player, i) => (
-        <Player
-          key={player.color}
+      {agents.map((agent, i) => (
+        <Agent
+          key={agent.type + agent.id}
           box={{
             topLeft: translate(
               firstTopLeft,
@@ -96,20 +170,20 @@ const PlayersRow: FunctionComponent<PlayersRowProps> = ({
             ),
             dimensions: { width: playerWidth, height: playerHeight },
           }}
-          player={player}
+          agent={agent}
         />
       ))}
     </Group>
   );
 };
 
-export interface RoomPlayersProps {
-  players: PlayerModel[];
+export interface RoomAgentsProps {
+  agents: AgentModel[];
   roomLoc: GridLoc;
 }
 
-const RoomPlayers: FunctionComponent<RoomPlayersProps> = ({
-  players,
+const RoomAgents: FunctionComponent<RoomAgentsProps> = ({
+  agents,
   roomLoc,
 }) => {
   const roomBox = useGridBox(roomLoc);
@@ -118,23 +192,23 @@ const RoomPlayers: FunctionComponent<RoomPlayersProps> = ({
     dimensions: { width, height },
   } = getPlayersBox(roomBox);
 
-  const byRow = partition(players, 3);
+  const byRow = partition(agents, 3);
   const rowHeight = height / byRow.length;
 
   return (
     <Group>
       {byRow.map((row, i) => (
-        <PlayersRow
+        <AgentsRow
           key={i}
           box={{
             topLeft: translate(topLeft, 0, i * rowHeight),
             dimensions: { width, height: rowHeight },
           }}
-          players={row}
+          agents={row}
         />
       ))}
     </Group>
   );
 };
 
-export default RoomPlayers;
+export default RoomAgents;
