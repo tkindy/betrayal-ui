@@ -1,12 +1,9 @@
-import React, { CSSProperties, FunctionComponent } from 'react';
+import React, { FunctionComponent } from 'react';
 import { useDispatch } from 'react-redux';
 import { drawEvent, drawItem, drawOmen } from '../../../features/cardStacks';
 import { BoundingBox } from '../../layout';
 import DOMPortal from '../portal/DOMPortal';
-
-const buttonStyle: CSSProperties = {
-  flex: '0 1 50px',
-};
+import './DrawControl.css';
 
 interface DrawButtonProps {
   entity: string;
@@ -17,7 +14,7 @@ const DrawButton: FunctionComponent<DrawButtonProps> = ({ entity, thunk }) => {
   const dispatch = useDispatch();
   return (
     <button
-      style={buttonStyle}
+      className="drawCardButton"
       onClick={() => dispatch(thunk())}
     >{`Draw ${entity}`}</button>
   );

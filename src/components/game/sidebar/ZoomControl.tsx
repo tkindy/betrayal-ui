@@ -1,8 +1,9 @@
-import React, { CSSProperties, FunctionComponent } from 'react';
+import React, { FunctionComponent } from 'react';
 import { useDispatch } from 'react-redux';
 import { zoomIn, zoomOut } from '../../../features/zoom';
 import { BoundingBox } from '../../layout';
 import DOMPortal from '../portal/DOMPortal';
+import './ZoomControl.css';
 
 interface ZoomControlProps {
   box: BoundingBox;
@@ -15,10 +16,6 @@ const ZoomControl: FunctionComponent<ZoomControlProps> = ({
   },
 }) => {
   const dispatch = useDispatch();
-  const buttonStyle: CSSProperties = {
-    flex: '0 1 50px',
-    height: '35px',
-  };
 
   return (
     <DOMPortal name="zoomControl">
@@ -34,10 +31,16 @@ const ZoomControl: FunctionComponent<ZoomControlProps> = ({
           alignItems: 'center',
         }}
       >
-        <button onClick={() => dispatch(zoomIn())} style={buttonStyle}>
+        <button
+          className="zoomButton zoomIn"
+          onClick={() => dispatch(zoomIn())}
+        >
           +
         </button>
-        <button onClick={() => dispatch(zoomOut())} style={buttonStyle}>
+        <button
+          className="zoomButton zoomOut"
+          onClick={() => dispatch(zoomOut())}
+        >
           -
         </button>
       </div>
