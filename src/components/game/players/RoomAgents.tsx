@@ -1,5 +1,5 @@
 import React, { FunctionComponent, useState } from 'react';
-import { Circle, Group } from 'react-konva';
+import { Circle, Group, Rect } from 'react-konva';
 import { partition } from '../../../utils';
 import { translate } from '../../geometry';
 import {
@@ -18,14 +18,43 @@ import { playerDropped, switchSelectedPlayer } from '../../../features/players';
 import { BoundingBox, getCenter, getPlayersBox } from '../../layout';
 import { useRender } from '../../hooks';
 import PlayerHovercard from './PlayerHovercard';
+import { monsterDropped } from '../../../features/monsters';
 
 interface MonsterProps {
   box: BoundingBox;
   monster: MonsterModel;
 }
 
-const Monster: FunctionComponent<MonsterProps> = ({ box, monster }) => {
-  return null;
+const Monster: FunctionComponent<MonsterProps> = ({ box, monster: { id } }) => {
+  const { width, height } = box.dimensions;
+  const side = Math.min(width, height);
+  const center = getCenter(box);
+  const { x, y } = translate(center, side / -2, side / -2);
+
+  const dispatch = useDispatch();
+  const render = useRender();
+  const gridSize = useGridSize();
+
+  return (
+    <Rect
+      x={x}
+      y={y}
+      width={width}
+      height={height}
+      fill="orange"
+      stroke="white"
+      draggable
+      onDragEnd={(e) => {
+        e.cancelBubble = true; // avoid dragging the board
+
+        dispatch(
+          monsterDropped(id, pointToGridLoc(e.target.position(), gridSize))
+        );
+
+        render(); // to snap back if dropped in an invalid spot
+      }}
+    />
+  );
 };
 
 interface PlayerProps {

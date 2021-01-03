@@ -16,6 +16,7 @@ import { getDrawnCard } from '../../features/cardStacks';
 import CharacterBar from './character/CharacterBar';
 import { connect, disconnect } from '@giantmachines/redux-websocket/dist';
 import { getLatestRoll } from '../../features/diceRolls';
+import { getMonsters } from '../../features/monsters';
 
 const buildWebsocketUrl = (gameId: string) => {
   const httpRoot = process.env.REACT_APP_API_ROOT!!;
@@ -43,6 +44,7 @@ const Game: FC<GameProps> = ({ gameId }) => {
     dispatch(connect(buildWebsocketUrl(gameId)));
     dispatch(getRooms());
     dispatch(getPlayers());
+    dispatch(getMonsters());
     dispatch(getRoomStack());
     dispatch(getDrawnCard());
     dispatch(getLatestRoll());

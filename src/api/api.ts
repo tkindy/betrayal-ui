@@ -12,6 +12,7 @@ import {
   TraitName,
 } from '../features/models';
 import axios from 'axios';
+import game from '../features/game';
 
 const buildApiUrl = (path: string) => process.env.REACT_APP_API_ROOT + path;
 
@@ -228,6 +229,29 @@ export const getMonsters: (gameId: string) => Promise<Monster[]> = async (
 ) => {
   const response = await axios.get<Monster[]>(
     buildApiUrl(`/games/${gameId}/monsters`)
+  );
+
+  return response.data;
+};
+
+export const addMonster: (gameId: string) => Promise<Monster> = async (
+  gameId
+) => {
+  const response = await axios.post<Monster>(
+    buildApiUrl(`/games/${gameId}/monsters`)
+  );
+
+  return response.data;
+};
+
+export const moveMonster: (
+  gameId: string,
+  monsterId: number,
+  loc: GridLoc
+) => Promise<Monster> = async (gameId, monsterId, loc) => {
+  const response = await axios.post<Monster>(
+    buildApiUrl(`/games/${gameId}/monsters/${monsterId}/move`),
+    loc
   );
 
   return response.data;

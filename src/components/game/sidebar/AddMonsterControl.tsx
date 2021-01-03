@@ -1,4 +1,6 @@
 import React, { FunctionComponent } from 'react';
+import { useDispatch } from 'react-redux';
+import { addMonster } from '../../../features/monsters';
 import { BoundingBox } from '../../layout';
 import DOMPortal from '../portal/DOMPortal';
 
@@ -12,9 +14,12 @@ const AddMonsterControl: FunctionComponent<AddMonsterControlProps> = ({
     dimensions: { width, height },
   },
 }) => {
+  const dispatch = useDispatch();
+
   return (
     <DOMPortal name="addMonsterControl">
       <button
+        onClick={() => dispatch(addMonster())}
         style={{
           position: 'absolute',
           top: y + height / 4,
