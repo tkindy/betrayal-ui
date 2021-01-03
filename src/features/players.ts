@@ -17,6 +17,7 @@ import {
 import { get } from '../board';
 import { addUpdateCase, createAsyncThunk } from './utils';
 import { giveDrawnCardToPlayer } from './cardStacks';
+import { sortBy } from '../utils';
 
 export const getPlayers = createAsyncThunk(
   'players/getStatus',
@@ -132,7 +133,9 @@ const playersSlice = createSlice({
     builder
       .addCase(getPlayers.fulfilled, (state, { payload: players }) => {
         state.players = players;
-        state.selectedPlayerId = players[0].id;
+        state.selectedPlayerId = sortBy(players, (p) =>
+          p.characterName.toLowerCase()
+        )[0].id;
       })
       .addCase(movePlayer.fulfilled, (state, { payload: players }) => {
         state.players = players;

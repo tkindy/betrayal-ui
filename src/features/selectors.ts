@@ -2,6 +2,7 @@ import { createSelector } from '@reduxjs/toolkit';
 import { buildBoardMap, findOpenNeighbors } from '../board';
 import { buildMultiCartMap } from '../map';
 import { RootState } from '../store';
+import { sortBy } from '../utils';
 
 export const getGameId = (state: RootState) => {
   const { gameId } = state.game;
@@ -31,7 +32,12 @@ export const getOpenNeighbors = createSelector([getBoardMap], (map) => {
   return findOpenNeighbors(map);
 });
 
-export const getPlayers = (state: RootState) => state.players.players;
+const getPlayersRaw = (state: RootState) => state.players.players;
+
+export const getPlayers = createSelector(
+  getPlayersRaw,
+  (players) => players && sortBy(players, (p) => p.characterName.toLowerCase())
+);
 
 export const getPlayerMap = createSelector([getPlayers], (players) => {
   if (!players) {
