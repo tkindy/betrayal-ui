@@ -15,10 +15,12 @@ import axios from 'axios';
 
 const buildApiUrl = (path: string) => process.env.REACT_APP_API_ROOT + path;
 
-export const createGame: () => Promise<string> = async () => {
+export const createGame: (numPlayers: number) => Promise<string> = async (
+  numPlayers
+) => {
   const response = await axios.post<{ id: string }>(buildApiUrl('/games'), {
     name: 'Foo',
-    numPlayers: 6,
+    numPlayers,
   });
   return response.data.id;
 };

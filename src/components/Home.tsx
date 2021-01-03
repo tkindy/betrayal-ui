@@ -1,5 +1,5 @@
 import './Home.css';
-import React, { FC, useState } from 'react';
+import React, { FC, useRef, useState } from 'react';
 import { RouteComponentProps, useNavigate } from '@reach/router';
 import { createGame } from '../api/api';
 
@@ -8,6 +8,7 @@ interface HomeProps extends RouteComponentProps {}
 const Home: FC<HomeProps> = () => {
   const navigate = useNavigate();
   const [gameId, setGameId] = useState('');
+  const numPlayersRef = useRef<HTMLInputElement>(null);
 
   const handleJoin = () => {
     navigate(`/game/${gameId}`);
@@ -17,15 +18,30 @@ const Home: FC<HomeProps> = () => {
     <div>
       <h1>Betrayal at House on the Hill</h1>
       <div className="container">
-        <button
-          className="new-game"
-          onClick={async () => {
-            const gameId = await createGame();
-            navigate(`/game/${gameId}`);
-          }}
-        >
+        <input
+          className="num-players"
+          form="new-game-form"
+          placeholder="Number of players"
+          required
+          type="number"
+          min="3"
+          max="6"
+          ref={numPlayersRef}
+        />
+        <button className="new-game" form="new-game-form">
           New game
         </button>
+        <form
+          id="new-game-form"
+          onSubmit={async (e) => {
+            e.preventDefault();
+
+            const gameId = await createGame(
+              parseInt(numPlayersRef.current!!.value)
+            );
+            navigate(`/game/${gameId}`);
+          }}
+        />
 
         <input
           className="join-game"

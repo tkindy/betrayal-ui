@@ -10,8 +10,14 @@ h1 {
   margin: auto;
 }
 
+input.num-players {
+  grid-column: 1 / 2;
+  grid-row: 1 / 2;
+  text-align: center;
+}
+
 button.new-game {
-  grid-column: 1 / 5;
+  grid-column: 3 / 4;
   grid-row: 1 / 2;
 }
 
