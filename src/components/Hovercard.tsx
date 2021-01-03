@@ -122,7 +122,7 @@ interface HovercardProps {
   targetBox: BoundingBox;
   contentDimensions: Dimensions;
   direction: CardDirection;
-  renderContent: (box: BoundingBox) => ReactElement<any, any>;
+  renderContent: (box: BoundingBox) => ReactElement<any, any> | null;
 }
 
 const Hovercard: FunctionComponent<HovercardProps> = ({

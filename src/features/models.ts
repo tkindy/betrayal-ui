@@ -46,6 +46,7 @@ interface RoomCore {
 
 export interface Room extends RoomCore {
   loc: GridLoc;
+  description?: string;
 }
 
 export enum Floor {
