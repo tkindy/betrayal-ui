@@ -2,13 +2,13 @@ import React, { FunctionComponent } from 'react';
 import { Group } from 'react-konva';
 import { useDispatch, useSelector } from 'react-redux';
 import { flippedRoomDropped } from '../../../../features/board';
-import { Feature, FlippedRoom } from '../../../../features/models';
+import { FlippedRoom } from '../../../../features/models';
 import { RootState } from '../../../../store';
 import { translate } from '../../../geometry';
 import { useRender } from '../../../hooks';
 import { BoundingBox, getDoorDimensions } from '../../../layout';
 import { useGridSize, windowToGridLoc } from '../../board/grid';
-import Room, { Direction } from '../../room/Room';
+import Room from '../../room/Room';
 import RoomFeatures from '../../room/RoomFeatures';
 import RoomName from '../../room/RoomName';
 
