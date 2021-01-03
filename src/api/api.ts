@@ -4,6 +4,7 @@ import {
   EventCard,
   FlippedRoom,
   ItemCard,
+  Monster,
   OmenCard,
   Player,
   Room,
@@ -217,6 +218,16 @@ export const getLatestRoll: (
 ) => Promise<number[] | null> = async (gameId) => {
   const response = await axios.get<number[]>(
     buildApiUrl(`/games/${gameId}/dice`)
+  );
+
+  return response.data;
+};
+
+export const getMonsters: (gameId: string) => Promise<Monster[]> = async (
+  gameId
+) => {
+  const response = await axios.get<Monster[]>(
+    buildApiUrl(`/games/${gameId}/monsters`)
   );
 
   return response.data;

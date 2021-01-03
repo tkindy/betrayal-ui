@@ -127,3 +127,9 @@ export interface GameUpdate {
   drawnCard: Card | null;
   latestRoll: number[] | null;
 }
+
+export interface Monster {
+  id: number;
+  number: number;
+  loc: GridLoc;
+}
