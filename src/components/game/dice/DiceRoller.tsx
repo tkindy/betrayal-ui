@@ -1,6 +1,8 @@
 import React, { FC } from 'react';
 
-const DiceRoller: FC<{}> = () => {
+interface DiceRollerProps {}
+
+const DiceRoller: FC<DiceRollerProps> = () => {
   return null;
 };
 
