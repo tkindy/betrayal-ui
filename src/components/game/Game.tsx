@@ -17,6 +17,7 @@ import CharacterBar from './character/CharacterBar';
 import { connect, disconnect } from '@giantmachines/redux-websocket/dist';
 import { getLatestRoll } from '../../features/diceRolls';
 import { getMonsters } from '../../features/monsters';
+import Dice from './dice/Dice';
 
 const buildWebsocketUrl = (gameId: string) => {
   const httpRoot = process.env.REACT_APP_API_ROOT!!;
@@ -85,6 +86,7 @@ const Game: FC<GameProps> = ({ gameId }) => {
         )}
       </ReactReduxContext.Consumer>
       <DrawnCard />
+      <Dice />
     </div>
   );
 };

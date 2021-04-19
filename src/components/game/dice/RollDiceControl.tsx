@@ -4,7 +4,6 @@ import { rollDice } from '../../../features/diceRolls';
 import { RootState } from '../../../store';
 import { translate } from '../../geometry';
 import { BoundingBox } from '../../layout';
-import DOMPortal from '../portal/DOMPortal';
 
 interface DieProps {
   value: number;
@@ -119,7 +118,7 @@ const RollDiceControl: FunctionComponent<RollDiceControlProps> = ({
   const [numDice, setNumDice] = useState<number>(8);
 
   return (
-    <DOMPortal name="rollDiceControl">
+    <div>
       <div
         style={{
           position: 'absolute',
@@ -148,7 +147,7 @@ const RollDiceControl: FunctionComponent<RollDiceControlProps> = ({
       </div>
 
       <Dice values={roll} box={diceBox} />
-    </DOMPortal>
+    </div>
   );
 };
 
