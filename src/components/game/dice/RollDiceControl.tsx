@@ -6,16 +6,13 @@ import { BoundingBox, Dimensions } from '../../layout';
 import zero from './zero.svg';
 import one from './one.svg';
 import two from './two.svg';
+import './RollDiceControl.css';
 
 interface DieProps {
   value: number;
-  dimensions: Dimensions;
 }
 
-const Die: FunctionComponent<DieProps> = ({
-  value,
-  dimensions: { width, height },
-}) => {
+const Die: FunctionComponent<DieProps> = ({ value }) => {
   let src;
   switch (value) {
     case 0:
@@ -29,43 +26,18 @@ const Die: FunctionComponent<DieProps> = ({
       break;
   }
 
-  const padding = width * 0.05;
-  const innerWidth = width - 2 * padding;
-  const innerHeight = height - 2 * padding;
-
-  return (
-    <img
-      src={src}
-      className="dieValue"
-      style={{ width: innerWidth, height: innerHeight, padding }}
-    />
-  );
+  return <img src={src} className="die-value" />;
 };
 
 interface DiceRowProps {
   values: number[];
-  box: BoundingBox;
-  dieDimensions: Dimensions;
 }
 
-const DiceRow: FunctionComponent<DiceRowProps> = ({
-  values,
-  box: {
-    topLeft: { x, y },
-    dimensions: { width, height },
-  },
-  dieDimensions,
-}) => {
+const DiceRow: FunctionComponent<DiceRowProps> = ({ values }) => {
   return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'space-evenly',
-      }}
-    >
+    <div className="dice-row">
       {values.map((value) => (
-        <Die value={value} dimensions={dieDimensions} />
+        <Die value={value} />
       ))}
     </div>
   );
@@ -73,49 +45,24 @@ const DiceRow: FunctionComponent<DiceRowProps> = ({
 
 interface DiceProps {
   values?: number[];
-  dimensions: Dimensions;
 }
 
-const Dice: FunctionComponent<DiceProps> = ({
-  values,
-  dimensions: { width, height },
-}) => {
-  const dieDimensions: Dimensions = { width: width / 4, height: height / 2 };
-
+const Dice: FunctionComponent<DiceProps> = ({ values }) => {
   let rows;
   if (values) {
     rows = [
-      <DiceRow
-        values={values.slice(0, 4)}
-        box={{
-          topLeft: { x: 0, y: 0 },
-          dimensions: { width, height: height / 2 },
-        }}
-        dieDimensions={dieDimensions}
-      />,
-      <DiceRow
-        values={values.slice(4, 8)}
-        box={{
-          topLeft: { x: 0, y: height / 2 },
-          dimensions: { width, height: height / 2 },
-        }}
-        dieDimensions={dieDimensions}
-      />,
+      <DiceRow values={values.slice(0, 4)} />,
+      <DiceRow values={values.slice(4, 8)} />,
     ];
   }
 
   return <div>{rows}</div>;
 };
 
-interface RollDiceControlProps {
-  dimensions: Dimensions;
-}
+interface RollDiceControlProps {}
 
-const RollDiceControl: FunctionComponent<RollDiceControlProps> = ({
-  dimensions: { width, height },
-}) => {
+const RollDiceControl: FunctionComponent<RollDiceControlProps> = ({}) => {
   const roll = useSelector((state: RootState) => state.diceRolls.roll);
-  const diceDimensions: Dimensions = { width, height: (5 * height) / 8 };
   const dispatch = useDispatch();
   const [numDice, setNumDice] = useState<number>(8);
 
@@ -144,7 +91,7 @@ const RollDiceControl: FunctionComponent<RollDiceControlProps> = ({
         </button>
       </div>
 
-      <Dice values={roll} dimensions={diceDimensions} />
+      <Dice values={roll} />
     </div>
   );
 };

@@ -8,13 +8,7 @@ const Dice: FC<{}> = () => {
   return (
     <div className="dice-container">
       <DiceButton expanded={expanded} onClick={() => setExpanded(!expanded)} />
-      <DiceRoller
-        box={{
-          topLeft: { x: 10, y: 70 },
-          dimensions: { width: 150, height: 150 },
-        }}
-        expanded={expanded}
-      />
+      <DiceRoller expanded={expanded} />
     </div>
   );
 };
