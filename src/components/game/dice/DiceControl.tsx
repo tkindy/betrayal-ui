@@ -73,24 +73,18 @@ const DiceControl: FunctionComponent<RollDiceControlProps> = ({ expanded }) => {
 
   return (
     <div className="dice-background">
-      <div
-        style={{
-          display: 'flex',
-          justifyContent: 'space-around',
-          padding: 5,
-        }}
-      >
+      <div className="dice-controls">
         <input
+          className="dice-count"
           type="number"
           min="1"
           max="8"
           value={numDice}
           onChange={(e) => setNumDice(parseInt(e.target.value))}
-          style={{ flex: '0 1 20%', minWidth: '0px' }}
         />
         <button
+          className="roll-dice-button"
           onClick={() => dispatch(rollDice({ numDice }))}
-          style={{ flex: '0 1 50%' }}
         >
           Roll
         </button>
