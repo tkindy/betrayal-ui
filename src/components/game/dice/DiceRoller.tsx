@@ -16,7 +16,7 @@ const DiceRoller: FC<DiceRollerProps> = ({ box, expanded }) => {
   const { x, y } = topLeft;
   const padding = 10;
   const controlBox: BoundingBox = {
-    topLeft: translate(topLeft, padding, padding),
+    topLeft: { x: padding, y: padding },
     dimensions: { width: width - 2 * padding, height: height - 2 * padding },
   };
 
