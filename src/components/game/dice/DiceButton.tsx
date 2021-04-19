@@ -6,6 +6,7 @@ import { BoundingBox } from '../../layout';
 interface DiceButtonProps {
   box: BoundingBox;
   expanded: boolean;
+  onClick: () => void;
 }
 
 const DiceButton: FC<DiceButtonProps> = ({
@@ -14,6 +15,7 @@ const DiceButton: FC<DiceButtonProps> = ({
     dimensions: { width, height },
   },
   expanded,
+  onClick,
 }) => {
   const dieWidth = width / 2;
   const dieHeight = dieWidth;
@@ -35,6 +37,7 @@ const DiceButton: FC<DiceButtonProps> = ({
         height,
         cursor: 'pointer',
       }}
+      onClick={onClick}
     >
       <img
         src={imgSrc}
@@ -46,6 +49,7 @@ const DiceButton: FC<DiceButtonProps> = ({
         }}
         width={dieWidth}
         height={dieHeight}
+        onClick={onClick}
       />
     </div>
   );

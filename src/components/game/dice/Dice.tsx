@@ -6,7 +6,8 @@ const Dice: FC<{}> = () => {
   return (
     <DiceButton
       box={{ topLeft: { x: 10, y: 10 }, dimensions: { width: 60, height: 60 } }}
-      expanded
+      expanded={expanded}
+      onClick={() => setExpanded(!expanded)}
     />
   );
 };
