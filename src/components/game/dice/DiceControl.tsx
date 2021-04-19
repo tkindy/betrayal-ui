@@ -13,19 +13,23 @@ interface DieProps {
 
 const Die: FunctionComponent<DieProps> = ({ value }) => {
   let src;
+  let alt;
   switch (value) {
     case 0:
       src = zero;
+      alt = 'zero';
       break;
     case 1:
       src = one;
+      alt = 'one';
       break;
     case 2:
       src = two;
+      alt = 'two';
       break;
   }
 
-  return <img src={src} className="die-value" />;
+  return <img src={src} alt={alt} className="die-value" />;
 };
 
 interface DiceRowProps {
