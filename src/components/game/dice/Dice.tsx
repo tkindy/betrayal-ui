@@ -1,6 +1,6 @@
 import React, { FC, useState } from 'react';
 import DiceButton from './DiceButton';
-import DiceRoller from './DiceRoller';
+import RollDiceControl from './RollDiceControl';
 import './Dice.css';
 
 const Dice: FC<{}> = () => {
@@ -8,7 +8,7 @@ const Dice: FC<{}> = () => {
   return (
     <div className="dice-container">
       <DiceButton expanded={expanded} onClick={() => setExpanded(!expanded)} />
-      <DiceRoller expanded={expanded} />
+      <RollDiceControl expanded={expanded} />
     </div>
   );
 };

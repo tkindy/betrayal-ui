@@ -2,7 +2,6 @@ import React, { FunctionComponent, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { rollDice } from '../../../features/diceRolls';
 import { RootState } from '../../../store';
-import { BoundingBox, Dimensions } from '../../layout';
 import zero from './zero.svg';
 import one from './one.svg';
 import two from './two.svg';
@@ -59,15 +58,23 @@ const Dice: FunctionComponent<DiceProps> = ({ values }) => {
   return <div>{rows}</div>;
 };
 
-interface RollDiceControlProps {}
+interface RollDiceControlProps {
+  expanded: boolean;
+}
 
-const RollDiceControl: FunctionComponent<RollDiceControlProps> = ({}) => {
+const RollDiceControl: FunctionComponent<RollDiceControlProps> = ({
+  expanded,
+}) => {
   const roll = useSelector((state: RootState) => state.diceRolls.roll);
   const dispatch = useDispatch();
   const [numDice, setNumDice] = useState<number>(8);
 
+  if (!expanded) {
+    return null;
+  }
+
   return (
-    <div>
+    <div className="dice-background">
       <div
         style={{
           display: 'flex',
