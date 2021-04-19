@@ -22,7 +22,9 @@ const DiceButton: FC<DiceButtonProps> = ({
   const dieLeft = width / 2 - dieWidth / 2;
   const dieTop = height / 2 - dieHeight / 2;
 
-  const imgSrc = expanded ? xIcon : die;
+  const [imgSrc, alt] = expanded
+    ? [xIcon, 'dice roller close']
+    : [die, 'dice roller open'];
 
   return (
     <div
@@ -51,6 +53,7 @@ const DiceButton: FC<DiceButtonProps> = ({
         width={dieWidth}
         height={dieHeight}
         onClick={onClick}
+        alt={alt}
       />
     </div>
   );
