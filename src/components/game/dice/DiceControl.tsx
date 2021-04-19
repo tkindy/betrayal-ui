@@ -5,7 +5,7 @@ import { RootState } from '../../../store';
 import zero from './zero.svg';
 import one from './one.svg';
 import two from './two.svg';
-import './RollDiceControl.css';
+import './DiceControl.css';
 
 interface DieProps {
   value: number;
@@ -62,9 +62,7 @@ interface RollDiceControlProps {
   expanded: boolean;
 }
 
-const RollDiceControl: FunctionComponent<RollDiceControlProps> = ({
-  expanded,
-}) => {
+const DiceControl: FunctionComponent<RollDiceControlProps> = ({ expanded }) => {
   const roll = useSelector((state: RootState) => state.diceRolls.roll);
   const dispatch = useDispatch();
   const [numDice, setNumDice] = useState<number>(8);
@@ -103,4 +101,4 @@ const RollDiceControl: FunctionComponent<RollDiceControlProps> = ({
   );
 };
 
-export default RollDiceControl;
+export default DiceControl;
