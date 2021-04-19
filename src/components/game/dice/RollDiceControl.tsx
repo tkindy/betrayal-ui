@@ -2,7 +2,6 @@ import React, { FunctionComponent, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { rollDice } from '../../../features/diceRolls';
 import { RootState } from '../../../store';
-import { translate } from '../../geometry';
 import { BoundingBox, Dimensions } from '../../layout';
 import zero from './zero.svg';
 import one from './one.svg';
@@ -60,11 +59,6 @@ const DiceRow: FunctionComponent<DiceRowProps> = ({
   return (
     <div
       style={{
-        position: 'absolute',
-        top: y,
-        left: x,
-        width,
-        height,
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'space-evenly',
@@ -79,15 +73,12 @@ const DiceRow: FunctionComponent<DiceRowProps> = ({
 
 interface DiceProps {
   values?: number[];
-  box: BoundingBox;
+  dimensions: Dimensions;
 }
 
 const Dice: FunctionComponent<DiceProps> = ({
   values,
-  box: {
-    topLeft,
-    dimensions: { width, height },
-  },
+  dimensions: { width, height },
 }) => {
   const dieDimensions: Dimensions = { width: width / 4, height: height / 2 };
 
@@ -112,42 +103,19 @@ const Dice: FunctionComponent<DiceProps> = ({
       />,
     ];
   }
-  const { x, y } = topLeft;
 
-  return (
-    <div
-      style={{
-        position: 'absolute',
-        top: y,
-        left: x,
-        width,
-        height,
-        backgroundColor: 'gray',
-        // border: '1px solid black',
-        borderRadius: '3px',
-      }}
-    >
-      <div>{rows}</div>
-    </div>
-  );
+  return <div>{rows}</div>;
 };
 
 interface RollDiceControlProps {
-  box: BoundingBox;
+  dimensions: Dimensions;
 }
 
 const RollDiceControl: FunctionComponent<RollDiceControlProps> = ({
-  box: {
-    topLeft,
-    dimensions: { width, height },
-  },
+  dimensions: { width, height },
 }) => {
-  const { x, y } = topLeft;
   const roll = useSelector((state: RootState) => state.diceRolls.roll);
-  const diceBox: BoundingBox = {
-    topLeft: translate(topLeft, 0, (3 * height) / 8),
-    dimensions: { width, height: (5 * height) / 8 },
-  };
+  const diceDimensions: Dimensions = { width, height: (5 * height) / 8 };
   const dispatch = useDispatch();
   const [numDice, setNumDice] = useState<number>(8);
 
@@ -155,13 +123,9 @@ const RollDiceControl: FunctionComponent<RollDiceControlProps> = ({
     <div>
       <div
         style={{
-          position: 'absolute',
-          top: y,
-          left: x,
-          width,
-          height: height / 4,
           display: 'flex',
           justifyContent: 'space-around',
+          padding: 5,
         }}
       >
         <input
@@ -180,7 +144,7 @@ const RollDiceControl: FunctionComponent<RollDiceControlProps> = ({
         </button>
       </div>
 
-      <Dice values={roll} box={diceBox} />
+      <Dice values={roll} dimensions={diceDimensions} />
     </div>
   );
 };

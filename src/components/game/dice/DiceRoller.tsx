@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { BoundingBox } from '../../layout';
+import { BoundingBox, Dimensions } from '../../layout';
 import RollDiceControl from './RollDiceControl';
 
 interface DiceRollerProps {
@@ -14,9 +14,9 @@ const DiceRoller: FC<DiceRollerProps> = ({ box, expanded }) => {
   } = box;
   const { x, y } = topLeft;
   const padding = 10;
-  const controlBox: BoundingBox = {
-    topLeft: { x: padding, y: padding },
-    dimensions: { width: width - 2 * padding, height: height - 2 * padding },
+  const controlDimensions: Dimensions = {
+    width: width - 2 * padding,
+    height: height - 2 * padding,
   };
 
   return expanded ? (
@@ -27,12 +27,10 @@ const DiceRoller: FC<DiceRollerProps> = ({ box, expanded }) => {
         position: 'absolute',
         left: x,
         top: y,
-        width,
-        height,
         zIndex: 2,
       }}
     >
-      <RollDiceControl box={controlBox} />
+      <RollDiceControl dimensions={controlDimensions} />
     </div>
   ) : null;
 };
