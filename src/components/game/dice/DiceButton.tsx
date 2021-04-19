@@ -1,9 +1,11 @@
 import React, { FC } from 'react';
 import die from '../../../assets/die.svg';
+import xIcon from '../../../assets/x.svg';
 import { BoundingBox } from '../../layout';
 
 interface DiceButtonProps {
   box: BoundingBox;
+  expanded: boolean;
 }
 
 const DiceButton: FC<DiceButtonProps> = ({
@@ -11,11 +13,14 @@ const DiceButton: FC<DiceButtonProps> = ({
     topLeft: { x, y },
     dimensions: { width, height },
   },
+  expanded,
 }) => {
   const dieWidth = width / 2;
   const dieHeight = dieWidth;
   const dieLeft = width / 2 - dieWidth / 2;
   const dieTop = height / 2 - dieHeight / 2;
+
+  const imgSrc = expanded ? xIcon : die;
 
   return (
     <div
@@ -32,7 +37,7 @@ const DiceButton: FC<DiceButtonProps> = ({
       }}
     >
       <img
-        src={die}
+        src={imgSrc}
         style={{
           position: 'relative',
           left: dieLeft,
