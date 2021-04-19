@@ -9,15 +9,15 @@ const Dice: FC<{}> = () => {
       <DiceButton
         box={{
           topLeft: { x: 10, y: 10 },
-          dimensions: { width: 60, height: 60 },
+          dimensions: { width: 50, height: 50 },
         }}
         expanded={expanded}
         onClick={() => setExpanded(!expanded)}
       />
       <DiceRoller
         box={{
-          topLeft: { x: 10, y: 80 },
-          dimensions: { width: 150, height: 100 },
+          topLeft: { x: 10, y: 70 },
+          dimensions: { width: 150, height: 150 },
         }}
         expanded={expanded}
       />
