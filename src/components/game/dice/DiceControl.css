@@ -1,12 +1,12 @@
 .dice-background {
   background-color: gray;
   margin-top: 10px;
+  padding: 10px;
 }
 
 .dice-controls {
   display: flex;
   justify-content: space-around;
-  padding: 5px;
 }
 
 .dice-count {
@@ -22,7 +22,7 @@
   display: flex;
   align-items: center;
   justify-content: space-evenly;
-  padding: 5px;
+  padding-top: 10px;
 }
 
 .die-value {
