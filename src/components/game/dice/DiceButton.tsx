@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import die from './die.svg';
+import die from './two.svg';
 import xIcon from './x.svg';
 import { BoundingBox } from '../../layout';
 
