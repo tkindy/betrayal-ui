@@ -36,6 +36,7 @@ const DiceButton: FC<DiceButtonProps> = ({
         width,
         height,
         cursor: 'pointer',
+        zIndex: 2,
       }}
       onClick={onClick}
     >

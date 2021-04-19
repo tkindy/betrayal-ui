@@ -30,6 +30,7 @@ const DiceRoller: FC<DiceRollerProps> = ({ box, expanded }) => {
         top: y,
         width,
         height,
+        zIndex: 2,
       }}
     >
       <RollDiceControl box={controlBox} />
