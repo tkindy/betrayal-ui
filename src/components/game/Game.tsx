@@ -57,7 +57,6 @@ const Game: FC<GameProps> = ({ gameId }) => {
 
   return (
     <div>
-      <Dice />
       <ReactReduxContext.Consumer>
         {(reduxContext) => (
           <Stage width={width} height={height}>
@@ -87,6 +86,7 @@ const Game: FC<GameProps> = ({ gameId }) => {
         )}
       </ReactReduxContext.Consumer>
       <DrawnCard />
+      <Dice />
     </div>
   );
 };
