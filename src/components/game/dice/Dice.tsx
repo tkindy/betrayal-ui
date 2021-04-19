@@ -14,7 +14,13 @@ const Dice: FC<{}> = () => {
         expanded={expanded}
         onClick={() => setExpanded(!expanded)}
       />
-      <DiceRoller />
+      <DiceRoller
+        box={{
+          topLeft: { x: 10, y: 80 },
+          dimensions: { width: 150, height: 100 },
+        }}
+        expanded={expanded}
+      />
     </div>
   );
 };
