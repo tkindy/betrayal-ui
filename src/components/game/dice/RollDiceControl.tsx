@@ -3,23 +3,50 @@ import { useDispatch, useSelector } from 'react-redux';
 import { rollDice } from '../../../features/diceRolls';
 import { RootState } from '../../../store';
 import { translate } from '../../geometry';
-import { BoundingBox } from '../../layout';
+import { BoundingBox, Dimensions } from '../../layout';
+import zero from './zero.svg';
+import one from './one.svg';
+import two from './two.svg';
 
 interface DieProps {
   value: number;
+  dimensions: Dimensions;
 }
 
-const Die: FunctionComponent<DieProps> = ({ value }) => {
+const Die: FunctionComponent<DieProps> = ({
+  value,
+  dimensions: { width, height },
+}) => {
+  let src;
+  switch (value) {
+    case 0:
+      src = zero;
+      break;
+    case 1:
+      src = one;
+      break;
+    case 2:
+      src = two;
+      break;
+  }
+
+  const padding = width * 0.05;
+  const innerWidth = width - 2 * padding;
+  const innerHeight = height - 2 * padding;
+
   return (
-    <div className="dieValue" style={{ flex: 1, textAlign: 'center' }}>
-      {value}
-    </div>
+    <img
+      src={src}
+      className="dieValue"
+      style={{ width: innerWidth, height: innerHeight, padding }}
+    />
   );
 };
 
 interface DiceRowProps {
   values: number[];
   box: BoundingBox;
+  dieDimensions: Dimensions;
 }
 
 const DiceRow: FunctionComponent<DiceRowProps> = ({
@@ -28,6 +55,7 @@ const DiceRow: FunctionComponent<DiceRowProps> = ({
     topLeft: { x, y },
     dimensions: { width, height },
   },
+  dieDimensions,
 }) => {
   return (
     <div
@@ -39,10 +67,11 @@ const DiceRow: FunctionComponent<DiceRowProps> = ({
         height,
         display: 'flex',
         alignItems: 'center',
+        justifyContent: 'space-evenly',
       }}
     >
       {values.map((value) => (
-        <Die value={value} />
+        <Die value={value} dimensions={dieDimensions} />
       ))}
     </div>
   );
@@ -60,6 +89,8 @@ const Dice: FunctionComponent<DiceProps> = ({
     dimensions: { width, height },
   },
 }) => {
+  const dieDimensions: Dimensions = { width: width / 4, height: height / 2 };
+
   let rows;
   if (values) {
     rows = [
@@ -69,6 +100,7 @@ const Dice: FunctionComponent<DiceProps> = ({
           topLeft: { x: 0, y: 0 },
           dimensions: { width, height: height / 2 },
         }}
+        dieDimensions={dieDimensions}
       />,
       <DiceRow
         values={values.slice(4, 8)}
@@ -76,6 +108,7 @@ const Dice: FunctionComponent<DiceProps> = ({
           topLeft: { x: 0, y: height / 2 },
           dimensions: { width, height: height / 2 },
         }}
+        dieDimensions={dieDimensions}
       />,
     ];
   }
@@ -89,7 +122,8 @@ const Dice: FunctionComponent<DiceProps> = ({
         left: x,
         width,
         height,
-        backgroundColor: 'white',
+        backgroundColor: 'gray',
+        // border: '1px solid black',
         borderRadius: '3px',
       }}
     >
