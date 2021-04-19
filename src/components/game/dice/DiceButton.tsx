@@ -1,6 +1,6 @@
 import React, { FC } from 'react';
-import die from '../../../assets/die.svg';
-import xIcon from '../../../assets/x.svg';
+import die from './die.svg';
+import xIcon from './x.svg';
 import { BoundingBox } from '../../layout';
 
 interface DiceButtonProps {
