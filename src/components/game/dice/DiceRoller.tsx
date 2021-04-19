@@ -1,6 +1,7 @@
 import React, { FC } from 'react';
 import { BoundingBox, Dimensions } from '../../layout';
 import RollDiceControl from './RollDiceControl';
+import './DiceRoller.css';
 
 interface DiceRollerProps {
   box: BoundingBox;
@@ -9,10 +10,8 @@ interface DiceRollerProps {
 
 const DiceRoller: FC<DiceRollerProps> = ({ box, expanded }) => {
   const {
-    topLeft,
     dimensions: { width, height },
   } = box;
-  const { x, y } = topLeft;
   const padding = 10;
   const controlDimensions: Dimensions = {
     width: width - 2 * padding,
@@ -20,16 +19,7 @@ const DiceRoller: FC<DiceRollerProps> = ({ box, expanded }) => {
   };
 
   return expanded ? (
-    <div
-      className="dice-background"
-      style={{
-        backgroundColor: 'gray',
-        position: 'absolute',
-        left: x,
-        top: y,
-        zIndex: 2,
-      }}
-    >
+    <div className="dice-background">
       <RollDiceControl dimensions={controlDimensions} />
     </div>
   ) : null;
