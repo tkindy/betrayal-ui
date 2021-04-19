@@ -1,7 +1,7 @@
 import React, { FC } from 'react';
 import { translate } from '../../geometry';
 import { BoundingBox } from '../../layout';
-import RollDiceControl from '../sidebar/RollDiceControl';
+import RollDiceControl from './RollDiceControl';
 
 interface DiceRollerProps {
   box: BoundingBox;
