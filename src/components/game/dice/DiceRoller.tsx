@@ -1,5 +1,4 @@
 import React, { FC } from 'react';
-import { translate } from '../../geometry';
 import { BoundingBox } from '../../layout';
 import RollDiceControl from './RollDiceControl';
 
