@@ -277,3 +277,12 @@ export const rotateRoom: (
     buildApiUrl(`/games/${gameId}/rooms/${roomId}/rotate`)
   );
 };
+
+export const returnRoomToStack: (
+  gameId: string,
+  roomId: number
+) => Promise<void> = async (gameId, roomId) => {
+  await axios.post<void>(
+    buildApiUrl(`/games/${gameId}/rooms/${roomId}/return`)
+  );
+};

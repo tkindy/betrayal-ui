@@ -56,7 +56,7 @@ const Game: FC<GameProps> = ({ gameId }) => {
   }, [gameId, dispatch, navigate]);
 
   return (
-    <div>
+    <div onContextMenu={(e) => e.preventDefault()}>
       <ReactReduxContext.Consumer>
         {(reduxContext) => (
           <Stage width={width} height={height}>
