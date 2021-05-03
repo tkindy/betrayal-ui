@@ -10,7 +10,11 @@ import { Point, subtract, translate } from '../../geometry';
 import Hovercard, { CardDirection } from '../../Hovercard';
 import { useDispatch } from 'react-redux';
 import { useRender } from '../../hooks';
-import { moveRoom, rotateRoom } from '../../../features/board';
+import {
+  moveRoom,
+  returnRoomToStack,
+  rotateRoom,
+} from '../../../features/board';
 
 const hovercardDimensions: Dimensions = { width: 200, height: 250 };
 
@@ -110,6 +114,10 @@ const BoardRoom: FunctionComponent<RoomModel> = (room) => {
         }}
         onDblClick={() => dispatch(rotateRoom({ id }))}
         onDblTap={() => dispatch(rotateRoom({ id }))}
+        onContextMenu={(e) => {
+          setHovered(false);
+          dispatch(returnRoomToStack({ id }));
+        }}
       >
         <Room
           box={{ ...box, topLeft: { x: 0, y: 0 } }}
