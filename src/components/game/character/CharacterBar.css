@@ -44,14 +44,14 @@
 }
 
 .traitValue.active {
-  font-weight: bold;
-  color: red;
-}
-
-.traitValue.starting {
   background-color: lightblue;
 }
 
-.traitValue.starting:hover {
+.traitValue.active:hover {
   background-color: lightgray;
+}
+
+.traitValue.starting {
+  font-weight: bold;
+  color: red;
 }
