@@ -1,8 +1,9 @@
-import React, { FunctionComponent } from 'react';
-import { Rect } from 'react-konva';
-import { useDispatch } from 'react-redux';
+import React, { FunctionComponent, useState } from 'react';
+import { Group, Rect } from 'react-konva';
+import { useDispatch, useSelector } from 'react-redux';
 import { openSpotClicked } from '../../../features/board';
-import { Direction } from '../room/Room';
+import { RootState } from '../../../store';
+import Room, { Direction } from '../room/Room';
 import { GridLoc, useGridBox } from './grid';
 
 interface OpenSpotProps {
@@ -11,13 +12,36 @@ interface OpenSpotProps {
 }
 
 const OpenSpot: FunctionComponent<OpenSpotProps> = ({ loc, from }) => {
+  const box = useGridBox(loc);
   const {
     topLeft: { x, y },
     dimensions: { width, height },
-  } = useGridBox(loc);
-
+  } = box;
+  const [hovered, setHovered] = useState(false);
   const dispatch = useDispatch();
   const onClick = () => dispatch(openSpotClicked(loc, from));
+  const flippedRoom = useSelector(
+    (state: RootState) => state.roomStack.flippedRoom
+  );
+  const onMouseEnter = () => setHovered(true);
+  const onMouseLeave = () => setHovered(false);
+
+  if (hovered && flippedRoom) {
+    return (
+      <Group
+        onClick={onClick}
+        onTap={onClick}
+        onMouseEnter={onMouseEnter}
+        onMouseLeave={onMouseLeave}
+      >
+        <Room
+          box={box}
+          doorDirections={flippedRoom.doorDirections}
+          opacity={0.7}
+        />
+      </Group>
+    );
+  }
 
   return (
     <Rect
@@ -27,6 +51,8 @@ const OpenSpot: FunctionComponent<OpenSpotProps> = ({ loc, from }) => {
       height={height}
       onClick={onClick}
       onTap={onClick}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
     />
   );
 };

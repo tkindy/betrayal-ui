@@ -78,9 +78,14 @@ const Door: FunctionComponent<DoorProps> = ({ roomBox, direction }) => {
 interface RoomProps {
   box: BoundingBox;
   doorDirections: Direction[];
+  opacity?: number;
 }
 
-const Room: FunctionComponent<RoomProps> = ({ box, doorDirections }) => {
+const Room: FunctionComponent<RoomProps> = ({
+  box,
+  doorDirections,
+  opacity,
+}) => {
   const {
     topLeft: { x, y },
     dimensions: { width, height },
@@ -91,7 +96,7 @@ const Room: FunctionComponent<RoomProps> = ({ box, doorDirections }) => {
   });
 
   return (
-    <Group>
+    <Group opacity={opacity || 1}>
       <Rect x={x} y={y} width={width} height={height} fill="black" />
       {doors}
       <Rect x={x} y={y} width={width} height={height} stroke="teal" />
