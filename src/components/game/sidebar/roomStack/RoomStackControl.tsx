@@ -6,8 +6,6 @@ import {
   skipRoom,
 } from '../../../../features/roomStack';
 import { RootState } from '../../../../store';
-import { BoundingBox } from '../../../layout';
-import DOMPortal from '../../portal/DOMPortal';
 
 const StackButtons: FunctionComponent<{}> = () => {
   const dispatch = useDispatch();
@@ -50,35 +48,17 @@ const FlippedRoomButtons: FunctionComponent<{}> = () => {
   );
 };
 
-interface RoomStackControlProps {
-  box: BoundingBox;
-}
+interface RoomStackControlProps {}
 
-const RoomStackControl: FunctionComponent<RoomStackControlProps> = ({
-  box: {
-    topLeft: { x, y },
-    dimensions: { width, height },
-  },
-}) => {
+const RoomStackControl: FunctionComponent<RoomStackControlProps> = () => {
   const flippedRoom = useSelector(
     (state: RootState) => state.roomStack.flippedRoom
   );
 
   return (
-    <DOMPortal name="roomStackControls">
-      <div
-        className="room-stack-control"
-        style={{
-          position: 'absolute',
-          top: y,
-          left: x,
-          width,
-          height,
-        }}
-      >
-        {flippedRoom ? <FlippedRoomButtons /> : <StackButtons />}
-      </div>
-    </DOMPortal>
+    <div className="room-stack-control">
+      {flippedRoom ? <FlippedRoomButtons /> : <StackButtons />}
+    </div>
   );
 };
 
