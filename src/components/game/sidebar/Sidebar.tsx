@@ -56,6 +56,7 @@ const Sidebar: FunctionComponent<SidebarProps> = () => {
     >
       <ZoomControl />
       <DrawControl />
+      <AddMonsterControl />
       <FlexContainer
         box={{
           topLeft: translate(topLeft, SIDEBAR_PADDING, SIDEBAR_PADDING),
@@ -69,7 +70,7 @@ const Sidebar: FunctionComponent<SidebarProps> = () => {
         {[
           { units: 1, render: (box) => null },
           { units: 2, render: (box) => null },
-          { units: 1, render: (box) => <AddMonsterControl box={box} /> },
+          { units: 1, render: (box) => null },
           { units: 1, render: () => null },
           { units: 3, render: (box) => <RoomStack box={box} /> },
         ]}
