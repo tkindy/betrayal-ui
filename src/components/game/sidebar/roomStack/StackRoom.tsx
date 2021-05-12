@@ -1,5 +1,5 @@
-import React, { FunctionComponent } from 'react';
-import { BoundingBox } from '../../../layout';
+import React, { FunctionComponent, useCallback, useState } from 'react';
+import { BoundingBox, Dimensions } from '../../../layout';
 import {
   Floor,
   StackRoom as StackRoomModel,
@@ -13,7 +13,7 @@ import {
   translate,
 } from '../../../geometry';
 import { Group, Layer, Line, Rect, Stage, Text } from 'react-konva';
-import { useSelector } from 'react-redux';
+import { ReactReduxContext, useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
 import FlippedStackRoom from './FlippedStackRoom';
 
@@ -176,45 +176,70 @@ const House: FunctionComponent<HouseProps> = ({ roomBox, nextRoom }) => {
   );
 };
 
-interface StackRoomProps {}
+interface RoomDrawingProps {
+  box: BoundingBox;
+}
 
-const StackRoom: FunctionComponent<StackRoomProps> = () => {
+const RoomDrawing: FunctionComponent<RoomDrawingProps> = ({ box }) => {
+  const {
+    dimensions: { width, height },
+  } = box;
   const { nextRoom, flippedRoom } = useSelector(
     (state: RootState) => state.roomStack
   );
-
-  const size = 100;
-  const box = {
-    topLeft: { x: 0, y: 0 },
-    dimensions: { width: size, height: size },
-  };
 
   if (flippedRoom) {
     return <FlippedStackRoom box={box} flippedRoom={flippedRoom} />;
   }
 
+  return nextRoom ? (
+    <Group>
+      <Rect width={width} height={height} fill="black" />
+      <House roomBox={box} nextRoom={nextRoom} />
+    </Group>
+  ) : (
+    <Text
+      x={0}
+      y={0}
+      width={width}
+      height={height}
+      align="center"
+      verticalAlign="middle"
+      fontSize={16}
+      text="Empty"
+    />
+  );
+};
+
+const StackRoom: FunctionComponent<{}> = () => {
+  const [{ width, height }, setDimensions] = useState<Dimensions>({
+    width: 0,
+    height: 0,
+  });
+  const wrapperRef = useCallback((node) => {
+    setDimensions(node.getBoundingClientRect());
+  }, []);
+
+  const size = Math.min(width, height);
+  const box = {
+    topLeft: { x: 0, y: 0 },
+    dimensions: { width: size, height: size },
+  };
+
   return (
-    <Stage>
-      <Layer>
-        {nextRoom ? (
-          <Group>
-            <Rect x={0} y={0} width={size} height={size} fill="black" />
-            <House roomBox={box} nextRoom={nextRoom} />
-          </Group>
-        ) : (
-          <Text
-            x={0}
-            y={0}
-            width={size}
-            height={size}
-            align="center"
-            verticalAlign="middle"
-            fontSize={16}
-            text="Empty"
-          />
+    <div style={{ flex: '0 1 200px' }} ref={wrapperRef}>
+      <ReactReduxContext.Consumer>
+        {(reduxContext) => (
+          <Stage width={width} height={height}>
+            <ReactReduxContext.Provider value={reduxContext}>
+              <Layer>
+                <RoomDrawing box={box} />
+              </Layer>
+            </ReactReduxContext.Provider>
+          </Stage>
         )}
-      </Layer>
-    </Stage>
+      </ReactReduxContext.Consumer>
+    </div>
   );
 };
 
