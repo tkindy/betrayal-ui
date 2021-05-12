@@ -79,12 +79,12 @@ const Game: FC<GameProps> = ({ gameId }) => {
               </Layer>
               <Layer>
                 <Sidebar />
-                <CharacterBar />
               </Layer>
             </ReactReduxContext.Provider>
           </Stage>
         )}
       </ReactReduxContext.Consumer>
+      <CharacterBar />
       <DrawnCard />
       <Dice />
     </div>

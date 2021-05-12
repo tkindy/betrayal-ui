@@ -23,7 +23,6 @@ import { useWindowDimensions } from '../../windowDimensions';
 import CardDetails from '../cards/CardDetails';
 import DiscardControl from '../cards/DiscardControl';
 import GiveToPlayerControl from '../cards/GiveToPlayerControl';
-import DOMPortal from '../portal/DOMPortal';
 import {
   SIDEBAR_MARGIN,
   SIDEBAR_PADDING,
@@ -214,6 +213,7 @@ const Traits: FunctionComponent<TraitsProps> = () => {
 
   return (
     <div
+      className="traits-container"
       style={{
         display: 'grid',
         gridTemplateRows: '1 1',
@@ -251,44 +251,35 @@ const CharacterBar: FunctionComponent<CharacterBarProps> = () => {
   const box = getBox(useWindowDimensions());
   const {
     topLeft: { x, y },
-    dimensions: { width, height },
+    dimensions: { width },
   } = box;
 
   return (
-    <Group>
-      <Rect
-        x={x}
-        y={y}
-        width={width}
-        height={height}
-        fill="grey"
-        stroke="black"
-        cornerRadius={10}
-      />
-      <DOMPortal name="characterBar">
-        <div
-          className="characterBarWrapper"
-          style={{
-            position: 'absolute',
-            top: y + CHARACTER_BAR_PADDING,
-            left: x + CHARACTER_BAR_PADDING,
-          }}
-        >
-          <PlayerSelect />
-          <div
-            style={{
-              display: 'flex',
-              width: width - 2 * CHARACTER_BAR_PADDING,
-              height: height - 2 * CHARACTER_BAR_PADDING - 10,
-              overflowX: 'hidden',
-            }}
-          >
-            <Traits />
-            <PlayerInventory />
-          </div>
-        </div>
-      </DOMPortal>
-    </Group>
+    <div
+      className="characterBarWrapper"
+      style={{
+        position: 'absolute',
+        top: y,
+        left: x,
+        width: width - 2 * CHARACTER_BAR_PADDING,
+        backgroundColor: 'grey',
+        border: '2px solid black',
+        borderRadius: 10,
+        padding: CHARACTER_BAR_PADDING,
+      }}
+    >
+      <PlayerSelect />
+      <div
+        className="character-bar-second-row"
+        style={{
+          display: 'flex',
+          overflowX: 'hidden',
+        }}
+      >
+        <Traits />
+        <PlayerInventory />
+      </div>
+    </div>
   );
 };
 
