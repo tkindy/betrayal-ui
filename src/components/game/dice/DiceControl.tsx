@@ -39,8 +39,8 @@ interface DiceRowProps {
 const DiceRow: FunctionComponent<DiceRowProps> = ({ values }) => {
   return (
     <div className="dice-row">
-      {values.map((value) => (
-        <Die value={value} />
+      {values.map((value, index) => (
+        <Die key={index} value={value} />
       ))}
     </div>
   );
@@ -54,8 +54,8 @@ const Dice: FunctionComponent<DiceProps> = ({ values }) => {
   let rows;
   if (values) {
     rows = [
-      <DiceRow values={values.slice(0, 4)} />,
-      <DiceRow values={values.slice(4, 8)} />,
+      <DiceRow key={0} values={values.slice(0, 4)} />,
+      <DiceRow key={1} values={values.slice(4, 8)} />,
     ];
   }
 

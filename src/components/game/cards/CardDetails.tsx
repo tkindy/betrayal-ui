@@ -49,9 +49,9 @@ const renderRollTarget = (target: RollTarget) => {
   }
 };
 
-const renderRollTableRow = (row: RollTableRow) => {
+const renderRollTableRow = (row: RollTableRow, index: number) => {
   return (
-    <tr className="rollTableRow">
+    <tr key={index} className="rollTableRow">
       <td className="rollTarget">{renderRollTarget(row.target)}</td>
       <td className="rollOutcome">{row.outcome}</td>
     </tr>
@@ -60,7 +60,7 @@ const renderRollTableRow = (row: RollTableRow) => {
 
 const renderRollTable = (rollTable: RollTable) => {
   return (
-    <table className="rollTable">
+    <table key="rollTable" className="rollTable">
       <tbody>{rollTable.map(renderRollTableRow)}</tbody>
     </table>
   );
@@ -68,19 +68,19 @@ const renderRollTable = (rollTable: RollTable) => {
 
 const renderFlavorText = (card: Card) => (
   <div className="cardFlavorText">
-    {card.flavorText?.split('\n').map((line) => (
-      <p>{line}</p>
+    {card.flavorText?.split('\n').map((line, index) => (
+      <p key={index}>{line}</p>
     ))}
   </div>
 );
 
 const renderDescription = (card: Card) => (
   <div className="cardDescription">
-    {card.description.split('\n').map((line) => {
+    {card.description.split('\n').map((line, index) => {
       if (line === '<rollTable>') {
         return renderRollTable(card.rollTable!!);
       }
-      return <p>{line}</p>;
+      return <p key={index}>{line}</p>;
     })}
   </div>
 );

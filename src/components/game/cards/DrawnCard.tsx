@@ -29,8 +29,12 @@ const DrawnCard: FunctionComponent<DrawnCardProps> = () => {
       <CardDetails
         card={drawnCard}
         renderControls={() => [
-          <DiscardControl onClick={() => dispatch(discardDrawnCard())} />,
+          <DiscardControl
+            key="discard"
+            onClick={() => dispatch(discardDrawnCard())}
+          />,
           <GiveToPlayerControl
+            key="giveToPlayer"
             players={players}
             onChange={(playerId) =>
               dispatch(giveDrawnCardToPlayer({ playerId }))

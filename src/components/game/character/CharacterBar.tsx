@@ -85,14 +85,18 @@ const CardHovercard: FunctionComponent<CardHovercardProps> = ({
       <CardDetails
         card={card.card}
         renderControls={() => [
-          <button onClick={close}>Close</button>,
+          <button key="close" onClick={close}>
+            Close
+          </button>,
           <DiscardControl
+            key="discard"
             onClick={() => {
               close();
               dispatch(discardHeldCard({ cardId: card.id }));
             }}
           />,
           <GiveToPlayerControl
+            key="giveToPlayer"
             players={possiblePlayersToGiveTo}
             onChange={(toPlayerId) => {
               close();
@@ -179,6 +183,7 @@ const Trait: FunctionComponent<TraitProps> = ({ name, trait, column, row }) => {
 
         return (
           <button
+            key={index}
             className={className}
             onClick={() => dispatch(setTrait({ trait: name, index }))}
           >
@@ -221,7 +226,13 @@ const Traits: FunctionComponent<TraitsProps> = () => {
       }}
     >
       {traitLayout.map(({ name, select, column, row }) => (
-        <Trait name={name} trait={select(player)} column={column} row={row} />
+        <Trait
+          key={name}
+          name={name}
+          trait={select(player)}
+          column={column}
+          row={row}
+        />
       ))}
     </div>
   );

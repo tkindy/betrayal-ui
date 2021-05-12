@@ -18,7 +18,9 @@ const GiveToPlayerControl: FunctionComponent<GiveToPlayerControlProps> = ({
     <select onChange={(e) => onChange(parseInt(e.target.value))}>
       <option value="">Give card to...</option>
       {players.map((player) => (
-        <option value={player.id}>{player.characterName}</option>
+        <option key={player.id} value={player.id}>
+          {player.characterName}
+        </option>
       ))}
     </select>
   );
