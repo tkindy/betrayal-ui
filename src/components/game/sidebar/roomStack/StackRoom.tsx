@@ -12,7 +12,7 @@ import {
   subtract,
   translate,
 } from '../../../geometry';
-import { Group, Line, Rect, Text } from 'react-konva';
+import { Group, Layer, Line, Rect, Stage, Text } from 'react-konva';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../../../store';
 import FlippedStackRoom from './FlippedStackRoom';
@@ -176,40 +176,45 @@ const House: FunctionComponent<HouseProps> = ({ roomBox, nextRoom }) => {
   );
 };
 
-interface StackRoomProps {
-  box: BoundingBox;
-}
+interface StackRoomProps {}
 
-const StackRoom: FunctionComponent<StackRoomProps> = ({ box }) => {
-  const {
-    topLeft: { x, y },
-    dimensions: { width, height },
-  } = box;
-
+const StackRoom: FunctionComponent<StackRoomProps> = () => {
   const { nextRoom, flippedRoom } = useSelector(
     (state: RootState) => state.roomStack
   );
+
+  const size = 100;
+  const box = {
+    topLeft: { x: 0, y: 0 },
+    dimensions: { width: size, height: size },
+  };
 
   if (flippedRoom) {
     return <FlippedStackRoom box={box} flippedRoom={flippedRoom} />;
   }
 
-  return nextRoom ? (
-    <Group>
-      <Rect x={x} y={y} width={width} height={height} fill="black" />
-      <House roomBox={box} nextRoom={nextRoom} />
-    </Group>
-  ) : (
-    <Text
-      x={x}
-      y={y}
-      width={width}
-      height={height}
-      align="center"
-      verticalAlign="middle"
-      fontSize={16}
-      text="Empty"
-    />
+  return (
+    <Stage>
+      <Layer>
+        {nextRoom ? (
+          <Group>
+            <Rect x={0} y={0} width={size} height={size} fill="black" />
+            <House roomBox={box} nextRoom={nextRoom} />
+          </Group>
+        ) : (
+          <Text
+            x={0}
+            y={0}
+            width={size}
+            height={size}
+            align="center"
+            verticalAlign="middle"
+            fontSize={16}
+            text="Empty"
+          />
+        )}
+      </Layer>
+    </Stage>
   );
 };
 
