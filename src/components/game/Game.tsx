@@ -77,13 +77,11 @@ const Game: FC<GameProps> = ({ gameId }) => {
                 <Agents />
                 <Group name="overlay" />
               </Layer>
-              <Layer>
-                <Sidebar />
-              </Layer>
             </ReactReduxContext.Provider>
           </Stage>
         )}
       </ReactReduxContext.Consumer>
+      <Sidebar />
       <CharacterBar />
       <DrawnCard />
       <Dice />

@@ -49,24 +49,40 @@ const Sidebar: FunctionComponent<SidebarProps> = () => {
         stroke="black"
         cornerRadius={10}
       />
-      <FlexContainer
-        box={{
-          topLeft: translate(topLeft, SIDEBAR_PADDING, SIDEBAR_PADDING),
-          dimensions: {
-            width: width - 2 * SIDEBAR_PADDING,
-            height: height - 2 * SIDEBAR_PADDING,
-          },
+      <div
+        style={{
+          position: 'absolute',
+          left: x,
+          top: y,
+          width: width - 2 * SIDEBAR_PADDING,
+          height: height - 2 * SIDEBAR_PADDING,
+          padding: SIDEBAR_PADDING,
+          backgroundColor: 'grey',
+          borderRadius: 10,
+          border: '2px solid black',
+          display: 'flex',
+          flexDirection: 'column',
         }}
-        direction={FlexDirection.COLUMN}
       >
-        {[
-          { units: 1, render: (box) => <ZoomControl box={box} /> },
-          { units: 2, render: (box) => <DrawControl box={box} /> },
-          { units: 1, render: (box) => <AddMonsterControl box={box} /> },
-          { units: 1, render: () => null },
-          { units: 3, render: (box) => <RoomStack box={box} /> },
-        ]}
-      </FlexContainer>
+        <FlexContainer
+          box={{
+            topLeft: translate(topLeft, SIDEBAR_PADDING, SIDEBAR_PADDING),
+            dimensions: {
+              width: width - 2 * SIDEBAR_PADDING,
+              height: height - 2 * SIDEBAR_PADDING,
+            },
+          }}
+          direction={FlexDirection.COLUMN}
+        >
+          {[
+            { units: 1, render: (box) => <ZoomControl box={box} /> },
+            { units: 2, render: (box) => <DrawControl box={box} /> },
+            { units: 1, render: (box) => <AddMonsterControl box={box} /> },
+            { units: 1, render: () => null },
+            { units: 3, render: (box) => <RoomStack box={box} /> },
+          ]}
+        </FlexContainer>
+      </div>
     </Group>
   );
 };
