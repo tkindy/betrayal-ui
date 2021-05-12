@@ -1,24 +1,16 @@
 import React, { FunctionComponent } from 'react';
 import { useDispatch } from 'react-redux';
 import { zoomIn, zoomOut } from '../../../features/zoom';
-import { BoundingBox } from '../../layout';
 import './ZoomControl.css';
 
-interface ZoomControlProps {
-  box: BoundingBox;
-}
+interface ZoomControlProps {}
 
-const ZoomControl: FunctionComponent<ZoomControlProps> = ({
-  box: {
-    dimensions: { height },
-  },
-}) => {
+const ZoomControl: FunctionComponent<ZoomControlProps> = () => {
   const dispatch = useDispatch();
 
   return (
     <div
       style={{
-        height,
         display: 'flex',
         justifyContent: 'space-around',
         alignItems: 'center',

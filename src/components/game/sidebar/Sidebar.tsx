@@ -39,16 +39,6 @@ const Sidebar: FunctionComponent<SidebarProps> = () => {
   const { x, y } = topLeft;
 
   return (
-    <Group>
-      <Rect
-        x={x}
-        y={y}
-        width={width}
-        height={height}
-        fill="grey"
-        stroke="black"
-        cornerRadius={10}
-      />
       <div
         style={{
           position: 'absolute',
@@ -64,6 +54,7 @@ const Sidebar: FunctionComponent<SidebarProps> = () => {
           flexDirection: 'column',
         }}
       >
+        <ZoomControl />
         <FlexContainer
           box={{
             topLeft: translate(topLeft, SIDEBAR_PADDING, SIDEBAR_PADDING),
@@ -75,7 +66,7 @@ const Sidebar: FunctionComponent<SidebarProps> = () => {
           direction={FlexDirection.COLUMN}
         >
           {[
-            { units: 1, render: (box) => <ZoomControl box={box} /> },
+            { units: 1, render: (box) => null },
             { units: 2, render: (box) => <DrawControl box={box} /> },
             { units: 1, render: (box) => <AddMonsterControl box={box} /> },
             { units: 1, render: () => null },
@@ -83,7 +74,6 @@ const Sidebar: FunctionComponent<SidebarProps> = () => {
           ]}
         </FlexContainer>
       </div>
-    </Group>
   );
 };
 
