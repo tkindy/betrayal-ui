@@ -1,5 +1,4 @@
 import React, { FunctionComponent, useEffect, useState } from 'react';
-import { Group, Rect } from 'react-konva';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   HeldCard,
