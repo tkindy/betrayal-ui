@@ -1,8 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { useDispatch } from 'react-redux';
 import { drawEvent, drawItem, drawOmen } from '../../../features/cardStacks';
-import { BoundingBox } from '../../layout';
-import DOMPortal from '../portal/DOMPortal';
 import './DrawControl.css';
 
 interface DrawButtonProps {
@@ -26,35 +24,21 @@ const buttonProps: DrawButtonProps[] = [
   { entity: 'omen', thunk: drawOmen },
 ];
 
-interface DrawControlProps {
-  box: BoundingBox;
-}
+interface DrawControlProps {}
 
-const DrawControl: FunctionComponent<DrawControlProps> = ({
-  box: {
-    topLeft: { x, y },
-    dimensions: { width, height },
-  },
-}) => {
+const DrawControl: FunctionComponent<DrawControlProps> = () => {
   return (
-    <DOMPortal name="drawControl">
-      <div
-        style={{
-          position: 'absolute',
-          top: y,
-          left: x,
-          width,
-          height,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'space-around',
-        }}
-      >
-        {buttonProps.map((props) => (
-          <DrawButton key={props.entity} {...props} />
-        ))}
-      </div>
-    </DOMPortal>
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'space-around',
+      }}
+    >
+      {buttonProps.map((props) => (
+        <DrawButton key={props.entity} {...props} />
+      ))}
+    </div>
   );
 };
 
