@@ -250,7 +250,7 @@ const CharacterBar: FunctionComponent<CharacterBarProps> = () => {
   const box = getBox(useWindowDimensions());
   const {
     topLeft: { x, y },
-    dimensions: { width },
+    dimensions: { width, height },
   } = box;
 
   return (
@@ -261,6 +261,7 @@ const CharacterBar: FunctionComponent<CharacterBarProps> = () => {
         top: y,
         left: x,
         width: width - 2 * CHARACTER_BAR_PADDING,
+        height: height - 2 * CHARACTER_BAR_PADDING,
         backgroundColor: 'grey',
         border: '2px solid black',
         borderRadius: 10,
