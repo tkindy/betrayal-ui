@@ -42,7 +42,7 @@ const PlayerSelect: FunctionComponent<{}> = () => {
     <select
       onChange={(e) => dispatch(switchSelectedPlayer(parseInt(e.target.value)))}
       value={selectedPlayerId}
-      style={{ display: 'block' }}
+      style={{ display: 'block', height: '15%' }}
     >
       {players?.map((player) => (
         <option key={player.id} value={player.id}>
@@ -274,6 +274,7 @@ const CharacterBar: FunctionComponent<CharacterBarProps> = () => {
         style={{
           display: 'flex',
           overflowX: 'hidden',
+          height: '85%',
         }}
       >
         <Traits />
