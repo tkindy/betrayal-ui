@@ -9341,14 +9341,6 @@ react-is@^17.0.1:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-17.0.2.tgz#e691d4a8e9c789365655539ab372762b0efb54f0"
   integrity sha512-w2GsyukL62IJnlaff/nRegPQR94C/XXamvMWmSHRJ4y7Ts/4ocGRmTHvOs8PSE6pB3dWOrD/nueuU5sduBsQ4w==
 
-react-konva-utils@^0.1.2:
-  version "0.1.2"
-  resolved "https://registry.yarnpkg.com/react-konva-utils/-/react-konva-utils-0.1.2.tgz#9df9734c54bfe7a6c2a6893462cb5ce95771cec2"
-  integrity sha512-yFHUyjsJF9uBM9S8ym5n5onpRPRYaCik7qpmMaQUKhqjFhDdPxuIve6swJhLgGvyx9j7/XM8CFZMTuYYtKr+Qw==
-  dependencies:
-    react-konva "^17.0.2-0"
-    use-image "^1.0.7"
-
 react-konva@^16.13.0-6:
   version "16.13.0-6"
   resolved "https://registry.yarnpkg.com/react-konva/-/react-konva-16.13.0-6.tgz#eae2864da3810bbfa33e159d027fcff82fcb0c32"
@@ -9356,14 +9348,6 @@ react-konva@^16.13.0-6:
   dependencies:
     react-reconciler "^0.25.1"
     scheduler "^0.19.1"
-
-react-konva@^17.0.2-0:
-  version "17.0.2-0"
-  resolved "https://registry.yarnpkg.com/react-konva/-/react-konva-17.0.2-0.tgz#35b1cf1b0ff3ed63b7de16aa6c0744e496391374"
-  integrity sha512-zT//biPf2UqqE4OIaivY2NfnnYgsEscSFacO9sbiUVrhtaP9mV8YgKx48CA4XjlgvfjjZqAxY6JTTmjJlsVYPw==
-  dependencies:
-    react-reconciler "~0.26.1"
-    scheduler "^0.20.1"
 
 react-lifecycles-compat@^3.0.4:
   version "3.0.4"
@@ -9379,15 +9363,6 @@ react-reconciler@^0.25.1:
     object-assign "^4.1.1"
     prop-types "^15.6.2"
     scheduler "^0.19.1"
-
-react-reconciler@~0.26.1:
-  version "0.26.2"
-  resolved "https://registry.yarnpkg.com/react-reconciler/-/react-reconciler-0.26.2.tgz#bbad0e2d1309423f76cf3c3309ac6c96e05e9d91"
-  integrity sha512-nK6kgY28HwrMNwDnMui3dvm3rCFjZrcGiuwLc5COUipBK5hWHLOxMJhSnSomirqWwjPBJKV1QcbkI0VJr7Gl1Q==
-  dependencies:
-    loose-envify "^1.1.0"
-    object-assign "^4.1.1"
-    scheduler "^0.20.2"
 
 react-redux@^7.2.1:
   version "7.2.4"
@@ -10016,14 +9991,6 @@ scheduler@^0.19.1:
   version "0.19.1"
   resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.19.1.tgz#4f3e2ed2c1a7d65681f4c854fa8c5a1ccb40f196"
   integrity sha512-n/zwRWRYSUj0/3g/otKDRPMh6qv2SYMWNq85IEa8iZyAv8od9zDYpGSnpBEjNgcMNq6Scbu5KfIPxNF72R/2EA==
-  dependencies:
-    loose-envify "^1.1.0"
-    object-assign "^4.1.1"
-
-scheduler@^0.20.1, scheduler@^0.20.2:
-  version "0.20.2"
-  resolved "https://registry.yarnpkg.com/scheduler/-/scheduler-0.20.2.tgz#4baee39436e34aa93b4874bddcbf0fe8b8b50e91"
-  integrity sha512-2eWfGgAqqWFGqtdMmcL5zCMK1U8KlXv8SQFGglL3CEtd0aDVDWgeF/YoCmvln55m5zSk3J/20hTaSBeSObsQDQ==
   dependencies:
     loose-envify "^1.1.0"
     object-assign "^4.1.1"
@@ -11246,11 +11213,6 @@ url@^0.11.0:
   dependencies:
     punycode "1.3.2"
     querystring "0.2.0"
-
-use-image@^1.0.7:
-  version "1.0.7"
-  resolved "https://registry.yarnpkg.com/use-image/-/use-image-1.0.7.tgz#b2c42b78d32868762a37631673eb169a244d5ad1"
-  integrity sha512-Z8hB8+lAGe25iqO3YaHO7bSvBSGErEakYQ6RGyRrPZoMDLKBIuZ67ikzn8f5ydjWorqFzeX+U3vVwnXoE1Q56Q==
 
 use@^3.1.0:
   version "3.1.1"
