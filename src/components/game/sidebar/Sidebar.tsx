@@ -1,10 +1,7 @@
 import React, { FunctionComponent } from 'react';
-import { Group, Rect } from 'react-konva';
 import ZoomControl from './ZoomControl';
-import { translate } from '../../geometry';
 import { BoundingBox, Dimensions } from '../../layout';
 import { useWindowDimensions } from '../../windowDimensions';
-import FlexContainer, { FlexDirection } from './flex/FlexContainer';
 import RoomStack from './roomStack/RoomStack';
 import DrawControl from './DrawControl';
 import AddMonsterControl from './AddMonsterControl';
@@ -57,24 +54,7 @@ const Sidebar: FunctionComponent<SidebarProps> = () => {
       <ZoomControl />
       <DrawControl />
       <AddMonsterControl />
-      <FlexContainer
-        box={{
-          topLeft: translate(topLeft, SIDEBAR_PADDING, SIDEBAR_PADDING),
-          dimensions: {
-            width: width - 2 * SIDEBAR_PADDING,
-            height: height - 2 * SIDEBAR_PADDING,
-          },
-        }}
-        direction={FlexDirection.COLUMN}
-      >
-        {[
-          { units: 1, render: (box) => null },
-          { units: 2, render: (box) => null },
-          { units: 1, render: (box) => null },
-          { units: 1, render: () => null },
-          { units: 3, render: (box) => <RoomStack box={box} /> },
-        ]}
-      </FlexContainer>
+      <RoomStack />
     </div>
   );
 };
