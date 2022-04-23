@@ -25,9 +25,7 @@ const buildWebsocketUrl = (gameId: string) => {
   return `${wsRoot}/games/${gameId}`;
 };
 
-interface GameProps {}
-
-const Game: FC<GameProps> = () => {
+const Game: FC<{}> = () => {
   const { gameId } = useParams();
   const { width, height } = useWindowDimensions();
   const dispatch = useDispatch();

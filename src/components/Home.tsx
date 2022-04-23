@@ -3,9 +3,7 @@ import React, { FC, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createGame } from '../api/api';
 
-interface HomeProps {}
-
-const Home: FC<HomeProps> = () => {
+const Home: FC<{}> = () => {
   const navigate = useNavigate();
   const [gameId, setGameId] = useState('');
   const numPlayersRef = useRef<HTMLInputElement>(null);
