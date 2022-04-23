@@ -1,9 +1,9 @@
 import { createSelector } from '@reduxjs/toolkit';
 import { buildBoardMap, findOpenNeighbors } from '../board';
-import { buildMultiCartMap, CartMap } from '../map';
+import { buildMultiCartMap } from '../map';
 import { RootState } from '../store';
 import { sortBy } from '../utils';
-import { Agent, Monster, Player } from './models';
+import { Agent } from './models';
 
 export const getGameId = (state: RootState) => {
   const { gameId } = state.game;
@@ -47,31 +47,30 @@ export const getMonsters = createSelector(
   (monsters) => monsters && sortBy(monsters, (m) => m.number)
 );
 
-export const getAgentMap = createSelector<
-  RootState,
-  Player[] | undefined,
-  Monster[] | undefined,
-  CartMap<Agent[]>
->(getPlayers, getMonsters, (players, monsters) => {
-  const playerAgents: Agent[] =
-    players?.map((p) => {
-      return {
-        type: 'player',
-        ...p,
-      };
-    }) || [];
-  const monsterAgents: Agent[] =
-    monsters?.map((m) => {
-      return { type: 'monster', ...m };
-    }) || [];
+export const getAgentMap = createSelector(
+  getPlayers,
+  getMonsters,
+  (players, monsters) => {
+    const playerAgents: Agent[] =
+      players?.map((p) => {
+        return {
+          type: 'player',
+          ...p,
+        };
+      }) || [];
+    const monsterAgents: Agent[] =
+      monsters?.map((m) => {
+        return { type: 'monster', ...m };
+      }) || [];
 
-  return buildMultiCartMap(
-    playerAgents.concat(monsterAgents),
-    ({ loc: { gridX: x, gridY: y } }) => {
-      return { x, y };
-    }
-  );
-});
+    return buildMultiCartMap(
+      playerAgents.concat(monsterAgents),
+      ({ loc: { gridX: x, gridY: y } }) => {
+        return { x, y };
+      }
+    );
+  }
+);
 
 export const getSelectedPlayerId = (state: RootState) =>
   state.players.selectedPlayerId;
