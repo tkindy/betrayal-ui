@@ -1,9 +1,9 @@
 import './Home.css';
 import React, { FC, useRef, useState } from 'react';
-import { RouteComponentProps, useNavigate } from '@reach/router';
+import { useNavigate } from 'react-router-dom';
 import { createGame } from '../api/api';
 
-interface HomeProps extends RouteComponentProps {}
+interface HomeProps {}
 
 const Home: FC<HomeProps> = () => {
   const navigate = useNavigate();

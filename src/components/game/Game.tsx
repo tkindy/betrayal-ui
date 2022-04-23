@@ -7,7 +7,7 @@ import { getRooms, moveBoard } from '../../features/board';
 import { RootState } from '../../store';
 import Agents from './players/Agents';
 import Sidebar from './sidebar/Sidebar';
-import { RouteComponentProps, useNavigate, useParams } from '@reach/router';
+import { useNavigate, useParams } from 'react-router-dom';
 import { joinGame } from '../../features/game';
 import { getPlayers } from '../../features/players';
 import { getRoomStack } from '../../features/roomStack';
@@ -25,7 +25,7 @@ const buildWebsocketUrl = (gameId: string) => {
   return `${wsRoot}/games/${gameId}`;
 };
 
-interface GameProps extends RouteComponentProps {}
+interface GameProps {}
 
 const Game: FC<GameProps> = () => {
   const { gameId } = useParams();
