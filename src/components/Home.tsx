@@ -1,11 +1,9 @@
 import './Home.css';
 import React, { FC, useRef, useState } from 'react';
-import { RouteComponentProps, useNavigate } from '@reach/router';
+import { useNavigate } from 'react-router-dom';
 import { createGame } from '../api/api';
 
-interface HomeProps extends RouteComponentProps {}
-
-const Home: FC<HomeProps> = () => {
+const Home: FC<{}> = () => {
   const navigate = useNavigate();
   const [gameId, setGameId] = useState('');
   const numPlayersRef = useRef<HTMLInputElement>(null);
