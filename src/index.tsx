@@ -6,7 +6,7 @@ import App from './components/App';
 import * as serviceWorker from './serviceWorker';
 import { useStrictMode } from 'react-konva';
 import { store } from './store';
-import { LocationProvider } from '@reach/router';
+import { BrowserRouter } from 'react-router-dom';
 
 // ESLint thinks this is a React hook
 // eslint-disable-next-line react-hooks/rules-of-hooks
@@ -14,11 +14,11 @@ useStrictMode(true);
 
 ReactDOM.render(
   <React.StrictMode>
-    <LocationProvider>
+    <BrowserRouter>
       <Provider store={store}>
         <App />
       </Provider>
-    </LocationProvider>
+    </BrowserRouter>
   </React.StrictMode>,
   document.getElementById('root')
 );
