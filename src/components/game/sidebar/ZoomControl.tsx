@@ -1,12 +1,12 @@
-import React, { FunctionComponent } from 'react';
-import { useDispatch } from 'react-redux';
+import { FunctionComponent } from 'react';
 import { zoomIn, zoomOut } from '../../../features/zoom';
+import { useAppDispatch } from '../../../hooks';
 import './ZoomControl.css';
 
 interface ZoomControlProps {}
 
 const ZoomControl: FunctionComponent<ZoomControlProps> = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   return (
     <div

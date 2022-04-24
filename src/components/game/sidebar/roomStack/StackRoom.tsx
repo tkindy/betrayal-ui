@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useCallback, useState } from 'react';
+import { FunctionComponent, useCallback, useState } from 'react';
 import { BoundingBox, Dimensions } from '../../../layout';
 import {
   Floor,
@@ -13,9 +13,9 @@ import {
   translate,
 } from '../../../geometry';
 import { Group, Layer, Line, Rect, Stage, Text } from 'react-konva';
-import { ReactReduxContext, useSelector } from 'react-redux';
-import { RootState } from '../../../../store';
+import { ReactReduxContext } from 'react-redux';
 import FlippedStackRoom from './FlippedStackRoom';
+import { useAppSelector } from '../../../../hooks';
 
 interface RoofPoints {
   peak: Point;
@@ -184,9 +184,7 @@ const RoomDrawing: FunctionComponent<RoomDrawingProps> = ({ box }) => {
   const {
     dimensions: { width, height },
   } = box;
-  const { nextRoom, flippedRoom } = useSelector(
-    (state: RootState) => state.roomStack
-  );
+  const { nextRoom, flippedRoom } = useAppSelector((state) => state.roomStack);
 
   if (flippedRoom) {
     return <FlippedStackRoom box={box} flippedRoom={flippedRoom} />;

@@ -15,11 +15,11 @@ import {
   getSelectedPlayerId,
 } from './selectors';
 import { get } from '../board';
-import { addUpdateCase, createAsyncThunk } from './utils';
+import { addUpdateCase, createAppAsyncThunk } from './utils';
 import { giveDrawnCardToPlayer } from './cardStacks';
 import { sortBy } from '../utils';
 
-export const getPlayers = createAsyncThunk(
+export const getPlayers = createAppAsyncThunk(
   'players/getStatus',
   async (_, { getState }) => {
     return api.getPlayers(getGameId(getState()));
@@ -31,7 +31,7 @@ interface MovePlayerPayload {
   loc: GridLoc;
 }
 
-export const movePlayer = createAsyncThunk(
+export const movePlayer = createAppAsyncThunk(
   'board/movePlayerStatus',
   ({ id, loc }: MovePlayerPayload, { getState }) => {
     return api.movePlayer(getGameId(getState()), id, loc);
@@ -60,7 +60,7 @@ export const playerDropped: (
   dispatch(movePlayer({ id, loc }));
 };
 
-export const setTrait = createAsyncThunk(
+export const setTrait = createAppAsyncThunk(
   'players/setTrait',
   async (
     {
@@ -81,7 +81,7 @@ export const setTrait = createAsyncThunk(
   }
 );
 
-export const discardHeldCard = createAsyncThunk(
+export const discardHeldCard = createAppAsyncThunk(
   'players/discardHeld',
   async ({ cardId }: { cardId: number }, { getState }) => {
     return api.discardHeldCard(
@@ -92,7 +92,7 @@ export const discardHeldCard = createAsyncThunk(
   }
 );
 
-export const giveHeldCardToPlayer = createAsyncThunk(
+export const giveHeldCardToPlayer = createAppAsyncThunk(
   'players/giveHeldCardToPlayer',
   async (
     { cardId, toPlayerId }: { cardId: number; toPlayerId: number },

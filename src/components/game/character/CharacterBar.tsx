@@ -1,5 +1,4 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { FunctionComponent, useEffect, useState } from 'react';
 import {
   HeldCard,
   Player,
@@ -17,6 +16,7 @@ import {
   getSelectedPlayer,
   getSelectedPlayerId,
 } from '../../../features/selectors';
+import { useAppDispatch, useAppSelector } from '../../../hooks';
 import { BoundingBox, Dimensions } from '../../layout';
 import { useWindowDimensions } from '../../windowDimensions';
 import CardDetails from '../cards/CardDetails';
@@ -34,9 +34,9 @@ const CHARACTER_BAR_MARGIN = SIDEBAR_MARGIN;
 const CHARACTER_BAR_PADDING = SIDEBAR_PADDING;
 
 const PlayerSelect: FunctionComponent<{}> = () => {
-  const dispatch = useDispatch();
-  const players = useSelector(getPlayers);
-  const selectedPlayerId = useSelector(getSelectedPlayerId);
+  const dispatch = useAppDispatch();
+  const players = useAppSelector(getPlayers);
+  const selectedPlayerId = useAppSelector(getSelectedPlayerId);
 
   return (
     <select
@@ -62,9 +62,9 @@ const CardHovercard: FunctionComponent<CardHovercardProps> = ({
   card,
   close,
 }) => {
-  const dispatch = useDispatch();
-  const selectedPlayerId = useSelector(getSelectedPlayerId);
-  const possiblePlayersToGiveTo = useSelector(getPlayers)?.filter(
+  const dispatch = useAppDispatch();
+  const selectedPlayerId = useAppSelector(getSelectedPlayerId);
+  const possiblePlayersToGiveTo = useAppSelector(getPlayers)?.filter(
     (player) => player.id !== selectedPlayerId
   );
 
@@ -112,7 +112,7 @@ const CardHovercard: FunctionComponent<CardHovercardProps> = ({
 interface PlayerInventoryProps {}
 
 const PlayerInventory: FunctionComponent<PlayerInventoryProps> = () => {
-  const cards = useSelector(getSelectedPlayer)?.cards;
+  const cards = useAppSelector(getSelectedPlayer)?.cards;
   const [focusedCardId, setFocusedCardId] = useState<number | null>(null);
 
   useEffect(() => setFocusedCardId(null), [cards]);
@@ -165,7 +165,7 @@ interface TraitProps {
 }
 
 const Trait: FunctionComponent<TraitProps> = ({ name, trait, column, row }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   return (
     <div style={{ gridRow: row, gridColumn: column, padding: '5px' }}>
@@ -210,7 +210,7 @@ const traitLayout: {
 interface TraitsProps {}
 
 const Traits: FunctionComponent<TraitsProps> = () => {
-  const player = useSelector(getSelectedPlayer);
+  const player = useAppSelector(getSelectedPlayer);
   if (!player) {
     return null;
   }

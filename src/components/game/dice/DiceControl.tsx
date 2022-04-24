@@ -1,11 +1,10 @@
-import React, { FunctionComponent, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { FunctionComponent, useState } from 'react';
 import { rollDice } from '../../../features/diceRolls';
-import { RootState } from '../../../store';
 import zero from './zero.svg';
 import one from './one.svg';
 import two from './two.svg';
 import './DiceControl.css';
+import { useAppDispatch, useAppSelector } from '../../../hooks';
 
 interface DieProps {
   value: number;
@@ -67,8 +66,8 @@ interface RollDiceControlProps {
 }
 
 const DiceControl: FunctionComponent<RollDiceControlProps> = ({ expanded }) => {
-  const roll = useSelector((state: RootState) => state.diceRolls.roll);
-  const dispatch = useDispatch();
+  const roll = useAppSelector((state) => state.diceRolls.roll);
+  const dispatch = useAppDispatch();
   const [numDice, setNumDice] = useState<number>(8);
 
   if (!expanded) {

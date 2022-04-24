@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { Group, Text } from 'react-konva';
 import Room from '../room/Room';
 import RoomName from '../room/RoomName';
@@ -8,13 +8,13 @@ import { BoundingBox, Dimensions, getRoomDetailsBox } from '../../layout';
 import RoomFeatures from '../room/RoomFeatures';
 import { Point, subtract, translate } from '../../geometry';
 import Hovercard, { CardDirection } from '../../Hovercard';
-import { useDispatch } from 'react-redux';
 import { useRender } from '../../hooks';
 import {
   moveRoom,
   returnRoomToStack,
   rotateRoom,
 } from '../../../features/board';
+import { useAppDispatch } from '../../../hooks';
 
 const hovercardDimensions: Dimensions = { width: 200, height: 250 };
 
@@ -84,7 +84,7 @@ const BoardRoom: FunctionComponent<RoomModel> = (room) => {
     dimensions: { width: detailsWidth, height: detailsHeight / 2 },
   };
   const [hovered, setHovered] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const render = useRender();
   const gridSize = useGridSize();
 

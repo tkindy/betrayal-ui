@@ -1,5 +1,4 @@
-import { useSelector } from 'react-redux';
-import { RootState } from '../../../store';
+import { useAppSelector } from '../../../hooks';
 import { Point, translate } from '../../geometry';
 import { BoundingBox } from '../../layout';
 
@@ -18,7 +17,7 @@ export const toString: (loc: GridLoc) => string = ({ gridX, gridY }) => {
 };
 
 export const useGridSize = () => {
-  return useSelector((state: RootState) => state.zoom.gridSize);
+  return useAppSelector((state) => state.zoom.gridSize);
 };
 
 export const useGridBox: (loc: GridLoc) => BoundingBox = ({ gridX, gridY }) => {

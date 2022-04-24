@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { addUpdateCase, createAsyncThunk } from './utils';
+import { addUpdateCase, createAppAsyncThunk } from './utils';
 import * as api from '../api/api';
 import { getGameId } from './selectors';
 
@@ -7,14 +7,14 @@ interface RollDicePayload {
   numDice: number;
 }
 
-export const getLatestRoll = createAsyncThunk(
+export const getLatestRoll = createAppAsyncThunk(
   'getLatestRoll',
   async (_, { getState }) => {
     return api.getLatestRoll(getGameId(getState()));
   }
 );
 
-export const rollDice = createAsyncThunk(
+export const rollDice = createAppAsyncThunk(
   'rollDice',
   async (payload: RollDicePayload, { getState }) => {
     return api.rollDice(getGameId(getState()), payload.numDice);

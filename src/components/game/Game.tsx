@@ -1,10 +1,9 @@
-import React, { FC, useEffect } from 'react';
+import { FC, useEffect } from 'react';
 import { Layer, Rect, Stage, Group } from 'react-konva';
 import Board from './board/Board';
-import { ReactReduxContext, useDispatch, useSelector } from 'react-redux';
+import { ReactReduxContext } from 'react-redux';
 import { useWindowDimensions } from '../windowDimensions';
 import { getRooms, moveBoard } from '../../features/board';
-import { RootState } from '../../store';
 import Agents from './players/Agents';
 import Sidebar from './sidebar/Sidebar';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -18,6 +17,7 @@ import { connect, disconnect } from '@giantmachines/redux-websocket/dist';
 import { getLatestRoll } from '../../features/diceRolls';
 import { getMonsters } from '../../features/monsters';
 import Dice from './dice/Dice';
+import { useAppDispatch, useAppSelector } from '../../hooks';
 
 const buildWebsocketUrl = (gameId: string) => {
   const httpRoot = process.env.REACT_APP_API_ROOT!!;
@@ -28,9 +28,9 @@ const buildWebsocketUrl = (gameId: string) => {
 const Game: FC<{}> = () => {
   const { gameId } = useParams();
   const { width, height } = useWindowDimensions();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
-  const { x, y } = useSelector((state: RootState) => state.board.topLeft);
+  const { x, y } = useAppSelector((state) => state.board.topLeft);
 
   useEffect(() => {
     if (!gameId || !/^[A-Z]{6}$/.test(gameId)) {

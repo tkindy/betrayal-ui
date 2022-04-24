@@ -1,14 +1,13 @@
-import React, { CSSProperties, FunctionComponent } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { CSSProperties, FunctionComponent } from 'react';
 import {
   flipRoomStack,
   rotateFlipped,
   skipRoom,
 } from '../../../../features/roomStack';
-import { RootState } from '../../../../store';
+import { useAppDispatch, useAppSelector } from '../../../../hooks';
 
 const StackButtons: FunctionComponent<{}> = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const buttonStyle: CSSProperties = {
     flex: '2',
     height: '100%',
@@ -34,7 +33,7 @@ const StackButtons: FunctionComponent<{}> = () => {
 };
 
 const FlippedRoomButtons: FunctionComponent<{}> = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   return (
     <div style={{ height: '100%' }}>
@@ -51,9 +50,7 @@ const FlippedRoomButtons: FunctionComponent<{}> = () => {
 interface RoomStackControlProps {}
 
 const RoomStackControl: FunctionComponent<RoomStackControlProps> = () => {
-  const flippedRoom = useSelector(
-    (state: RootState) => state.roomStack.flippedRoom
-  );
+  const flippedRoom = useAppSelector((state) => state.roomStack.flippedRoom);
 
   return (
     <div className="room-stack-control">

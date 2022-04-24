@@ -1,6 +1,6 @@
-import React, { FunctionComponent } from 'react';
-import { useDispatch } from 'react-redux';
+import { FunctionComponent } from 'react';
 import { drawEvent, drawItem, drawOmen } from '../../../features/cardStacks';
+import { useAppDispatch } from '../../../hooks';
 import './DrawControl.css';
 
 interface DrawButtonProps {
@@ -9,7 +9,7 @@ interface DrawButtonProps {
 }
 
 const DrawButton: FunctionComponent<DrawButtonProps> = ({ entity, thunk }) => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   return (
     <button
       className="drawCardButton"

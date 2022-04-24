@@ -1,11 +1,11 @@
-import React, { FunctionComponent } from 'react';
-import { useDispatch } from 'react-redux';
+import { FunctionComponent } from 'react';
 import { addMonster } from '../../../features/monsters';
+import { useAppDispatch } from '../../../hooks';
 
 interface AddMonsterControlProps {}
 
 const AddMonsterControl: FunctionComponent<AddMonsterControlProps> = () => {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   return <button onClick={() => dispatch(addMonster())}>Add monster</button>;
 };

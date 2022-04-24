@@ -1,8 +1,7 @@
-import React, { FunctionComponent, useState } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { Group, Rect } from 'react-konva';
-import { useDispatch, useSelector } from 'react-redux';
 import { openSpotClicked } from '../../../features/board';
-import { RootState } from '../../../store';
+import { useAppDispatch, useAppSelector } from '../../../hooks';
 import Room, { Direction } from '../room/Room';
 import { GridLoc, useGridBox } from './grid';
 
@@ -18,11 +17,9 @@ const OpenSpot: FunctionComponent<OpenSpotProps> = ({ loc, from }) => {
     dimensions: { width, height },
   } = box;
   const [hovered, setHovered] = useState(false);
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const onClick = () => dispatch(openSpotClicked(loc, from));
-  const flippedRoom = useSelector(
-    (state: RootState) => state.roomStack.flippedRoom
-  );
+  const flippedRoom = useAppSelector((state) => state.roomStack.flippedRoom);
   const onMouseEnter = () => setHovered(true);
   const onMouseLeave = () => setHovered(false);
 

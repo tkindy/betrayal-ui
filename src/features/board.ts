@@ -11,30 +11,30 @@ import { Room } from './models';
 import { Point } from '../components/geometry';
 import { getGameId, getOpenNeighbors } from './selectors';
 import { Direction } from '../components/game/room/Room';
-import { addUpdateCase, createAsyncThunk } from './utils';
+import { addUpdateCase, createAppAsyncThunk } from './utils';
 
-export const getRooms = createAsyncThunk(
+export const getRooms = createAppAsyncThunk(
   'board/getStatus',
   async (_, { getState }) => {
     return api.getRooms(getGameId(getState()));
   }
 );
 
-export const moveRoom = createAsyncThunk(
+export const moveRoom = createAppAsyncThunk(
   'board/moveRoom',
   async ({ id, loc }: { id: number; loc: GridLoc }, { getState }) => {
     return api.moveRoom(getGameId(getState()), id, loc);
   }
 );
 
-export const rotateRoom = createAsyncThunk(
+export const rotateRoom = createAppAsyncThunk(
   'board/rotateRoom',
   async ({ id }: { id: number }, { getState }) => {
     return api.rotateRoom(getGameId(getState()), id);
   }
 );
 
-export const returnRoomToStack = createAsyncThunk(
+export const returnRoomToStack = createAppAsyncThunk(
   'board/returnRoomToStack',
   async ({ id }: { id: number }, { getState }) => {
     return api.returnRoomToStack(getGameId(getState()), id);
@@ -59,7 +59,7 @@ const getMatchingDoor: (dir: Direction) => Direction = (dir) => {
   }
 };
 
-export const placeRoom = createAsyncThunk(
+export const placeRoom = createAppAsyncThunk(
   'board/placeRoomStatus',
   async (loc: GridLoc, { getState }) => {
     return api.placeRoom(getGameId(getState()), loc);

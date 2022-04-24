@@ -1,4 +1,4 @@
-import React, { FunctionComponent, useState } from 'react';
+import { FunctionComponent, useState } from 'react';
 import { Circle, Group, Rect, Text } from 'react-konva';
 import { partition } from '../../../utils';
 import { translate } from '../../geometry';
@@ -13,12 +13,12 @@ import {
   Agent as AgentModel,
   Monster as MonsterModel,
 } from '../../../features/models';
-import { useDispatch } from 'react-redux';
 import { playerDropped, switchSelectedPlayer } from '../../../features/players';
 import { BoundingBox, getCenter, getPlayersBox } from '../../layout';
 import { useRender } from '../../hooks';
 import PlayerHovercard from './PlayerHovercard';
 import { monsterDropped } from '../../../features/monsters';
+import { useAppDispatch } from '../../../hooks';
 
 interface MonsterProps {
   box: BoundingBox;
@@ -34,7 +34,7 @@ const Monster: FunctionComponent<MonsterProps> = ({
   const center = getCenter(box);
   const { x, y } = translate(center, side / -2, side / -2);
 
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const render = useRender();
   const gridSize = useGridSize();
 
@@ -87,7 +87,7 @@ const Player: FunctionComponent<PlayerProps> = ({ box, player }) => {
   const { id, color } = player;
 
   const render = useRender();
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
   const gridSize = useGridSize();
 
   const [hovered, setHovered] = useState(false);

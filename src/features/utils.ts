@@ -5,14 +5,14 @@ import {
   CaseReducer,
   createAsyncThunk as CAT,
 } from '@reduxjs/toolkit';
-import { GameUpdatePayload, RootState } from '../store';
+import { AppDispatch, GameUpdatePayload, RootState } from '../store';
 
-export const createAsyncThunk: <Returned, ThunkArg = void>(
+export const createAppAsyncThunk: <Returned, ThunkArg = void>(
   typePrefix: string,
   payloadCreator: AsyncThunkPayloadCreator<
     Returned,
     ThunkArg,
-    { state: RootState }
+    { dispatch: AppDispatch; state: RootState }
   >
 ) => AsyncThunk<Returned, ThunkArg, { state: RootState }> = (
   typePrefix,

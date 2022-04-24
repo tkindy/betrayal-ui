@@ -1,6 +1,6 @@
 import { Action, createSlice, ThunkAction } from '@reduxjs/toolkit';
 import { Monster } from './models';
-import { addUpdateCase, createAsyncThunk } from './utils';
+import { addUpdateCase, createAppAsyncThunk } from './utils';
 import * as api from '../api/api';
 import { getBoardMap, getGameId } from './selectors';
 import { equal, GridLoc } from '../components/game/board/grid';
@@ -8,21 +8,21 @@ import { RootState } from '../store';
 import { get } from '../board';
 import { getMonsters as selectMonsters } from './selectors';
 
-export const getMonsters = createAsyncThunk(
+export const getMonsters = createAppAsyncThunk(
   'monsters/get',
   async (_, { getState }) => {
     return api.getMonsters(getGameId(getState()));
   }
 );
 
-export const addMonster = createAsyncThunk(
+export const addMonster = createAppAsyncThunk(
   'monsters/add',
   async (_, { getState }) => {
     return api.addMonster(getGameId(getState()));
   }
 );
 
-export const moveMonster = createAsyncThunk(
+export const moveMonster = createAppAsyncThunk(
   'monsters/move',
   async ({ id, loc }: { id: number; loc: GridLoc }, { getState }) => {
     return api.moveMonster(getGameId(getState()), id, loc);

@@ -3,30 +3,30 @@ import { placeRoom } from './board';
 import { FlippedRoom, StackRoom } from './models';
 import * as api from '../api/api';
 import { getGameId } from './selectors';
-import { addUpdateCase, createAsyncThunk } from './utils';
+import { addUpdateCase, createAppAsyncThunk } from './utils';
 
-export const getRoomStack = createAsyncThunk(
+export const getRoomStack = createAppAsyncThunk(
   'roomStack/getStatus',
   async (_, { getState }) => {
     return api.getRoomStack(getGameId(getState()));
   }
 );
 
-export const skipRoom = createAsyncThunk(
+export const skipRoom = createAppAsyncThunk(
   'roomStack/skipStatus',
   async (_, { getState }) => {
     return api.skipRoom(getGameId(getState()));
   }
 );
 
-export const flipRoomStack = createAsyncThunk(
+export const flipRoomStack = createAppAsyncThunk(
   'roomStack/flipStatus',
   async (_, { getState }) => {
     return api.flipRoom(getGameId(getState()));
   }
 );
 
-export const rotateFlipped = createAsyncThunk(
+export const rotateFlipped = createAppAsyncThunk(
   'roomStack/rotateStatus',
   async (_, { getState }) => {
     return api.rotateFlipped(getGameId(getState()));

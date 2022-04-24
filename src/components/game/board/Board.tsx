@@ -1,16 +1,16 @@
-import React, { FunctionComponent } from 'react';
+import { FunctionComponent } from 'react';
 import BoardRoom from './BoardRoom';
 import { Group } from 'react-konva';
 import { toString } from './grid';
 import OpenSpot from './OpenSpot';
-import { useSelector } from 'react-redux';
 import { getOpenNeighbors, getRooms } from '../../../features/selectors';
+import { useAppSelector } from '../../../hooks';
 
 interface BoardProps {}
 
 const Board: FunctionComponent<BoardProps> = () => {
-  const rooms = useSelector(getRooms);
-  const openNeighbors = useSelector(getOpenNeighbors);
+  const rooms = useAppSelector(getRooms);
+  const openNeighbors = useAppSelector(getOpenNeighbors);
 
   if (!rooms || !openNeighbors) {
     return null;
