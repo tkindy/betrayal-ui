@@ -1,4 +1,4 @@
-import React, { FunctionComponent, ReactElement } from 'react';
+import { FunctionComponent, ReactElement, ReactNode } from 'react';
 import {
   RollTarget,
   RollTableRow,
@@ -13,6 +13,7 @@ import './CardDetails.css';
 interface BaseCardDetailsProps {
   color: string;
   renderControls: () => ReactElement<any, any>[];
+  children: ReactNode;
 }
 
 const BaseCardDetails: FunctionComponent<BaseCardDetailsProps> = ({

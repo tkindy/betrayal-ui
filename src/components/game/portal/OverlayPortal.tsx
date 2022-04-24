@@ -1,9 +1,10 @@
-import { FunctionComponent } from 'react';
+import { FunctionComponent, ReactNode } from 'react';
 import { Portal } from 'react-konva-utils';
 
 interface PortalProps {
   selector: string;
   enabled: boolean;
+  children: ReactNode;
 }
 type OverlayPortalProps = Omit<PortalProps, 'selector'>;
 
