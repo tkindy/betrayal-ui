@@ -1,6 +1,4 @@
 import React, { FC } from 'react';
-import die from './two.svg';
-import xIcon from './x.svg';
 import './DiceButton.css';
 
 interface DiceButtonProps {
@@ -9,15 +7,15 @@ interface DiceButtonProps {
 }
 
 const DiceButton: FC<DiceButtonProps> = ({ expanded, onClick }) => {
-  const [imgSrc, alt] = expanded
-    ? [xIcon, 'dice roller close']
-    : [die, 'dice roller open'];
+  const [filename, alt] = expanded
+    ? ['x', 'dice roller close']
+    : ['dice/two', 'dice roller open'];
 
   return (
     <div className="dice-button-background" onClick={onClick}>
       <img
         className="dice-button-icon"
-        src={imgSrc}
+        src={`/images/${filename}.svg`}
         onClick={onClick}
         alt={alt}
       />

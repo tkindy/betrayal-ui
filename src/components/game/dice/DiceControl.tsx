@@ -1,8 +1,5 @@
 import { FunctionComponent, useState } from 'react';
 import { rollDice } from '../../../features/diceRolls';
-import zero from './zero.svg';
-import one from './one.svg';
-import two from './two.svg';
 import './DiceControl.css';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
 
@@ -11,24 +8,22 @@ interface DieProps {
 }
 
 const Die: FunctionComponent<DieProps> = ({ value }) => {
-  let src;
-  let alt;
+  let name;
   switch (value) {
     case 0:
-      src = zero;
-      alt = 'zero';
+      name = 'zero';
       break;
     case 1:
-      src = one;
-      alt = 'one';
+      name = 'one';
       break;
     case 2:
-      src = two;
-      alt = 'two';
+      name = 'two';
       break;
   }
 
-  return <img src={src} alt={alt} className="die-value" />;
+  return (
+    <img src={`/images/dice/${name}.svg`} alt={name} className="die-value" />
+  );
 };
 
 interface DiceRowProps {
