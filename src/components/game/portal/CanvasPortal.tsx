@@ -1,6 +1,6 @@
-import React, { FunctionComponent, useEffect, useRef } from 'react';
+import { FunctionComponent, useEffect, useRef } from 'react';
 import { Group } from 'react-konva';
-import { Group as GroupElem } from 'konva/types/Group';
+import { Group as GroupType } from 'konva/lib/Group';
 
 // For drawing canvas elements in another part of the react-konva tree
 // Adapted from https://konvajs.org/docs/react/Canvas_Portal.html
@@ -15,8 +15,8 @@ const CanvasPortal: FunctionComponent<PortalProps> = ({
   enabled,
   children,
 }) => {
-  const outer = useRef<GroupElem>(null);
-  const inner = useRef<GroupElem>(null);
+  const outer = useRef<GroupType>(null);
+  const inner = useRef<GroupType>(null);
 
   useEffect(() => {
     const stage = outer.current?.getStage();
