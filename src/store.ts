@@ -1,4 +1,4 @@
-import { configureStore, getDefaultMiddleware } from '@reduxjs/toolkit';
+import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from '@reduxjs/toolkit';
 import zoomReducer from './features/zoom';
 import roomStackReducer from './features/roomStack';
@@ -24,12 +24,13 @@ const rootReducer = combineReducers({
 
 export const store = configureStore({
   reducer: rootReducer,
-  middleware: getDefaultMiddleware().concat([
-    reduxWebsocket({
-      deserializer: (message) => JSON.parse(message),
-      dateSerializer: (date) => date.getUTCMilliseconds(),
-    }),
-  ]),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware().concat([
+      reduxWebsocket({
+        deserializer: (message) => JSON.parse(message),
+        dateSerializer: (date) => date.getUTCMilliseconds(),
+      }),
+    ]),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
