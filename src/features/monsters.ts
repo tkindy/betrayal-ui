@@ -32,24 +32,22 @@ export const moveMonster = createAppAsyncThunk(
 export const monsterDropped: (
   id: number,
   loc: GridLoc
-) => ThunkAction<void, RootState, unknown, Action<string>> = (id, loc) => (
-  dispatch,
-  getState
-) => {
-  const map = getBoardMap(getState())!!;
-  if (!get(map, loc)) {
-    return;
-  }
+) => ThunkAction<void, RootState, unknown, Action<string>> =
+  (id, loc) => (dispatch, getState) => {
+    const map = getBoardMap(getState())!!;
+    if (!get(map, loc)) {
+      return;
+    }
 
-  const { loc: originalLoc } = selectMonsters(getState())!!.find(
-    (monster) => monster.id === id
-  )!!;
-  if (equal(originalLoc, loc)) {
-    return;
-  }
+    const { loc: originalLoc } = selectMonsters(getState())!!.find(
+      (monster) => monster.id === id
+    )!!;
+    if (equal(originalLoc, loc)) {
+      return;
+    }
 
-  dispatch(moveMonster({ id, loc }));
-};
+    dispatch(moveMonster({ id, loc }));
+  };
 
 interface MonstersState {
   monsters?: Monster[];

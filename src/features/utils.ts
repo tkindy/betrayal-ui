@@ -3,7 +3,7 @@ import {
   AsyncThunk,
   AsyncThunkPayloadCreator,
   CaseReducer,
-  createAsyncThunk as CAT,
+  createAsyncThunk,
 } from '@reduxjs/toolkit';
 import { AppDispatch, GameUpdatePayload, RootState } from '../store';
 
@@ -18,7 +18,7 @@ export const createAppAsyncThunk: <Returned, ThunkArg = void>(
   typePrefix,
   payloadCreator
 ) => {
-  return CAT(typePrefix, payloadCreator);
+  return createAsyncThunk(typePrefix, payloadCreator);
 };
 
 export const addUpdateCase: <S>(

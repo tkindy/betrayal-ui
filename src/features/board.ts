@@ -69,43 +69,39 @@ export const placeRoom = createAppAsyncThunk(
 export const openSpotClicked: (
   loc: GridLoc,
   from: Direction[]
-) => ThunkAction<void, RootState, unknown, Action<string>> = (loc, from) => (
-  dispatch,
-  getState
-) => {
-  const flippedRoom = getState().roomStack.flippedRoom;
-  if (!flippedRoom) {
-    return;
-  }
+) => ThunkAction<void, RootState, unknown, Action<string>> =
+  (loc, from) => (dispatch, getState) => {
+    const flippedRoom = getState().roomStack.flippedRoom;
+    if (!flippedRoom) {
+      return;
+    }
 
-  const hasMatchingDoor = flippedRoom.doorDirections
-    .map(getMatchingDoor)
-    .some((dir) => from.includes(dir));
+    const hasMatchingDoor = flippedRoom.doorDirections
+      .map(getMatchingDoor)
+      .some((dir) => from.includes(dir));
 
-  if (!hasMatchingDoor) {
-    return;
-  }
+    if (!hasMatchingDoor) {
+      return;
+    }
 
-  dispatch(placeRoom(loc));
-};
+    dispatch(placeRoom(loc));
+  };
 
 export const flippedRoomDropped: (
   loc: GridLoc
-) => ThunkAction<void, RootState, unknown, Action<string>> = (loc) => (
-  dispatch,
-  getState
-) => {
-  const openNeighbors = getOpenNeighbors(getState());
-  const relevantNeighbor = openNeighbors?.find((neighbor) =>
-    equal(neighbor.loc, loc)
-  );
+) => ThunkAction<void, RootState, unknown, Action<string>> =
+  (loc) => (dispatch, getState) => {
+    const openNeighbors = getOpenNeighbors(getState());
+    const relevantNeighbor = openNeighbors?.find((neighbor) =>
+      equal(neighbor.loc, loc)
+    );
 
-  if (!relevantNeighbor) {
-    return;
-  }
+    if (!relevantNeighbor) {
+      return;
+    }
 
-  dispatch(openSpotClicked(relevantNeighbor.loc, relevantNeighbor.from));
-};
+    dispatch(openSpotClicked(relevantNeighbor.loc, relevantNeighbor.from));
+  };
 
 const initialState: BoardState = {
   topLeft: { x: 0, y: 0 },

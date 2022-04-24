@@ -40,11 +40,11 @@ const getHousePoints: (
   width: number,
   floorHeight: number
 ) => number[] = (topLeft, width, floorHeight) => {
-  const { peak, left: upperLeft, right: upperRight } = getRoofPoints(
-    topLeft,
-    width,
-    floorHeight
-  );
+  const {
+    peak,
+    left: upperLeft,
+    right: upperRight,
+  } = getRoofPoints(topLeft, width, floorHeight);
   const lowerLeft = translate(upperLeft, 0, 3 * floorHeight);
   const lowerRight = translate(lowerLeft, width, 0);
 

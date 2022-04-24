@@ -41,24 +41,22 @@ export const movePlayer = createAppAsyncThunk(
 export const playerDropped: (
   id: number,
   loc: GridLoc
-) => ThunkAction<void, RootState, unknown, Action<string>> = (id, loc) => (
-  dispatch,
-  getState
-) => {
-  const map = getBoardMap(getState())!!;
-  if (!get(map, loc)) {
-    return;
-  }
+) => ThunkAction<void, RootState, unknown, Action<string>> =
+  (id, loc) => (dispatch, getState) => {
+    const map = getBoardMap(getState())!!;
+    if (!get(map, loc)) {
+      return;
+    }
 
-  const { loc: originalLoc } = selectPlayers(getState())!!.find(
-    (player) => player.id === id
-  )!!;
-  if (equal(originalLoc, loc)) {
-    return;
-  }
+    const { loc: originalLoc } = selectPlayers(getState())!!.find(
+      (player) => player.id === id
+    )!!;
+    if (equal(originalLoc, loc)) {
+      return;
+    }
 
-  dispatch(movePlayer({ id, loc }));
-};
+    dispatch(movePlayer({ id, loc }));
+  };
 
 export const setTrait = createAppAsyncThunk(
   'players/setTrait',
