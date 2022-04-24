@@ -1,16 +1,20 @@
-import React, { FunctionComponent } from 'react';
-import CanvasPortal, { PortalProps } from './CanvasPortal';
+import { FunctionComponent } from 'react';
+import { Portal } from 'react-konva-utils';
 
+interface PortalProps {
+  selector: string;
+  enabled: boolean;
+}
 type OverlayPortalProps = Omit<PortalProps, 'selector'>;
 
 const OverlayPortal: FunctionComponent<OverlayPortalProps> = ({
   children,
-  ...rest
+  enabled,
 }) => {
   return (
-    <CanvasPortal selector=".overlay" {...rest}>
+    <Portal selector=".overlay" enabled={enabled}>
       {children}
-    </CanvasPortal>
+    </Portal>
   );
 };
 
