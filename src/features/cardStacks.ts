@@ -4,11 +4,6 @@ import { Card, Player } from './models';
 import { getGameId } from './selectors';
 import { addUpdateCase, createAppAsyncThunk } from './utils';
 
-export const getDrawnCard = createAppAsyncThunk(
-  'cards/drawn/get',
-  async (_, { getState }) => api.getDrawnCard(getGameId(getState()))
-);
-
 export const drawEvent = createAppAsyncThunk(
   'cardStacks/events/get',
   async (_, { getState }) => {
@@ -58,9 +53,6 @@ const cardStacksSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getDrawnCard.fulfilled, (state, { payload: card }) => {
-        state.drawnCard = card;
-      })
       .addCase(drawEvent.fulfilled, (state, { payload: card }) => {
         state.drawnCard = card;
       })

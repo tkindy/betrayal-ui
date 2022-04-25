@@ -7,13 +7,6 @@ interface RollDicePayload {
   numDice: number;
 }
 
-export const getLatestRoll = createAppAsyncThunk(
-  'getLatestRoll',
-  async (_, { getState }) => {
-    return api.getLatestRoll(getGameId(getState()));
-  }
-);
-
 export const rollDice = createAppAsyncThunk(
   'rollDice',
   async (payload: RollDicePayload, { getState }) => {
@@ -32,13 +25,9 @@ const diceRollsSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder
-      .addCase(getLatestRoll.fulfilled, (state, { payload: roll }) => {
-        state.roll = roll || undefined;
-      })
-      .addCase(rollDice.fulfilled, (state, { payload: roll }) => {
-        state.roll = roll;
-      });
+    builder.addCase(rollDice.fulfilled, (state, { payload: roll }) => {
+      state.roll = roll;
+    });
 
     addUpdateCase(builder, (state, { payload: { message } }) => {
       state.roll = message.latestRoll || undefined;

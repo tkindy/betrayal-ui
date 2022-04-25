@@ -8,13 +8,6 @@ import { RootState } from '../store';
 import { get } from '../board';
 import { getMonsters as selectMonsters } from './selectors';
 
-export const getMonsters = createAppAsyncThunk(
-  'monsters/get',
-  async (_, { getState }) => {
-    return api.getMonsters(getGameId(getState()));
-  }
-);
-
 export const addMonster = createAppAsyncThunk(
   'monsters/add',
   async (_, { getState }) => {
@@ -61,9 +54,6 @@ const monstersSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getMonsters.fulfilled, (state, { payload: monsters }) => {
-        state.monsters = monsters;
-      })
       .addCase(addMonster.fulfilled, (state, { payload: monster }) => {
         if (state.monsters?.map((m) => m.id).includes(monster.id)) {
           return;

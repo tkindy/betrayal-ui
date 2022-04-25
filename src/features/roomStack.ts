@@ -5,13 +5,6 @@ import * as api from '../api/api';
 import { getGameId } from './selectors';
 import { addUpdateCase, createAppAsyncThunk } from './utils';
 
-export const getRoomStack = createAppAsyncThunk(
-  'roomStack/getStatus',
-  async (_, { getState }) => {
-    return api.getRoomStack(getGameId(getState()));
-  }
-);
-
 export const skipRoom = createAppAsyncThunk(
   'roomStack/skipStatus',
   async (_, { getState }) => {
@@ -46,9 +39,6 @@ const roomStackSlice = createSlice({
   reducers: {},
   extraReducers: (builder) => {
     builder
-      .addCase(getRoomStack.fulfilled, (_state, { payload: newState }) => {
-        return newState;
-      })
       .addCase(flipRoomStack.fulfilled, (state, { payload: flippedRoom }) => {
         delete state.nextRoom;
         state.flippedRoom = flippedRoom;

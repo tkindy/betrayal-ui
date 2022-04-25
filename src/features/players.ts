@@ -19,13 +19,6 @@ import { addUpdateCase, createAppAsyncThunk } from './utils';
 import { giveDrawnCardToPlayer } from './cardStacks';
 import { sortBy } from '../utils';
 
-export const getPlayers = createAppAsyncThunk(
-  'players/getStatus',
-  async (_, { getState }) => {
-    return api.getPlayers(getGameId(getState()));
-  }
-);
-
 interface MovePlayerPayload {
   id: number;
   loc: GridLoc;
@@ -129,12 +122,6 @@ const playersSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(getPlayers.fulfilled, (state, { payload: players }) => {
-        state.players = players;
-        state.selectedPlayerId = sortBy(players, (p) =>
-          p.characterName.toLowerCase()
-        )[0].id;
-      })
       .addCase(movePlayer.fulfilled, (state, { payload: players }) => {
         state.players = players;
       })
@@ -159,6 +146,12 @@ const playersSlice = createSlice({
 
     addUpdateCase(builder, (state, { payload: { message } }) => {
       state.players = message.players;
+
+      if (state.selectedPlayerId === null) {
+        state.selectedPlayerId = sortBy(message.players, (p) =>
+          p.characterName.toLowerCase()
+        )[0].id;
+      }
     });
   },
 });

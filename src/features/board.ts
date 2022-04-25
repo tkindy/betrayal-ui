@@ -13,13 +13,6 @@ import { getGameId, getOpenNeighbors } from './selectors';
 import { Direction } from '../components/game/room/Room';
 import { addUpdateCase, createAppAsyncThunk } from './utils';
 
-export const getRooms = createAppAsyncThunk(
-  'board/getStatus',
-  async (_, { getState }) => {
-    return api.getRooms(getGameId(getState()));
-  }
-);
-
 export const moveRoom = createAppAsyncThunk(
   'board/moveRoom',
   async ({ id, loc }: { id: number; loc: GridLoc }, { getState }) => {
@@ -116,13 +109,9 @@ const boardSlice = createSlice({
     },
   },
   extraReducers: (builder) => {
-    builder
-      .addCase(getRooms.fulfilled, (state, { payload: rooms }) => {
-        state.rooms = rooms;
-      })
-      .addCase(placeRoom.fulfilled, (state, { payload: { rooms } }) => {
-        state.rooms = rooms;
-      });
+    builder.addCase(placeRoom.fulfilled, (state, { payload: { rooms } }) => {
+      state.rooms = rooms;
+    });
 
     addUpdateCase(builder, (state, { payload: { message } }) => {
       state.rooms = message.rooms;

@@ -3,19 +3,14 @@ import { Layer, Rect, Stage, Group } from 'react-konva';
 import Board from './board/Board';
 import { ReactReduxContext } from 'react-redux';
 import { useWindowDimensions } from '../windowDimensions';
-import { getRooms, moveBoard } from '../../features/board';
+import { moveBoard } from '../../features/board';
 import Agents from './players/Agents';
 import Sidebar from './sidebar/Sidebar';
 import { useNavigate, useParams } from 'react-router-dom';
 import { joinGame } from '../../features/game';
-import { getPlayers } from '../../features/players';
-import { getRoomStack } from '../../features/roomStack';
 import DrawnCard from './cards/DrawnCard';
-import { getDrawnCard } from '../../features/cardStacks';
 import CharacterBar from './character/CharacterBar';
 import { connect, disconnect } from '@giantmachines/redux-websocket/dist';
-import { getLatestRoll } from '../../features/diceRolls';
-import { getMonsters } from '../../features/monsters';
 import Dice from './dice/Dice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 
@@ -40,12 +35,6 @@ const Game: FC<{}> = () => {
 
     dispatch(joinGame(gameId));
     dispatch(connect(buildWebsocketUrl(gameId)));
-    dispatch(getRooms());
-    dispatch(getPlayers());
-    dispatch(getMonsters());
-    dispatch(getRoomStack());
-    dispatch(getDrawnCard());
-    dispatch(getLatestRoll());
 
     return () => {
       dispatch(disconnect());

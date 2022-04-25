@@ -1,6 +1,5 @@
 import { GridLoc } from '../components/game/board/grid';
 import {
-  Card,
   EventCard,
   FlippedRoom,
   ItemCard,
@@ -29,14 +28,6 @@ interface RoomStackResponse {
   nextRoom?: StackRoom;
   flippedRoom?: FlippedRoom;
 }
-
-export const getRoomStack = async (gameId: string) => {
-  const response = await axios.get<RoomStackResponse>(
-    buildApiUrl(`/games/${gameId}/roomStack`)
-  );
-
-  return response.data;
-};
 
 export const skipRoom = async (gameId: string) => {
   const response = await axios.post<RoomStackResponse>(
@@ -76,13 +67,6 @@ export const placeRoom: (
   return response.data;
 };
 
-export const getRooms: (gameId: string) => Promise<Room[]> = async (gameId) => {
-  const response = await axios.get<Room[]>(
-    buildApiUrl(`/games/${gameId}/rooms`)
-  );
-  return response.data;
-};
-
 export const getPlayers: (gameId: string) => Promise<Player[]> = async (
   gameId
 ) => {
@@ -114,20 +98,6 @@ export const setTrait: (
     buildApiUrl(`/games/${gameId}/players/${playerId}/setTrait`),
     { trait, index }
   );
-
-  return response.data;
-};
-
-export const getDrawnCard: (gameId: string) => Promise<Card | null> = async (
-  gameId
-) => {
-  const response = await axios.get<Card>(
-    buildApiUrl(`/games/${gameId}/cards/drawn`)
-  );
-
-  if (response.status === 404) {
-    return null;
-  }
 
   return response.data;
 };
@@ -210,26 +180,6 @@ export const rollDice: (
   const response = await axios.post<number[]>(
     buildApiUrl(`/games/${gameId}/dice`),
     { numDice }
-  );
-
-  return response.data;
-};
-
-export const getLatestRoll: (
-  gameId: string
-) => Promise<number[] | null> = async (gameId) => {
-  const response = await axios.get<number[]>(
-    buildApiUrl(`/games/${gameId}/dice`)
-  );
-
-  return response.data;
-};
-
-export const getMonsters: (gameId: string) => Promise<Monster[]> = async (
-  gameId
-) => {
-  const response = await axios.get<Monster[]>(
-    buildApiUrl(`/games/${gameId}/monsters`)
   );
 
   return response.data;
