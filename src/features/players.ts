@@ -147,7 +147,7 @@ const playersSlice = createSlice({
     addUpdateCase(builder, (state, { payload: { message } }) => {
       state.players = message.players;
 
-      if (state.selectedPlayerId === null) {
+      if (state.selectedPlayerId === undefined) {
         state.selectedPlayerId = sortBy(message.players, (p) =>
           p.characterName.toLowerCase()
         )[0].id;
