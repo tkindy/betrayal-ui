@@ -11,7 +11,7 @@ import { Room } from './models';
 import { Point } from '../components/geometry';
 import { getGameId, getOpenNeighbors } from './selectors';
 import { Direction } from '../components/game/room/Room';
-import { addUpdateCase, createAppAsyncThunk } from './utils';
+import { addGameUpdateCase, createAppAsyncThunk } from './utils';
 
 export const moveRoom = createAppAsyncThunk(
   'board/moveRoom',
@@ -113,7 +113,7 @@ const boardSlice = createSlice({
       state.rooms = rooms;
     });
 
-    addUpdateCase(builder, (state, { payload: { message } }) => {
+    addGameUpdateCase(builder, (state, { payload: { message } }) => {
       state.rooms = message.rooms;
     });
   },

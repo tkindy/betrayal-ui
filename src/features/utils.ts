@@ -21,12 +21,13 @@ export const createAppAsyncThunk: <Returned, ThunkArg = void>(
   return createAsyncThunk(typePrefix, payloadCreator);
 };
 
-export const addUpdateCase: <S>(
+const buildAddUpdateCase: <T>() => <S>(
   builder: ActionReducerMapBuilder<S>,
-  reducer: CaseReducer<
-    S,
-    { type: 'REDUX_WEBSOCKET::MESSAGE'; payload: GameUpdatePayload }
-  >
-) => void = (builder, reducer) => {
-  builder.addCase('REDUX_WEBSOCKET::MESSAGE', reducer);
+  reducer: CaseReducer<S, { type: 'REDUX_WEBSOCKET::MESSAGE'; payload: T }>
+) => void = () => {
+  return (builder, reducer) => {
+    builder.addCase('REDUX_WEBSOCKET::MESSAGE', reducer);
+  };
 };
+
+export const addGameUpdateCase = buildAddUpdateCase<GameUpdatePayload>();

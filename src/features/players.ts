@@ -15,7 +15,7 @@ import {
   getSelectedPlayerId,
 } from './selectors';
 import { get } from '../board';
-import { addUpdateCase, createAppAsyncThunk } from './utils';
+import { addGameUpdateCase, createAppAsyncThunk } from './utils';
 import { giveDrawnCardToPlayer } from './cardStacks';
 import { sortBy } from '../utils';
 
@@ -144,7 +144,7 @@ const playersSlice = createSlice({
         state.players = replacePlayer(state.players!!, player);
       });
 
-    addUpdateCase(builder, (state, { payload: { message } }) => {
+    addGameUpdateCase(builder, (state, { payload: { message } }) => {
       state.players = message.players;
 
       if (state.selectedPlayerId === undefined) {

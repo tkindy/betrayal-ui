@@ -2,7 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 import * as api from '../api/api';
 import { Card, Player } from './models';
 import { getGameId } from './selectors';
-import { addUpdateCase, createAppAsyncThunk } from './utils';
+import { addGameUpdateCase, createAppAsyncThunk } from './utils';
 
 export const drawEvent = createAppAsyncThunk(
   'cardStacks/events/get',
@@ -69,7 +69,7 @@ const cardStacksSlice = createSlice({
         state.drawnCard = null;
       });
 
-    addUpdateCase(builder, (state, { payload: { message } }) => {
+    addGameUpdateCase(builder, (state, { payload: { message } }) => {
       state.drawnCard = message.drawnCard;
     });
   },

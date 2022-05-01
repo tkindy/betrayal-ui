@@ -1,6 +1,6 @@
 import { Action, createSlice, ThunkAction } from '@reduxjs/toolkit';
 import { Monster } from './models';
-import { addUpdateCase, createAppAsyncThunk } from './utils';
+import { addGameUpdateCase, createAppAsyncThunk } from './utils';
 import * as api from '../api/api';
 import { getBoardMap, getGameId } from './selectors';
 import { equal, GridLoc } from '../components/game/board/grid';
@@ -67,7 +67,7 @@ const monstersSlice = createSlice({
         );
       });
 
-    addUpdateCase(builder, (state, { payload: { message } }) => {
+    addGameUpdateCase(builder, (state, { payload: { message } }) => {
       state.monsters = message.monsters;
     });
   },

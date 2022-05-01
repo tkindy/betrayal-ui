@@ -3,7 +3,7 @@ import { placeRoom } from './board';
 import { FlippedRoom, StackRoom } from './models';
 import * as api from '../api/api';
 import { getGameId } from './selectors';
-import { addUpdateCase, createAppAsyncThunk } from './utils';
+import { addGameUpdateCase, createAppAsyncThunk } from './utils';
 
 export const skipRoom = createAppAsyncThunk(
   'roomStack/skipStatus',
@@ -54,7 +54,7 @@ const roomStackSlice = createSlice({
         state.nextRoom = nextRoom;
       });
 
-    addUpdateCase(builder, (_state, { payload: { message } }) => {
+    addGameUpdateCase(builder, (_state, { payload: { message } }) => {
       return message.roomStack;
     });
   },
