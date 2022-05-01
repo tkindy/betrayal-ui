@@ -1,5 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { combineReducers } from '@reduxjs/toolkit';
+import lobbyReducer from './features/lobby';
 import zoomReducer from './features/zoom';
 import roomStackReducer from './features/roomStack';
 import cardStacksReducer from './features/cardStacks';
@@ -12,6 +13,7 @@ import reduxWebsocket from '@giantmachines/redux-websocket';
 import { GameUpdate, LobbyUpdate } from './features/models';
 
 const rootReducer = combineReducers({
+  lobby: lobbyReducer,
   game: gameReducer,
   zoom: zoomReducer,
   roomStack: roomStackReducer,
