@@ -5,7 +5,12 @@ import {
   CaseReducer,
   createAsyncThunk,
 } from '@reduxjs/toolkit';
-import { AppDispatch, GameUpdatePayload, RootState } from '../store';
+import {
+  AppDispatch,
+  GameUpdatePayload,
+  LobbyUpdatePayload,
+  RootState,
+} from '../store';
 
 export const createAppAsyncThunk: <Returned, ThunkArg = void>(
   typePrefix: string,
@@ -31,3 +36,4 @@ const buildAddUpdateCase: <T>() => <S>(
 };
 
 export const addGameUpdateCase = buildAddUpdateCase<GameUpdatePayload>();
+export const addLobbyUpdateCase = buildAddUpdateCase<LobbyUpdatePayload>();
