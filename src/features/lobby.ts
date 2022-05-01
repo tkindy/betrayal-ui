@@ -4,6 +4,7 @@ import { addLobbyUpdateCase } from './utils';
 
 interface LobbyState {
   lobbyId?: string;
+  name?: string;
   players?: LobbyPlayer[];
 }
 
@@ -13,6 +14,9 @@ const lobbySlice = createSlice({
   name: 'lobby',
   initialState,
   reducers: {
+    setName(state, { payload: name }) {
+      state.name = name;
+    },
     joinLobby(state, { payload: lobbyId }) {
       state.lobbyId = lobbyId;
     },
@@ -24,5 +28,5 @@ const lobbySlice = createSlice({
   },
 });
 
-export const { joinLobby } = lobbySlice.actions;
+export const {setName, joinLobby } = lobbySlice.actions;
 export default lobbySlice.reducer;

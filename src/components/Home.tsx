@@ -1,12 +1,15 @@
 import './Home.css';
-import React, { FC, useRef, useState } from 'react';
+import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { createGame } from '../api/api';
+import { createLobby } from '../api/api';
+import { useAppDispatch } from '../hooks';
+import { setName } from '../features/lobby';
 
 const Home: FC<{}> = () => {
   const navigate = useNavigate();
+  const [hostName, setHostName] = useState('');
   const [gameId, setGameId] = useState('');
-  const numPlayersRef = useRef<HTMLInputElement>(null);
+  const dispatch = useAppDispatch();
 
   const handleJoin = () => {
     navigate(`/game/${gameId}`);
@@ -17,14 +20,16 @@ const Home: FC<{}> = () => {
       <h1>Betrayal at House on the Hill</h1>
       <div className="container">
         <input
-          className="num-players"
+          className="host-name"
           form="new-game-form"
-          placeholder="Number of players"
+          placeholder="Your name"
           required
-          type="number"
-          min="3"
-          max="6"
-          ref={numPlayersRef}
+          type="text"
+          minLength={1}
+          maxLength={20}
+          onChange={(e) => {
+            setHostName(e.target.value);
+          }}
         />
         <button className="new-game" form="new-game-form">
           New game
@@ -34,10 +39,9 @@ const Home: FC<{}> = () => {
           onSubmit={async (e) => {
             e.preventDefault();
 
-            const gameId = await createGame(
-              parseInt(numPlayersRef.current!!.value)
-            );
-            navigate(`/game/${gameId}`);
+            const lobbyId = await createLobby(hostName);
+            dispatch(setName(hostName));
+            navigate(`/lobby/${lobbyId}`);
           }}
         />
 

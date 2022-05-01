@@ -1,4 +1,4 @@
-import { connect, disconnect } from '@giantmachines/redux-websocket/dist';
+import { connect, disconnect, send } from '@giantmachines/redux-websocket/dist';
 import { FC, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { joinLobby } from '../../features/lobby';
@@ -30,6 +30,7 @@ const Lobby: FC<{}> = () => {
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const players = useAppSelector((state) => state.lobby.players);
+  const name = useAppSelector((state) => state.lobby.name);
 
   useEffect(() => {
     if (!lobbyId || !/^[A-Z]{6}$/.test(lobbyId)) {
@@ -39,11 +40,12 @@ const Lobby: FC<{}> = () => {
 
     dispatch(joinLobby(lobbyId));
     dispatch(connect(buildWebsocketUrl(lobbyId)));
+    dispatch(send({ name }));
 
     return () => {
       dispatch(disconnect());
     };
-  }, [lobbyId, dispatch, navigate]);
+  }, [lobbyId, name, dispatch, navigate]);
 
   return (
     <div className="lobby-wrapper">
