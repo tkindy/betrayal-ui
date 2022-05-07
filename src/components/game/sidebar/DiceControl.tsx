@@ -44,16 +44,13 @@ interface DiceProps {
   values?: number[];
 }
 
-const Dice: FunctionComponent<DiceProps> = ({ values }) => {
-  let rows;
-  if (values) {
-    rows = [
-      <DiceRow key={0} values={values.slice(0, 4)} />,
-      <DiceRow key={1} values={values.slice(4, 8)} />,
-    ];
-  }
-
-  return <div>{rows}</div>;
+const Dice: FunctionComponent<DiceProps> = ({ values = [] }) => {
+  return (
+    <div>
+      <DiceRow key={0} values={values.slice(0, 4)} />
+      <DiceRow key={1} values={values.slice(4, 8)} />
+    </div>
+  );
 };
 
 const DiceControl: FunctionComponent<{}> = () => {
