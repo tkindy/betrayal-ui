@@ -1,8 +1,5 @@
 .dice-background {
-  background-color: gray;
-  margin-top: 10px;
   padding: 10px;
-  min-width: 150px;
 }
 
 .dice-controls {
@@ -24,6 +21,7 @@
   align-items: center;
   justify-content: space-evenly;
   padding-top: 10px;
+  height: 30px;
 }
 
 .die-value {

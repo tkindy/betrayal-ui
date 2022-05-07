@@ -11,7 +11,6 @@ import { joinGame } from '../../features/game';
 import DrawnCard from './cards/DrawnCard';
 import CharacterBar from './character/CharacterBar';
 import { connect, disconnect } from '@giantmachines/redux-websocket/dist';
-import Dice from './dice/Dice';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 
 const buildWebsocketUrl = (gameId: string) => {
@@ -70,7 +69,6 @@ const Game: FC<{}> = () => {
       <Sidebar />
       <CharacterBar />
       <DrawnCard />
-      <Dice />
     </div>
   );
 };

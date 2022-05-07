@@ -44,30 +44,19 @@ interface DiceProps {
   values?: number[];
 }
 
-const Dice: FunctionComponent<DiceProps> = ({ values }) => {
-  let rows;
-  if (values) {
-    rows = [
-      <DiceRow key={0} values={values.slice(0, 4)} />,
-      <DiceRow key={1} values={values.slice(4, 8)} />,
-    ];
-  }
-
-  return <div>{rows}</div>;
+const Dice: FunctionComponent<DiceProps> = ({ values = [] }) => {
+  return (
+    <div>
+      <DiceRow key={0} values={values.slice(0, 4)} />
+      <DiceRow key={1} values={values.slice(4, 8)} />
+    </div>
+  );
 };
 
-interface RollDiceControlProps {
-  expanded: boolean;
-}
-
-const DiceControl: FunctionComponent<RollDiceControlProps> = ({ expanded }) => {
+const DiceControl: FunctionComponent<{}> = () => {
   const roll = useAppSelector((state) => state.diceRolls.roll);
   const dispatch = useAppDispatch();
   const [numDice, setNumDice] = useState<number>(8);
-
-  if (!expanded) {
-    return null;
-  }
 
   return (
     <div className="dice-background">
