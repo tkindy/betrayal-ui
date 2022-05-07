@@ -5,7 +5,7 @@ import { useWindowDimensions } from '../../windowDimensions';
 import RoomStack from './roomStack/RoomStack';
 import DrawControl from './DrawControl';
 import AddMonsterControl from './AddMonsterControl';
-import DiceControl from '../dice/DiceControl';
+import DiceControl from './DiceControl';
 
 export const SIDEBAR_WIDTH = 215;
 export const SIDEBAR_MARGIN = 10;
