@@ -5,7 +5,7 @@ import { useWindowDimensions } from '../../windowDimensions';
 import RoomStack from './roomStack/RoomStack';
 import DrawControl from './DrawControl';
 import AddMonsterControl from './AddMonsterControl';
-import DiceControl from './DiceControl';
+import DiceControl from '../dice/DiceControl';
 
 export const SIDEBAR_WIDTH = 215;
 export const SIDEBAR_MARGIN = 10;
@@ -55,7 +55,7 @@ const Sidebar: FunctionComponent<SidebarProps> = () => {
     >
       <ZoomControl />
       <DrawControl />
-      <DiceControl />
+      <DiceControl expanded={true} />
       <AddMonsterControl />
       <RoomStack />
     </div>
