@@ -56,18 +56,10 @@ const Dice: FunctionComponent<DiceProps> = ({ values }) => {
   return <div>{rows}</div>;
 };
 
-interface RollDiceControlProps {
-  expanded: boolean;
-}
-
-const DiceControl: FunctionComponent<RollDiceControlProps> = ({ expanded }) => {
+const DiceControl: FunctionComponent<{}> = () => {
   const roll = useAppSelector((state) => state.diceRolls.roll);
   const dispatch = useAppDispatch();
   const [numDice, setNumDice] = useState<number>(8);
-
-  if (!expanded) {
-    return null;
-  }
 
   return (
     <div className="dice-background">

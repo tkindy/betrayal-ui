@@ -55,7 +55,7 @@ const Sidebar: FunctionComponent<SidebarProps> = () => {
     >
       <ZoomControl />
       <DrawControl />
-      <DiceControl expanded={true} />
+      <DiceControl />
       <AddMonsterControl />
       <RoomStack />
     </div>
