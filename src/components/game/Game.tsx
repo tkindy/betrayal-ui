@@ -70,7 +70,6 @@ const Game: FC<{}> = () => {
       <Sidebar />
       <CharacterBar />
       <DrawnCard />
-      <Dice />
     </div>
   );
 };
