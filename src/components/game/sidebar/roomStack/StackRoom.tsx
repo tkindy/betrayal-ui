@@ -215,7 +215,9 @@ const StackRoom: FunctionComponent<{}> = () => {
     height: 0,
   });
   const wrapperRef = useCallback((node: HTMLElement | null) => {
-    setDimensions(node!.getBoundingClientRect());
+    if (node !== null) {
+      setDimensions(node.getBoundingClientRect());
+    }
   }, []);
 
   const size = Math.min(width, height);
