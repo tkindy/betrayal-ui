@@ -2,20 +2,22 @@ import { createSlice } from '@reduxjs/toolkit';
 import { addUpdateCase, createAppAsyncThunk } from './utils';
 import * as api from '../api/api';
 import { getGameId } from './selectors';
+import { DiceRoll, DiceRollType } from './models';
 
 interface RollDicePayload {
   numDice: number;
+  type: DiceRollType;
 }
 
 export const rollDice = createAppAsyncThunk(
   'rollDice',
   async (payload: RollDicePayload, { getState }) => {
-    return api.rollDice(getGameId(getState()), payload.numDice);
+    return api.rollDice(getGameId(getState()), payload.numDice, payload.type);
   }
 );
 
 interface DiceRollsState {
-  roll?: number[];
+  roll?: DiceRoll;
 }
 
 const initialState: DiceRollsState = {};

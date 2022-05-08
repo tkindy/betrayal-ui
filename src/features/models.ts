@@ -134,7 +134,7 @@ export interface GameUpdate {
   players: Player[];
   roomStack: RoomStackState;
   drawnCard: Card | null;
-  latestRoll: number[] | null;
+  latestRoll: DiceRoll | null;
   monsters: Monster[];
 }
 
@@ -147,3 +147,10 @@ export interface Monster {
 export type Agent =
   | (Player & { type: 'player' })
   | (Monster & { type: 'monster' });
+
+export type DiceRollType = 'AD_HOC' | 'HAUNT';
+
+export interface DiceRoll {
+  values: number[];
+  type: DiceRollType;
+}

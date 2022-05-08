@@ -1,5 +1,7 @@
 import { GridLoc } from '../components/game/board/grid';
 import {
+  DiceRoll,
+  DiceRollType,
   EventCard,
   FlippedRoom,
   ItemCard,
@@ -175,11 +177,12 @@ export const giveHeldCardToPlayer: (
 
 export const rollDice: (
   gameId: string,
-  numDice: number
-) => Promise<number[]> = async (gameId, numDice) => {
-  const response = await axios.post<number[]>(
+  numDice: number,
+  type: DiceRollType
+) => Promise<DiceRoll> = async (gameId, numDice, type) => {
+  const response = await axios.post<DiceRoll>(
     buildApiUrl(`/games/${gameId}/dice`),
-    { numDice }
+    { numDice, type }
   );
 
   return response.data;
