@@ -1,7 +1,24 @@
-import { FunctionComponent, useState } from 'react';
+import { CSSProperties, FunctionComponent, useState } from 'react';
 import { rollDice } from '../../../features/diceRolls';
 import './DiceControl.css';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
+import { getNumHeldOmens } from '../../../features/selectors';
+
+const HauntRollButton: FunctionComponent<{}> = () => {
+  const numOmens = useAppSelector(getNumHeldOmens);
+  const dispatch = useAppDispatch();
+
+  return (
+    <button
+      style={{ width: '100%', margin: '3px', padding: '3px' }}
+      onClick={() => {
+        dispatch(rollDice({ numDice: 6, type: 'HAUNT' }));
+      }}
+    >
+      Haunt roll ({numOmens} omen{numOmens === 1 ? '' : 's'})
+    </button>
+  );
+};
 
 interface DieProps {
   value: number;
@@ -53,8 +70,40 @@ const Dice: FunctionComponent<DiceProps> = ({ values = [] }) => {
   );
 };
 
+const HauntTimeMessage: FunctionComponent<{}> = () => {
+  const { roll, couldTriggerHaunt } = useAppSelector(
+    (state) => state.diceRolls
+  );
+  const numOmens = useAppSelector(getNumHeldOmens);
+
+  let message: string, style: CSSProperties;
+  if (!couldTriggerHaunt) {
+    message = '';
+    style = {};
+  } else if (roll!.values.reduce((a, b) => a + b, 0) < numOmens) {
+    message = 'Haunt time!';
+    style = { color: '#ac1212' };
+  } else {
+    message = 'No haunt';
+    style = {};
+  }
+
+  return (
+    <p
+      style={{
+        ...style,
+        height: '20px',
+        fontWeight: 'bold',
+        textAlign: 'center',
+      }}
+    >
+      {message}
+    </p>
+  );
+};
+
 const DiceControl: FunctionComponent<{}> = () => {
-  const roll = useAppSelector((state) => state.diceRolls.roll);
+  const { roll } = useAppSelector((state) => state.diceRolls);
   const dispatch = useAppDispatch();
   const [numDice, setNumDice] = useState<number>(8);
 
@@ -71,13 +120,15 @@ const DiceControl: FunctionComponent<{}> = () => {
         />
         <button
           className="roll-dice-button"
-          onClick={() => dispatch(rollDice({ numDice }))}
+          onClick={() => dispatch(rollDice({ numDice, type: 'AD_HOC' }))}
         >
           Roll
         </button>
       </div>
 
-      <Dice values={roll} />
+      <HauntRollButton />
+      <Dice values={roll?.values} />
+      <HauntTimeMessage />
     </div>
   );
 };

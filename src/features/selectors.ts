@@ -85,3 +85,14 @@ export const getSelectedPlayer = createSelector(
     return players.find((player) => player.id === selectedPlayerId);
   }
 );
+
+export const getAllHeldCars = createSelector(
+  [getPlayers],
+  (players) => players?.flatMap((player) => player.cards) || []
+);
+
+export const getNumHeldOmens = createSelector(
+  [getAllHeldCars],
+  (allHeldCards) =>
+    allHeldCards.filter((heldCard) => heldCard.card.type === 'OMEN').length
+);
