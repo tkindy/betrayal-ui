@@ -151,6 +151,7 @@ export type Agent =
 export type DiceRollType = 'AD_HOC' | 'HAUNT';
 
 export interface DiceRoll {
+  id: number;
   values: number[];
   type: DiceRollType;
 }

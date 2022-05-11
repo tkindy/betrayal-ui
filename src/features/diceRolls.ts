@@ -18,9 +18,13 @@ export const rollDice = createAppAsyncThunk(
 
 interface DiceRollsState {
   roll?: DiceRoll;
+  couldTriggerHaunt: boolean;
 }
 
-const initialState: DiceRollsState = {};
+const initialState: DiceRollsState = { couldTriggerHaunt: false };
+
+const isNewRoll = (roll: DiceRoll, lastRoll?: DiceRoll) =>
+  roll.id !== lastRoll?.id;
 
 const diceRollsSlice = createSlice({
   name: 'diceRolls',
@@ -29,10 +33,17 @@ const diceRollsSlice = createSlice({
   extraReducers: (builder) => {
     builder.addCase(rollDice.fulfilled, (state, { payload: roll }) => {
       state.roll = roll;
+      state.couldTriggerHaunt = roll.type === 'HAUNT';
     });
 
     addUpdateCase(builder, (state, { payload: { message } }) => {
-      state.roll = message.latestRoll || undefined;
+      const roll = message.latestRoll;
+      const lastRoll = state.roll;
+      state.roll = roll || undefined;
+
+      if (roll && isNewRoll(roll, lastRoll)) {
+        state.couldTriggerHaunt = roll.type === 'HAUNT';
+      }
     });
   },
 });
