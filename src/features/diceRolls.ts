@@ -31,11 +31,6 @@ const diceRollsSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(rollDice.fulfilled, (state, { payload: roll }) => {
-      state.roll = roll;
-      state.couldTriggerHaunt = roll.type === 'HAUNT';
-    });
-
     addUpdateCase(builder, (state, { payload: { message } }) => {
       const roll = message.latestRoll;
       const lastRoll = state.roll;
