@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { joinLobby } from '../../features/lobby';
 import { LobbyPlayer } from '../../features/models';
 import { useAppDispatch, useAppSelector } from '../../hooks';
+import { AppDispatch } from '../../store';
 
 const buildWebsocketUrl = (lobbyId: string) => {
   const httpRoot = process.env.REACT_APP_API_ROOT!!;
@@ -27,19 +28,23 @@ const PlayerList: FC<{ players?: LobbyPlayer[] }> = ({ players }) => {
 
 let webSocket: WebSocket;
 
-const connectToLobby = (lobbyId: string, name: string) => {
+const connectToLobby = (
+  lobbyId: string,
+  name: string,
+  dispatch: AppDispatch
+) => {
   webSocket = new WebSocket(buildWebsocketUrl(lobbyId));
   webSocket.onopen = () => {
     webSocket.send(JSON.stringify({ name }));
   };
   webSocket.onmessage = (event) => {
-    console.log(event.data);
+    dispatch({ type: 'lobbyMessage', payload: JSON.parse(event.data) });
   };
 };
 
 const disconnectFromLobby = () => {
   webSocket.close();
-}
+};
 
 const Lobby: FC<{}> = () => {
   const { lobbyId } = useParams();
@@ -59,7 +64,7 @@ const Lobby: FC<{}> = () => {
     }
 
     dispatch(joinLobby(lobbyId));
-    connectToLobby(lobbyId, name);
+    connectToLobby(lobbyId, name, dispatch);
 
     return disconnectFromLobby;
   }, [lobbyId, name, dispatch, navigate]);
