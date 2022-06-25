@@ -1,6 +1,6 @@
 import { FC, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { joinLobby } from '../../features/lobby';
+import { joinLobby, receiveLobbyMessage } from '../../features/lobby';
 import { LobbyPlayer } from '../../features/models';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { AppDispatch } from '../../store';
@@ -11,7 +11,7 @@ const buildWebsocketUrl = (lobbyId: string) => {
   return `${wsRoot}/lobbies/${lobbyId}`;
 };
 
-const PlayerList: FC<{ players?: LobbyPlayer[] }> = ({ players }) => {
+const PlayerList: FC<{ players?: string[] }> = ({ players }) => {
   if (!players) {
     return <p>Loading...</p>;
   }
@@ -19,7 +19,7 @@ const PlayerList: FC<{ players?: LobbyPlayer[] }> = ({ players }) => {
   return (
     <ul className="lobby-players">
       {players.map((player) => (
-        <li key={player.id}>{player.name}</li>
+        <li key={player}>{player}</li>
       ))}
     </ul>
   );
@@ -35,7 +35,7 @@ const connectToLobby = (
     webSocket.send(JSON.stringify({ name }));
   };
   webSocket.onmessage = (event) => {
-    dispatch({ type: 'lobbyMessage', payload: JSON.parse(event.data) });
+    dispatch(receiveLobbyMessage(JSON.parse(event.data)));
   };
 
   return () => {

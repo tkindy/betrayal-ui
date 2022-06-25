@@ -1,14 +1,19 @@
-import { createSlice } from '@reduxjs/toolkit';
-import { LobbyPlayer } from './models';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { LobbyPlayer, Player } from './models';
 import { addLobbyUpdateCase } from './utils';
 
 interface LobbyState {
   lobbyId?: string;
   name?: string;
-  players?: LobbyPlayer[];
+  players?: string[];
 }
 
 const initialState: LobbyState = {};
+
+interface PlayersMessage {
+  type: 'players';
+  players: string[];
+}
 
 const lobbySlice = createSlice({
   name: 'lobby',
@@ -20,13 +25,11 @@ const lobbySlice = createSlice({
     joinLobby(state, { payload: lobbyId }) {
       state.lobbyId = lobbyId;
     },
-  },
-  extraReducers: (builder) => {
-    addLobbyUpdateCase(builder, (state, { payload: { message } }) => {
-      state.players = message.players;
-    });
+    receiveLobbyMessage(state, { payload }: PayloadAction<PlayersMessage>) {
+      state.players = payload.players;
+    },
   },
 });
 
-export const {setName, joinLobby } = lobbySlice.actions;
+export const { setName, joinLobby, receiveLobbyMessage } = lobbySlice.actions;
 export default lobbySlice.reducer;
