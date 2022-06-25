@@ -1,4 +1,3 @@
-import { connect, disconnect, send } from '@giantmachines/redux-websocket/dist';
 import { FC, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { joinLobby } from '../../features/lobby';
