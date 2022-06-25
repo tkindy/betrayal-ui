@@ -2,16 +2,6 @@ import { GridLoc } from '../components/game/board/grid';
 import { Direction } from '../components/game/room/Room';
 import { RoomStackState } from './roomStack';
 
-export interface LobbyPlayer {
-  id: number;
-  name: string;
-}
-
-export interface LobbyUpdate {
-  hostId: string;
-  players: LobbyPlayer[];
-}
-
 export enum PlayerColor {
   WHITE = 'white',
   BLUE = 'blue',

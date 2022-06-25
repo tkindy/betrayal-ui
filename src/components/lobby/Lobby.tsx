@@ -1,7 +1,6 @@
 import { FC, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { joinLobby, receiveLobbyMessage } from '../../features/lobby';
-import { LobbyPlayer } from '../../features/models';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { AppDispatch } from '../../store';
 

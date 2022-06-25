@@ -8,7 +8,6 @@ import {
 import {
   AppDispatch,
   GameUpdatePayload,
-  LobbyUpdatePayload,
   RootState,
 } from '../store';
 
@@ -36,4 +35,3 @@ const buildAddUpdateCase: <T>() => <S>(
 };
 
 export const addGameUpdateCase = buildAddUpdateCase<GameUpdatePayload>();
-export const addLobbyUpdateCase = buildAddUpdateCase<LobbyUpdatePayload>();

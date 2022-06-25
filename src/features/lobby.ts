@@ -1,6 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
-import { LobbyPlayer, Player } from './models';
-import { addLobbyUpdateCase } from './utils';
 
 interface LobbyState {
   lobbyId?: string;

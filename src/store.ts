@@ -10,7 +10,7 @@ import gameReducer from './features/game';
 import diceRollsReducer from './features/diceRolls';
 import monstersReducer from './features/monsters';
 import reduxWebsocket from '@giantmachines/redux-websocket';
-import { GameUpdate, LobbyUpdate } from './features/models';
+import { GameUpdate } from './features/models';
 
 const rootReducer = combineReducers({
   lobby: lobbyReducer,
@@ -38,9 +38,6 @@ export const store = configureStore({
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 
-export interface LobbyUpdatePayload {
-  message: LobbyUpdate;
-}
 export interface GameUpdatePayload {
   message: GameUpdate;
 }
