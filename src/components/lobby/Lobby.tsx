@@ -26,24 +26,22 @@ const PlayerList: FC<{ players?: LobbyPlayer[] }> = ({ players }) => {
   );
 };
 
-let webSocket: WebSocket;
-
 const connectToLobby = (
   lobbyId: string,
   name: string,
   dispatch: AppDispatch
 ) => {
-  webSocket = new WebSocket(buildWebsocketUrl(lobbyId));
+  let webSocket = new WebSocket(buildWebsocketUrl(lobbyId));
   webSocket.onopen = () => {
     webSocket.send(JSON.stringify({ name }));
   };
   webSocket.onmessage = (event) => {
     dispatch({ type: 'lobbyMessage', payload: JSON.parse(event.data) });
   };
-};
 
-const disconnectFromLobby = () => {
-  webSocket.close();
+  return () => {
+    webSocket.close();
+  };
 };
 
 const Lobby: FC<{}> = () => {
@@ -64,9 +62,7 @@ const Lobby: FC<{}> = () => {
     }
 
     dispatch(joinLobby(lobbyId));
-    connectToLobby(lobbyId, name, dispatch);
-
-    return disconnectFromLobby;
+    return connectToLobby(lobbyId, name, dispatch);
   }, [lobbyId, name, dispatch, navigate]);
 
   return (
