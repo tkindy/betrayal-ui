@@ -25,6 +25,22 @@ const PlayerList: FC<{ players?: LobbyPlayer[] }> = ({ players }) => {
   );
 };
 
+let webSocket: WebSocket;
+
+const connectToLobby = (lobbyId: string, name: string) => {
+  webSocket = new WebSocket(buildWebsocketUrl(lobbyId));
+  webSocket.onopen = () => {
+    webSocket.send(JSON.stringify({ name }));
+  };
+  webSocket.onmessage = (event) => {
+    console.log(event.data);
+  };
+};
+
+const disconnectFromLobby = () => {
+  webSocket.close();
+}
+
 const Lobby: FC<{}> = () => {
   const { lobbyId } = useParams();
   const navigate = useNavigate();
@@ -37,14 +53,15 @@ const Lobby: FC<{}> = () => {
       navigate('/');
       return;
     }
+    if (!name) {
+      console.error('No name in store');
+      return;
+    }
 
     dispatch(joinLobby(lobbyId));
-    dispatch(connect(buildWebsocketUrl(lobbyId)));
-    dispatch(send({ name }));
+    connectToLobby(lobbyId, name);
 
-    return () => {
-      dispatch(disconnect());
-    };
+    return disconnectFromLobby;
   }, [lobbyId, name, dispatch, navigate]);
 
   return (
