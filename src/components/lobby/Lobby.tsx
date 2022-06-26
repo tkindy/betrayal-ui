@@ -89,8 +89,11 @@ const Lobby: FC<{}> = () => {
       navigate('/');
       return;
     }
+    if (name) {
+      return;
+    }
 
-    let nameToUse = name || null;
+    let nameToUse: string | null = null;
 
     const nameParam = searchParams.get('name');
     if (nameParam) {
