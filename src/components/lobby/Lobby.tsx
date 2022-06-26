@@ -50,6 +50,11 @@ const PlayerList: FC<{ players?: string[] }> = ({ players }) => {
   );
 };
 
+const InLobby: FC<{}> = () => {
+  const players = useAppSelector((state) => state.lobby.players);
+  return <PlayerList players={players} />;
+};
+
 const connectToLobby = (
   lobbyId: string,
   name: string,
@@ -80,7 +85,6 @@ const Lobby: FC<{}> = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const players = useAppSelector((state) => state.lobby.players);
   const name = useAppSelector((state) => state.lobby.name);
   const [newName, setNewName] = useState<string | null>(null);
 
@@ -136,11 +140,7 @@ const Lobby: FC<{}> = () => {
 
   return (
     <div className="lobby-wrapper">
-      {name ? (
-        <PlayerList players={players} />
-      ) : (
-        <NameForm submitName={setNewName} />
-      )}
+      {name ? <InLobby /> : <NameForm submitName={setNewName} />}
     </div>
   );
 };
