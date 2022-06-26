@@ -18,8 +18,7 @@ const lobbySlice = createSlice({
   name: 'lobby',
   initialState,
   reducers: {
-    joinLobby(state, { payload: { lobbyId, name } }) {
-      state.lobbyId = lobbyId;
+    setName(state, { payload: { name } }) {
       state.name = name;
     },
     receiveLobbyMessage(state, { payload }: PayloadAction<PlayersMessage>) {
@@ -28,12 +27,12 @@ const lobbySlice = createSlice({
   },
 });
 
-export const joinLobby =
+export const setName =
   (lobbyId: string, name: string) => (dispatch: AppDispatch) => {
     if (process.env.NODE_ENV === 'production') {
       localStorage.setItem(lobbyId, name);
     }
-    dispatch(lobbySlice.actions.joinLobby({ lobbyId, name }));
+    dispatch(lobbySlice.actions.setName({ name }));
   };
 
 export const { receiveLobbyMessage } = lobbySlice.actions;

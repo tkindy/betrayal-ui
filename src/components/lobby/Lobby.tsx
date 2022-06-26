@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { joinLobby, receiveLobbyMessage } from '../../features/lobby';
+import { receiveLobbyMessage, setName } from '../../features/lobby';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { AppDispatch } from '../../store';
 
@@ -42,6 +42,13 @@ const connectToLobby = (
   };
 };
 
+const isLobbyId = (lobbyId: string | undefined): lobbyId is string => {
+  if (!lobbyId) {
+    return false;
+  }
+  return /^[A-Z]{6}$/.test(lobbyId);
+};
+
 const Lobby: FC<{}> = () => {
   const { lobbyId } = useParams();
   const [searchParams, setSearchParams] = useSearchParams();
@@ -53,12 +60,11 @@ const Lobby: FC<{}> = () => {
   const [nameSubmitted, setNameSubmitted] = useState(false);
 
   useEffect(() => {
-    if (!lobbyId || !/^[A-Z]{6}$/.test(lobbyId)) {
+    if (!isLobbyId(lobbyId)) {
       navigate('/');
       return;
     }
 
-    // Join if we're the host, or rejoin if we were previously in this lobby
     let nameToUse = name || null;
 
     const nameParam = searchParams.get('name');
@@ -76,12 +82,9 @@ const Lobby: FC<{}> = () => {
       setNameSubmitted(false);
     }
 
-    if (!nameToUse) {
-      return;
+    if (nameToUse) {
+      dispatch(setName(lobbyId, nameToUse));
     }
-
-    dispatch(joinLobby(lobbyId, nameToUse));
-    return connectToLobby(lobbyId, nameToUse, dispatch);
   }, [
     lobbyId,
     name,
@@ -93,6 +96,16 @@ const Lobby: FC<{}> = () => {
     searchParams,
     setSearchParams,
   ]);
+  useEffect(() => {
+    if (!isLobbyId(lobbyId)) {
+      navigate('/');
+      return;
+    }
+
+    if (name) {
+      return connectToLobby(lobbyId, name, dispatch);
+    }
+  }, [lobbyId, name, dispatch, navigate]);
 
   return (
     <div className="lobby-wrapper">
