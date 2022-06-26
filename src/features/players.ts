@@ -17,7 +17,6 @@ import {
 import { get } from '../board';
 import { createAppAsyncThunk } from './utils';
 import { giveDrawnCardToPlayer } from './cardStacks';
-import { sortBy } from '../utils';
 import { receiveGameMessage } from './actions';
 
 interface MovePlayerPayload {
@@ -109,6 +108,7 @@ const replacePlayer: (players: Player[], player: Player) => Player[] = (
 interface PlayersState {
   players?: Player[];
   selectedPlayerId?: number;
+  myPlayerId?: number;
 }
 
 const initialState: PlayersState = {};
@@ -144,13 +144,16 @@ const playersSlice = createSlice({
       .addCase(setTrait.fulfilled, (state, { payload: player }) => {
         state.players = replacePlayer(state.players!!, player);
       })
-      .addCase(receiveGameMessage, (state, { payload: message }) => {
-        state.players = message.players;
+      .addCase(receiveGameMessage, (state, { payload: { name, update } }) => {
+        state.players = update.players;
 
-        if (state.selectedPlayerId === undefined) {
-          state.selectedPlayerId = sortBy(message.players, (p) =>
-            p.characterName.toLowerCase()
+        if (state.myPlayerId === undefined) {
+          state.myPlayerId = update.players.filter(
+            (player) => player.name === name
           )[0].id;
+        }
+        if (state.selectedPlayerId === undefined) {
+          state.selectedPlayerId = state.myPlayerId;
         }
       });
   },

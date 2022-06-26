@@ -33,12 +33,7 @@ export const getOpenNeighbors = createSelector([getBoardMap], (map) => {
   return findOpenNeighbors(map);
 });
 
-const getPlayersRaw = (state: RootState) => state.players.players;
-
-export const getPlayers = createSelector(
-  getPlayersRaw,
-  (players) => players && sortBy(players, (p) => p.characterName.toLowerCase())
-);
+export const getPlayers = (state: RootState) => state.players.players;
 
 const getMonstersRaw = (state: RootState) => state.monsters.monsters;
 

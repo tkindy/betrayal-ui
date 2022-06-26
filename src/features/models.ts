@@ -130,6 +130,11 @@ export interface HeldCard {
   card: Card;
 }
 
+export interface GameUpdatePayload {
+  name: string;
+  update: GameUpdate;
+}
+
 export interface GameUpdate {
   rooms: Room[];
   players: Player[];

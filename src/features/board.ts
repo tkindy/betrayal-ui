@@ -114,8 +114,8 @@ const boardSlice = createSlice({
       .addCase(placeRoom.fulfilled, (state, { payload: { rooms } }) => {
         state.rooms = rooms;
       })
-      .addCase(receiveGameMessage, (state, { payload: message }) => {
-        state.rooms = message.rooms;
+      .addCase(receiveGameMessage, (state, { payload: { update } }) => {
+        state.rooms = update.rooms;
       });
   },
 });

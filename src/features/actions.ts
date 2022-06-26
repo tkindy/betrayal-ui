@@ -1,7 +1,7 @@
 import { createAction } from '@reduxjs/toolkit';
 import { AppThunk } from '../store';
 import * as lobbyActions from './lobby';
-import { GameUpdate } from './models';
+import { GameUpdate, GameUpdatePayload } from './models';
 
 export const joinGame = createAction<{ gameId: string }>('game/join');
 
@@ -29,6 +29,6 @@ export const receiveLobbyMessage =
     }
   };
 
-export const receiveGameMessage = createAction<GameUpdate>(
+export const receiveGameMessage = createAction<GameUpdatePayload>(
   'game/receiveGameMessage'
 );

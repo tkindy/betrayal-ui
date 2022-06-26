@@ -69,8 +69,8 @@ const cardStacksSlice = createSlice({
       .addCase(giveDrawnCardToPlayer.fulfilled, (state) => {
         state.drawnCard = null;
       })
-      .addCase(receiveGameMessage, (state, { payload: message }) => {
-        state.drawnCard = message.drawnCard;
+      .addCase(receiveGameMessage, (state, { payload: { update } }) => {
+        state.drawnCard = update.drawnCard;
       });
   },
 });

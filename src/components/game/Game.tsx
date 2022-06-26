@@ -16,6 +16,7 @@ import { AppDispatch } from '../../store';
 import { useSend } from '../hooks';
 import { isLobbyId } from '../lobby/Lobby';
 import { setName } from '../../features/lobby';
+import { GameUpdate } from '../../features/models';
 
 const buildWebsocketUrl = (gameId: string) => {
   const httpRoot = process.env.REACT_APP_API_ROOT!!;
@@ -27,7 +28,7 @@ const connectToGame = (gameId: string, name: string, dispatch: AppDispatch) => {
   return connectToWebSocket(
     buildWebsocketUrl(gameId),
     dispatch,
-    receiveGameMessage,
+    (message: GameUpdate) => receiveGameMessage({ name, update: message }),
     (webSocket) => {
       webSocket.send(JSON.stringify({ type: 'name', name }));
     }

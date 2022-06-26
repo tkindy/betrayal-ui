@@ -54,8 +54,8 @@ const roomStackSlice = createSlice({
       .addCase(skipRoom.fulfilled, (state, { payload: nextRoom }) => {
         state.nextRoom = nextRoom;
       })
-      .addCase(receiveGameMessage, (_state, { payload: message }) => {
-        return message.roomStack;
+      .addCase(receiveGameMessage, (_state, { payload: { update } }) => {
+        return update.roomStack;
       });
   },
 });

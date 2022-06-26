@@ -67,8 +67,8 @@ const monstersSlice = createSlice({
           m.id === monster.id ? monster : m
         );
       })
-      .addCase(receiveGameMessage, (state, { payload: message }) => {
-        state.monsters = message.monsters;
+      .addCase(receiveGameMessage, (state, { payload: { update } }) => {
+        state.monsters = update.monsters;
       });
   },
 });

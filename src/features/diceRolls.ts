@@ -32,8 +32,8 @@ const diceRollsSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    builder.addCase(receiveGameMessage, (state, { payload: message }) => {
-      const roll = message.latestRoll;
+    builder.addCase(receiveGameMessage, (state, { payload: { update } }) => {
+      const roll = update.latestRoll;
       const lastRoll = state.roll;
       state.roll = roll || undefined;
 
