@@ -84,7 +84,7 @@ const connectToLobby = (
   );
 };
 
-const isLobbyId = (lobbyId: string | undefined): lobbyId is string => {
+export const isLobbyId = (lobbyId: string | undefined): lobbyId is string => {
   if (!lobbyId) {
     return false;
   }
@@ -150,7 +150,7 @@ const Lobby: FC<{}> = () => {
 
     if (name) {
       const { send, close } = connectToLobby(lobbyId, name, dispatch);
-      setSend( send);
+      setSend(send);
       return () => {
         setSend();
         close();
@@ -165,11 +165,7 @@ const Lobby: FC<{}> = () => {
 
   return (
     <div className="lobby-wrapper">
-      {name ? (
-        <InLobby send={send} />
-      ) : (
-        <NameForm submitName={setNewName} />
-      )}
+      {name ? <InLobby send={send} /> : <NameForm submitName={setNewName} />}
     </div>
   );
 };

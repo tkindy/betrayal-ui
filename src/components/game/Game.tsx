@@ -14,6 +14,8 @@ import { joinGame, receiveGameMessage } from '../../features/actions';
 import { connectToWebSocket } from '../webSocket';
 import { AppDispatch } from '../../store';
 import { useSend } from '../hooks';
+import { isLobbyId } from '../lobby/Lobby';
+import { setName } from '../../features/lobby';
 
 const buildWebsocketUrl = (gameId: string) => {
   const httpRoot = process.env.REACT_APP_API_ROOT!!;
@@ -21,11 +23,14 @@ const buildWebsocketUrl = (gameId: string) => {
   return `${wsRoot}/games/${gameId}`;
 };
 
-const connectToGame = (gameId: string, dispatch: AppDispatch) => {
+const connectToGame = (gameId: string, name: string, dispatch: AppDispatch) => {
   return connectToWebSocket(
     buildWebsocketUrl(gameId),
     dispatch,
-    receiveGameMessage
+    receiveGameMessage,
+    (webSocket) => {
+      webSocket.send(JSON.stringify({ type: 'name', name }));
+    }
   );
 };
 
@@ -36,22 +41,44 @@ const Game: FC<{}> = () => {
   const navigate = useNavigate();
   const { x, y } = useAppSelector((state) => state.board.topLeft);
   const [send, setSend] = useSend();
+  const name = useAppSelector((state) => state.lobby.name);
 
   useEffect(() => {
-    if (!gameId || !/^[A-Z]{6}$/.test(gameId)) {
+    if (!isLobbyId(gameId)) {
+      navigate('/');
+      return;
+    }
+    if (name) {
+      return;
+    }
+
+    let nameToUse: string | null = null;
+
+    if (process.env.NODE_ENV === 'production') {
+      nameToUse = localStorage.getItem(gameId);
+    }
+
+    if (nameToUse) {
+      dispatch(setName(gameId, nameToUse, false));
+    }
+  }, [gameId, dispatch, navigate, name]);
+  useEffect(() => {
+    if (!isLobbyId(gameId)) {
       navigate('/');
       return;
     }
 
-    dispatch(joinGame({ gameId }));
-    const { send, close } = connectToGame(gameId, dispatch);
-    setSend(send);
+    if (name) {
+      dispatch(joinGame({ gameId }));
+      const { send, close } = connectToGame(gameId, name, dispatch);
+      setSend(send);
 
-    return () => {
-      setSend();
-      close();
-    };
-  }, [gameId, dispatch, navigate, setSend]);
+      return () => {
+        setSend();
+        close();
+      };
+    }
+  }, [gameId, navigate, name, dispatch, setSend]);
 
   return (
     <div onContextMenu={(e) => e.preventDefault()}>
