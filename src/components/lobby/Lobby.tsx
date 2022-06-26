@@ -69,27 +69,39 @@ const InLobby: FC<{ send?: Send }> = ({ send }) => {
   );
 };
 
+const connectToWebSocket = <M,>(
+  url: string,
+  dispatch: AppDispatch,
+  messageActionCreator: (message: M) => Parameters<AppDispatch>[0],
+  onOpen: (webSocket: WebSocket, e: Event) => void = () => {}
+) => {
+  let webSocket = new WebSocket(url);
+  webSocket.onopen = (e) => {
+    onOpen(webSocket, e);
+  };
+  webSocket.onmessage = (event) => {
+    dispatch(messageActionCreator(JSON.parse(event.data)));
+  };
+
+  return {
+    close: () => webSocket.close(),
+    send: (data: any) => webSocket.send(JSON.stringify(data)),
+  };
+};
+
 const connectToLobby = (
   lobbyId: string,
   name: string,
   dispatch: AppDispatch
 ) => {
-  let webSocket = new WebSocket(buildWebsocketUrl(lobbyId));
-  webSocket.onopen = () => {
-    webSocket.send(JSON.stringify({ name }));
-  };
-  webSocket.onmessage = (event) => {
-    dispatch(receiveLobbyMessage(JSON.parse(event.data)));
-  };
-
-  return {
-    close: () => webSocket.close(),
-    send: (data: any) => {
-      console.log('Sending ' + data);
-      const json = JSON.stringify(data);
-      webSocket.send(json);
-    },
-  };
+  return connectToWebSocket(
+    buildWebsocketUrl(lobbyId),
+    dispatch,
+    receiveLobbyMessage,
+    (webSocket) => {
+      webSocket.send(JSON.stringify({ name }));
+    }
+  );
 };
 
 const isLobbyId = (lobbyId: string | undefined): lobbyId is string => {
