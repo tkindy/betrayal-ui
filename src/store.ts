@@ -9,7 +9,6 @@ import playersReducer from './features/players';
 import gameReducer from './features/game';
 import diceRollsReducer from './features/diceRolls';
 import monstersReducer from './features/monsters';
-import { GameUpdate } from './features/models';
 
 const rootReducer = combineReducers({
   lobby: lobbyReducer,
