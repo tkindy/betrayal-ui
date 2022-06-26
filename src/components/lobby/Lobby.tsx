@@ -4,8 +4,7 @@ import { receiveLobbyMessage } from '../../features/actions';
 import { setName } from '../../features/lobby';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { AppDispatch } from '../../store';
-
-type Send = (data: any) => void;
+import { connectToWebSocket, Send } from '../webSocket';
 
 const buildWebsocketUrl = (lobbyId: string) => {
   const httpRoot = process.env.REACT_APP_API_ROOT!!;
@@ -67,26 +66,6 @@ const InLobby: FC<{ send?: Send }> = ({ send }) => {
       )}
     </>
   );
-};
-
-const connectToWebSocket = <M,>(
-  url: string,
-  dispatch: AppDispatch,
-  messageActionCreator: (message: M) => Parameters<AppDispatch>[0],
-  onOpen: (webSocket: WebSocket, e: Event) => void = () => {}
-) => {
-  let webSocket = new WebSocket(url);
-  webSocket.onopen = (e) => {
-    onOpen(webSocket, e);
-  };
-  webSocket.onmessage = (event) => {
-    dispatch(messageActionCreator(JSON.parse(event.data)));
-  };
-
-  return {
-    close: () => webSocket.close(),
-    send: (data: any) => webSocket.send(JSON.stringify(data)),
-  };
 };
 
 const connectToLobby = (
