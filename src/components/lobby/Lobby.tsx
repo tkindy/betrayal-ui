@@ -10,6 +10,32 @@ const buildWebsocketUrl = (lobbyId: string) => {
   return `${wsRoot}/lobbies/${lobbyId}`;
 };
 
+const NameForm: FC<{
+  submitName: (name: string) => void;
+}> = ({ submitName }) => {
+  const [name, setName] = useState('');
+
+  return (
+    <div>
+      <p>Enter your name</p>
+      <input
+        type="text"
+        value={name}
+        onChange={(e) => {
+          setName(e.target.value);
+        }}
+      />
+      <button
+        onClick={() => {
+          submitName(name);
+        }}
+      >
+        Submit
+      </button>
+    </div>
+  );
+};
+
 const PlayerList: FC<{ players?: string[] }> = ({ players }) => {
   if (!players) {
     return <p>Loading...</p>;
@@ -56,8 +82,7 @@ const Lobby: FC<{}> = () => {
   const dispatch = useAppDispatch();
   const players = useAppSelector((state) => state.lobby.players);
   const name = useAppSelector((state) => state.lobby.name);
-  const [newName, setNewName] = useState('');
-  const [nameSubmitted, setNameSubmitted] = useState(false);
+  const [newName, setNewName] = useState<string | null>(null);
 
   useEffect(() => {
     if (!isLobbyId(lobbyId)) {
@@ -77,9 +102,9 @@ const Lobby: FC<{}> = () => {
       nameToUse = nameToUse || localStorage.getItem(lobbyId);
     }
 
-    if (nameSubmitted) {
+    if (newName !== null) {
       nameToUse = nameToUse || newName;
-      setNameSubmitted(false);
+      setNewName(null);
     }
 
     if (nameToUse) {
@@ -88,9 +113,8 @@ const Lobby: FC<{}> = () => {
   }, [
     lobbyId,
     name,
-    nameSubmitted,
-    setNameSubmitted,
     newName,
+    setNewName,
     dispatch,
     navigate,
     searchParams,
@@ -112,22 +136,7 @@ const Lobby: FC<{}> = () => {
       {name ? (
         <PlayerList players={players} />
       ) : (
-        <div>
-          <p>Enter your name</p>
-          <input
-            type="text"
-            onChange={(e) => {
-              setNewName(e.target.value);
-            }}
-          />
-          <button
-            onClick={() => {
-              setNameSubmitted(true);
-            }}
-          >
-            Submit
-          </button>
-        </div>
+        <NameForm submitName={setNewName} />
       )}
     </div>
   );
