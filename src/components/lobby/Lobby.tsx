@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
-import { useNavigate, useParams } from 'react-router-dom';
-import { joinLobby, receiveLobbyMessage, setName } from '../../features/lobby';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
+import { joinLobby, receiveLobbyMessage } from '../../features/lobby';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { AppDispatch } from '../../store';
 
@@ -44,24 +44,55 @@ const connectToLobby = (
 
 const Lobby: FC<{}> = () => {
   const { lobbyId } = useParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   const players = useAppSelector((state) => state.lobby.players);
   const name = useAppSelector((state) => state.lobby.name);
   const [newName, setNewName] = useState('');
+  const [nameSubmitted, setNameSubmitted] = useState(false);
 
   useEffect(() => {
     if (!lobbyId || !/^[A-Z]{6}$/.test(lobbyId)) {
       navigate('/');
       return;
     }
-    if (!name) {
+
+    // Join if we're the host, or rejoin if we were previously in this lobby
+    let nameToUse = name || null;
+
+    const nameParam = searchParams.get('name');
+    if (nameParam) {
+      nameToUse = nameToUse || nameParam;
+      setSearchParams({});
+    }
+
+    if (process.env.NODE_ENV === 'production') {
+      nameToUse = nameToUse || localStorage.getItem(lobbyId);
+    }
+
+    if (nameSubmitted) {
+      nameToUse = nameToUse || newName;
+      setNameSubmitted(false);
+    }
+
+    if (!nameToUse) {
       return;
     }
 
-    dispatch(joinLobby(lobbyId));
-    return connectToLobby(lobbyId, name, dispatch);
-  }, [lobbyId, name, dispatch, navigate]);
+    dispatch(joinLobby(lobbyId, nameToUse));
+    return connectToLobby(lobbyId, nameToUse, dispatch);
+  }, [
+    lobbyId,
+    name,
+    nameSubmitted,
+    setNameSubmitted,
+    newName,
+    dispatch,
+    navigate,
+    searchParams,
+    setSearchParams,
+  ]);
 
   return (
     <div className="lobby-wrapper">
@@ -78,7 +109,7 @@ const Lobby: FC<{}> = () => {
           />
           <button
             onClick={() => {
-              dispatch(setName(newName));
+              setNameSubmitted(true);
             }}
           >
             Submit

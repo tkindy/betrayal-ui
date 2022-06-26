@@ -2,14 +2,11 @@ import './Home.css';
 import { FC, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { createLobby } from '../api/api';
-import { useAppDispatch } from '../hooks';
-import { setName } from '../features/lobby';
 
 const Home: FC<{}> = () => {
   const navigate = useNavigate();
   const [hostName, setHostName] = useState('');
   const [gameId, setGameId] = useState('');
-  const dispatch = useAppDispatch();
 
   const handleJoin = () => {
     navigate(`/game/${gameId}`);
@@ -40,8 +37,7 @@ const Home: FC<{}> = () => {
             e.preventDefault();
 
             const lobbyId = await createLobby(hostName);
-            dispatch(setName(hostName));
-            navigate(`/lobby/${lobbyId}`);
+            navigate(`/lobby/${lobbyId}?name=${encodeURIComponent(hostName)}`);
           }}
         />
 
