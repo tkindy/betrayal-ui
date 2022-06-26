@@ -52,7 +52,14 @@ const PlayerList: FC<{ players?: string[] }> = ({ players }) => {
 
 const InLobby: FC<{}> = () => {
   const players = useAppSelector((state) => state.lobby.players);
-  return <PlayerList players={players} />;
+  const isHost = useAppSelector((state) => state.lobby.isHost);
+
+  return (
+    <>
+      <PlayerList players={players} />
+      {isHost && <button>Start game</button>}
+    </>
+  );
 };
 
 const connectToLobby = (
@@ -98,11 +105,13 @@ const Lobby: FC<{}> = () => {
     }
 
     let nameToUse: string | null = null;
+    let isHost = false;
 
     const nameParam = searchParams.get('name');
     if (nameParam) {
       nameToUse = nameToUse || nameParam;
       setSearchParams({});
+      isHost = true;
     }
 
     if (process.env.NODE_ENV === 'production') {
@@ -115,7 +124,7 @@ const Lobby: FC<{}> = () => {
     }
 
     if (nameToUse) {
-      dispatch(setName(lobbyId, nameToUse));
+      dispatch(setName(lobbyId, nameToUse, isHost));
     }
   }, [
     lobbyId,
