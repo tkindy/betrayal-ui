@@ -1,8 +1,11 @@
 import { FC, useEffect, useState } from 'react';
 import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
-import { receiveLobbyMessage, setName } from '../../features/lobby';
+import { receiveLobbyMessage } from '../../features/actions';
+import { setName } from '../../features/lobby';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { AppDispatch } from '../../store';
+
+type Send = (data: any) => void;
 
 const buildWebsocketUrl = (lobbyId: string) => {
   const httpRoot = process.env.REACT_APP_API_ROOT!!;
@@ -50,14 +53,18 @@ const PlayerList: FC<{ players?: string[] }> = ({ players }) => {
   );
 };
 
-const InLobby: FC<{}> = () => {
+const InLobby: FC<{ send?: Send }> = ({ send }) => {
   const players = useAppSelector((state) => state.lobby.players);
   const isHost = useAppSelector((state) => state.lobby.isHost);
 
   return (
     <>
       <PlayerList players={players} />
-      {isHost && <button>Start game</button>}
+      {isHost && (
+        <button onClick={() => send!({ type: 'start-game' })}>
+          Start game
+        </button>
+      )}
     </>
   );
 };
@@ -75,8 +82,13 @@ const connectToLobby = (
     dispatch(receiveLobbyMessage(JSON.parse(event.data)));
   };
 
-  return () => {
-    webSocket.close();
+  return {
+    close: () => webSocket.close(),
+    send: (data: any) => {
+      console.log('Sending ' + data);
+      const json = JSON.stringify(data);
+      webSocket.send(json);
+    },
   };
 };
 
@@ -94,6 +106,8 @@ const Lobby: FC<{}> = () => {
   const dispatch = useAppDispatch();
   const name = useAppSelector((state) => state.lobby.name);
   const [newName, setNewName] = useState<string | null>(null);
+  const [wrappedSend, setWrappedSend] = useState<{ send: Send } | null>(null);
+  const gameStarted = useAppSelector((state) => state.lobby.gameStarted);
 
   useEffect(() => {
     if (!isLobbyId(lobbyId)) {
@@ -143,13 +157,27 @@ const Lobby: FC<{}> = () => {
     }
 
     if (name) {
-      return connectToLobby(lobbyId, name, dispatch);
+      const { send, close } = connectToLobby(lobbyId, name, dispatch);
+      setWrappedSend({ send });
+      return () => {
+        setWrappedSend(null);
+        close();
+      };
     }
-  }, [lobbyId, name, dispatch, navigate]);
+  }, [lobbyId, name, dispatch, navigate, setWrappedSend]);
+  useEffect(() => {
+    if (gameStarted) {
+      navigate(`/game/${lobbyId}`);
+    }
+  }, [gameStarted, navigate, lobbyId]);
 
   return (
     <div className="lobby-wrapper">
-      {name ? <InLobby /> : <NameForm submitName={setNewName} />}
+      {name ? (
+        <InLobby send={wrappedSend?.send} />
+      ) : (
+        <NameForm submitName={setNewName} />
+      )}
     </div>
   );
 };

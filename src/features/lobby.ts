@@ -6,14 +6,10 @@ interface LobbyState {
   name?: string;
   isHost?: boolean;
   players?: string[];
+  gameStarted: boolean;
 }
 
-const initialState: LobbyState = {};
-
-interface PlayersMessage {
-  type: 'players';
-  players: string[];
-}
+const initialState: LobbyState = { gameStarted: false };
 
 const lobbySlice = createSlice({
   name: 'lobby',
@@ -28,8 +24,14 @@ const lobbySlice = createSlice({
       state.name = name;
       state.isHost = isHost;
     },
-    receiveLobbyMessage(state, { payload }: PayloadAction<PlayersMessage>) {
-      state.players = payload.players;
+    setLobbyId(state, { payload: lobbyId }: PayloadAction<string>) {
+      state.lobbyId = lobbyId;
+    },
+    setPlayers(state, { payload: players }: PayloadAction<string[]>) {
+      state.players = players;
+    },
+    switchToGame(state) {
+      state.gameStarted = true;
     },
   },
 });
@@ -43,5 +45,5 @@ export const setName =
     dispatch(lobbySlice.actions.setName({ name, isHost }));
   };
 
-export const { receiveLobbyMessage } = lobbySlice.actions;
+export const { setPlayers, switchToGame } = lobbySlice.actions;
 export default lobbySlice.reducer;

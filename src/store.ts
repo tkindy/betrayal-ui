@@ -1,4 +1,4 @@
-import { configureStore } from '@reduxjs/toolkit';
+import { AnyAction, configureStore, ThunkAction } from '@reduxjs/toolkit';
 import { combineReducers } from '@reduxjs/toolkit';
 import lobbyReducer from './features/lobby';
 import zoomReducer from './features/zoom';
@@ -37,6 +37,12 @@ export const store = configureStore({
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
+export type AppThunk<ReturnType = void> = ThunkAction<
+  ReturnType,
+  RootState,
+  unknown,
+  AnyAction
+>;
 
 export interface GameUpdatePayload {
   message: GameUpdate;

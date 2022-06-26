@@ -7,11 +7,11 @@ import { moveBoard } from '../../features/board';
 import Agents from './players/Agents';
 import Sidebar from './sidebar/Sidebar';
 import { useNavigate, useParams } from 'react-router-dom';
-import { joinGame } from '../../features/game';
 import DrawnCard from './cards/DrawnCard';
 import CharacterBar from './character/CharacterBar';
 import { connect, disconnect } from '@giantmachines/redux-websocket/dist';
 import { useAppDispatch, useAppSelector } from '../../hooks';
+import { joinGame } from '../../features/actions';
 
 const buildWebsocketUrl = (gameId: string) => {
   const httpRoot = process.env.REACT_APP_API_ROOT!!;
@@ -32,7 +32,7 @@ const Game: FC<{}> = () => {
       return;
     }
 
-    dispatch(joinGame(gameId));
+    dispatch(joinGame({ gameId }));
     dispatch(connect(buildWebsocketUrl(gameId)));
 
     return () => {

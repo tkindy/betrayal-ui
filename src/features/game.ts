@@ -1,4 +1,5 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit';
+import { joinGame } from './actions';
 
 interface GameState {
   gameId?: string;
@@ -9,12 +10,12 @@ const initialState: GameState = {};
 const gameSlice = createSlice({
   name: 'game',
   initialState,
-  reducers: {
-    joinGame(state, { payload: gameId }: PayloadAction<string>) {
+  reducers: {},
+  extraReducers(builder) {
+    builder.addCase(joinGame, (state, { payload: { gameId } }) => {
       state.gameId = gameId;
-    },
+    });
   },
 });
 
-export const { joinGame } = gameSlice.actions;
 export default gameSlice.reducer;
