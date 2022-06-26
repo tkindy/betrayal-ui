@@ -1,6 +1,6 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { joinLobby, receiveLobbyMessage } from '../../features/lobby';
+import { joinLobby, receiveLobbyMessage, setName } from '../../features/lobby';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { AppDispatch } from '../../store';
 
@@ -48,6 +48,7 @@ const Lobby: FC<{}> = () => {
   const dispatch = useAppDispatch();
   const players = useAppSelector((state) => state.lobby.players);
   const name = useAppSelector((state) => state.lobby.name);
+  const [newName, setNewName] = useState('');
 
   useEffect(() => {
     if (!lobbyId || !/^[A-Z]{6}$/.test(lobbyId)) {
@@ -55,7 +56,6 @@ const Lobby: FC<{}> = () => {
       return;
     }
     if (!name) {
-      console.error('No name in store');
       return;
     }
 
@@ -65,7 +65,26 @@ const Lobby: FC<{}> = () => {
 
   return (
     <div className="lobby-wrapper">
-      <PlayerList players={players} />
+      {name ? (
+        <PlayerList players={players} />
+      ) : (
+        <div>
+          <p>Enter your name</p>
+          <input
+            type="text"
+            onChange={(e) => {
+              setNewName(e.target.value);
+            }}
+          />
+          <button
+            onClick={() => {
+              dispatch(setName(newName));
+            }}
+          >
+            Submit
+          </button>
+        </div>
+      )}
     </div>
   );
 };
