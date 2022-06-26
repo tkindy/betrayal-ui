@@ -1,4 +1,4 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { Layer, Rect, Stage, Group } from 'react-konva';
 import Board from './board/Board';
 import { ReactReduxContext } from 'react-redux';
@@ -9,14 +9,23 @@ import Sidebar from './sidebar/Sidebar';
 import { useNavigate, useParams } from 'react-router-dom';
 import DrawnCard from './cards/DrawnCard';
 import CharacterBar from './character/CharacterBar';
-import { connect, disconnect } from '@giantmachines/redux-websocket/dist';
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { joinGame } from '../../features/actions';
+import { joinGame, receiveGameMessage } from '../../features/actions';
+import { connectToWebSocket, Send } from '../webSocket';
+import { AppDispatch } from '../../store';
 
 const buildWebsocketUrl = (gameId: string) => {
   const httpRoot = process.env.REACT_APP_API_ROOT!!;
   const wsRoot = httpRoot.replace(/^http/, 'ws');
   return `${wsRoot}/games/${gameId}`;
+};
+
+const connectToGame = (gameId: string, dispatch: AppDispatch) => {
+  return connectToWebSocket(
+    buildWebsocketUrl(gameId),
+    dispatch,
+    receiveGameMessage
+  );
 };
 
 const Game: FC<{}> = () => {
@@ -25,6 +34,7 @@ const Game: FC<{}> = () => {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const { x, y } = useAppSelector((state) => state.board.topLeft);
+  const [wrappedSend, setWrappedSend] = useState<{ send: Send } | null>();
 
   useEffect(() => {
     if (!gameId || !/^[A-Z]{6}$/.test(gameId)) {
@@ -33,10 +43,12 @@ const Game: FC<{}> = () => {
     }
 
     dispatch(joinGame({ gameId }));
-    dispatch(connect(buildWebsocketUrl(gameId)));
+    const { send, close } = connectToGame(gameId, dispatch);
+    setWrappedSend({ send });
 
     return () => {
-      dispatch(disconnect());
+      setWrappedSend(null);
+      close();
     };
   }, [gameId, dispatch, navigate]);
 
