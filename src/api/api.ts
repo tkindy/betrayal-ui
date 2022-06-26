@@ -25,16 +25,6 @@ export const createLobby: (hostName: string) => Promise<string> = async (
   return response.data.id;
 };
 
-export const createGame: (numPlayers: number) => Promise<string> = async (
-  numPlayers
-) => {
-  const response = await axios.post<{ id: string }>(buildApiUrl('/games'), {
-    name: 'Foo',
-    numPlayers,
-  });
-  return response.data.id;
-};
-
 interface RoomStackResponse {
   nextRoom?: StackRoom;
   flippedRoom?: FlippedRoom;
