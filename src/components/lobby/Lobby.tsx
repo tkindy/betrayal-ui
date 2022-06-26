@@ -4,6 +4,7 @@ import { receiveLobbyMessage } from '../../features/actions';
 import { setName } from '../../features/lobby';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { AppDispatch } from '../../store';
+import { useSend } from '../hooks';
 import { connectToWebSocket, Send } from '../webSocket';
 
 const buildWebsocketUrl = (lobbyId: string) => {
@@ -97,7 +98,7 @@ const Lobby: FC<{}> = () => {
   const dispatch = useAppDispatch();
   const name = useAppSelector((state) => state.lobby.name);
   const [newName, setNewName] = useState<string | null>(null);
-  const [wrappedSend, setWrappedSend] = useState<{ send: Send } | null>(null);
+  const [send, setSend] = useSend();
   const gameStarted = useAppSelector((state) => state.lobby.gameStarted);
 
   useEffect(() => {
@@ -149,13 +150,13 @@ const Lobby: FC<{}> = () => {
 
     if (name) {
       const { send, close } = connectToLobby(lobbyId, name, dispatch);
-      setWrappedSend({ send });
+      setSend( send);
       return () => {
-        setWrappedSend(null);
+        setSend();
         close();
       };
     }
-  }, [lobbyId, name, dispatch, navigate, setWrappedSend]);
+  }, [lobbyId, name, dispatch, navigate, setSend]);
   useEffect(() => {
     if (gameStarted) {
       navigate(`/game/${lobbyId}`);
@@ -165,7 +166,7 @@ const Lobby: FC<{}> = () => {
   return (
     <div className="lobby-wrapper">
       {name ? (
-        <InLobby send={wrappedSend?.send} />
+        <InLobby send={send} />
       ) : (
         <NameForm submitName={setNewName} />
       )}
