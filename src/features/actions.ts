@@ -29,4 +29,6 @@ export const receiveLobbyMessage =
     }
   };
 
-export const receiveGameMessage = createAction<GameUpdate>('game/update');
+export const receiveGameMessage = createAction<GameUpdate>(
+  'game/receiveGameMessage'
+);

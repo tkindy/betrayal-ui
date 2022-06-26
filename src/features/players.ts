@@ -15,9 +15,10 @@ import {
   getSelectedPlayerId,
 } from './selectors';
 import { get } from '../board';
-import { addGameUpdateCase, createAppAsyncThunk } from './utils';
+import { createAppAsyncThunk } from './utils';
 import { giveDrawnCardToPlayer } from './cardStacks';
 import { sortBy } from '../utils';
+import { receiveGameMessage } from './actions';
 
 interface MovePlayerPayload {
   id: number;
@@ -142,17 +143,16 @@ const playersSlice = createSlice({
       )
       .addCase(setTrait.fulfilled, (state, { payload: player }) => {
         state.players = replacePlayer(state.players!!, player);
+      })
+      .addCase(receiveGameMessage, (state, { payload: message }) => {
+        state.players = message.players;
+
+        if (state.selectedPlayerId === undefined) {
+          state.selectedPlayerId = sortBy(message.players, (p) =>
+            p.characterName.toLowerCase()
+          )[0].id;
+        }
       });
-
-    addGameUpdateCase(builder, (state, { payload: { message } }) => {
-      state.players = message.players;
-
-      if (state.selectedPlayerId === undefined) {
-        state.selectedPlayerId = sortBy(message.players, (p) =>
-          p.characterName.toLowerCase()
-        )[0].id;
-      }
-    });
   },
 });
 

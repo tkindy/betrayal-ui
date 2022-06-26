@@ -1,8 +1,9 @@
 import { createSlice } from '@reduxjs/toolkit';
-import { addGameUpdateCase, createAppAsyncThunk } from './utils';
+import { createAppAsyncThunk } from './utils';
 import * as api from '../api/api';
 import { getGameId } from './selectors';
 import { DiceRoll, DiceRollType } from './models';
+import { receiveGameMessage } from './actions';
 
 interface RollDicePayload {
   numDice: number;
@@ -31,7 +32,7 @@ const diceRollsSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: (builder) => {
-    addGameUpdateCase(builder, (state, { payload: { message } }) => {
+    builder.addCase(receiveGameMessage, (state, { payload: message }) => {
       const roll = message.latestRoll;
       const lastRoll = state.roll;
       state.roll = roll || undefined;

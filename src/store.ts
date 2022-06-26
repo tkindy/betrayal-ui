@@ -9,7 +9,6 @@ import playersReducer from './features/players';
 import gameReducer from './features/game';
 import diceRollsReducer from './features/diceRolls';
 import monstersReducer from './features/monsters';
-import reduxWebsocket from '@giantmachines/redux-websocket';
 import { GameUpdate } from './features/models';
 
 const rootReducer = combineReducers({
@@ -26,13 +25,6 @@ const rootReducer = combineReducers({
 
 export const store = configureStore({
   reducer: rootReducer,
-  middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat([
-      reduxWebsocket({
-        deserializer: (message) => JSON.parse(message),
-        dateSerializer: (date) => date.getUTCMilliseconds(),
-      }),
-    ]),
 });
 
 export type RootState = ReturnType<typeof store.getState>;
@@ -43,7 +35,3 @@ export type AppThunk<ReturnType = void> = ThunkAction<
   unknown,
   AnyAction
 >;
-
-export interface GameUpdatePayload {
-  message: GameUpdate;
-}

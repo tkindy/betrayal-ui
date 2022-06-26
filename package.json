@@ -3,7 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@giantmachines/redux-websocket": "^1.4.0",
     "@reduxjs/toolkit": "^1.4.0",
     "@testing-library/jest-dom": "^5",
     "@testing-library/react": "^13",
