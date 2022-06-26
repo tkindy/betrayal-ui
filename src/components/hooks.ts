@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { Send } from './webSocket';
 
 export const useRender = () => {
@@ -12,6 +12,9 @@ export const useSend = (): [Send | undefined, (send?: Send) => void] => {
   const [wrappedSend, setWrappedSend] = useState<{ send: Send } | undefined>();
   return [
     wrappedSend?.send,
-    (send?: Send) => setWrappedSend(send ? { send } : undefined),
+    useCallback(
+      (send?: Send) => setWrappedSend(send ? { send } : undefined),
+      [setWrappedSend]
+    ),
   ];
 };
