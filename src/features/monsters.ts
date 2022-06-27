@@ -1,12 +1,13 @@
 import { Action, createSlice, ThunkAction } from '@reduxjs/toolkit';
 import { Monster } from './models';
-import { addUpdateCase, createAppAsyncThunk } from './utils';
+import { createAppAsyncThunk } from './utils';
 import * as api from '../api/api';
 import { getBoardMap, getGameId } from './selectors';
 import { equal, GridLoc } from '../components/game/board/grid';
 import { RootState } from '../store';
 import { get } from '../board';
 import { getMonsters as selectMonsters } from './selectors';
+import { receiveGameMessage } from './actions';
 
 export const addMonster = createAppAsyncThunk(
   'monsters/add',
@@ -65,11 +66,10 @@ const monstersSlice = createSlice({
         state.monsters = state.monsters!!.map((m) =>
           m.id === monster.id ? monster : m
         );
+      })
+      .addCase(receiveGameMessage, (state, { payload: { update } }) => {
+        state.monsters = update.monsters;
       });
-
-    addUpdateCase(builder, (state, { payload: { message } }) => {
-      state.monsters = message.monsters;
-    });
   },
 });
 

@@ -46,7 +46,7 @@ const PlayerSelect: FunctionComponent<{}> = () => {
     >
       {players?.map((player) => (
         <option key={player.id} value={player.id}>
-          {player.characterName}
+          {`${player.characterName} (${player.name})`}
         </option>
       ))}
     </select>

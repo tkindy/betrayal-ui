@@ -22,6 +22,7 @@ export interface Trait {
 
 export interface Player {
   id: number;
+  name: string;
   characterName: string;
   color: PlayerColor;
   loc: GridLoc;
@@ -127,6 +128,11 @@ export type Card = EventCard | ItemCard | OmenCard;
 export interface HeldCard {
   id: number;
   card: Card;
+}
+
+export interface GameUpdatePayload {
+  name: string;
+  update: GameUpdate;
 }
 
 export interface GameUpdate {
