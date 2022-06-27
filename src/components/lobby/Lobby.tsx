@@ -19,7 +19,8 @@ const NameForm: FC<{
   const [name, setName] = useState('');
 
   return (
-    <div>
+    <div className="name-form">
+      <h2>Join lobby</h2>
       <p>Enter your name</p>
       <input
         type="text"
@@ -47,7 +48,9 @@ const PlayerList: FC<{ players?: string[] }> = ({ players }) => {
   return (
     <ul className="lobby-players">
       {players.map((player) => (
-        <li key={player}>{player}</li>
+        <li key={player} style={{ padding: 4 }}>
+          {player}
+        </li>
       ))}
     </ul>
   );
@@ -59,6 +62,7 @@ const InLobby: FC<{ send?: Send }> = ({ send }) => {
 
   return (
     <>
+      <h2>Lobby</h2>
       <PlayerList players={players} />
       {isHost && (
         <button onClick={() => send!({ type: 'start-game' })}>
@@ -164,7 +168,7 @@ const Lobby: FC<{}> = () => {
   }, [gameStarted, navigate, lobbyId]);
 
   return (
-    <div className="lobby-wrapper">
+    <div className="lobby-wrapper" style={{ padding: '10px' }}>
       {name ? <InLobby send={send} /> : <NameForm submitName={setNewName} />}
     </div>
   );
