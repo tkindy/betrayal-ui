@@ -57,7 +57,7 @@ interface PlayerHovercardProps {
 const PlayerHovercard: FunctionComponent<PlayerHovercardProps> = ({
   hovered,
   playerBox,
-  player: { characterName, speed, might, sanity, knowledge },
+  player: { name, characterName, speed, might, sanity, knowledge },
 }) => {
   return (
     <Hovercard
@@ -77,10 +77,20 @@ const PlayerHovercard: FunctionComponent<PlayerHovercardProps> = ({
               x={x}
               y={y}
               width={width}
-              height={height / 2}
+              height={height / 4}
               text={characterName}
               fontSize={20}
               fontStyle="bold"
+              align="center"
+            />
+            <Text
+              x={x}
+              y={y + height / 4}
+              width={width}
+              height={height / 4}
+              text={name}
+              fontSize={16}
+              fontStyle="italic"
               align="center"
             />
             {[
