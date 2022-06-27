@@ -59,15 +59,30 @@ const PlayerList: FC<{ players?: string[] }> = ({ players }) => {
 const InLobby: FC<{ send?: Send }> = ({ send }) => {
   const players = useAppSelector((state) => state.lobby.players);
   const isHost = useAppSelector((state) => state.lobby.isHost);
+  const numPlayers = players?.length || 0;
+  const wrongNumberOfPlayers = numPlayers < 3 || numPlayers > 6;
 
   return (
     <>
       <h2>Lobby</h2>
       <PlayerList players={players} />
       {isHost && (
-        <button onClick={() => send!({ type: 'start-game' })}>
-          Start game
-        </button>
+        <>
+          <button
+            disabled={wrongNumberOfPlayers}
+            onClick={() => send!({ type: 'start-game' })}
+          >
+            Start game
+          </button>
+          {wrongNumberOfPlayers && (
+            <p
+              className="start-game-error"
+              style={{ color: 'red', fontStyle: 'italic' }}
+            >
+              Must have between 3 and 6 players
+            </p>
+          )}
+        </>
       )}
     </>
   );
