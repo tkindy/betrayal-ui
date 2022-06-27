@@ -6,11 +6,6 @@ import { createLobby } from '../api/api';
 const Home: FC<{}> = () => {
   const navigate = useNavigate();
   const [hostName, setHostName] = useState('');
-  const [gameId, setGameId] = useState('');
-
-  const handleJoin = () => {
-    navigate(`/game/${gameId}`);
-  };
 
   return (
     <div>
@@ -38,33 +33,6 @@ const Home: FC<{}> = () => {
 
             const lobbyId = await createLobby(hostName);
             navigate(`/lobby/${lobbyId}?name=${encodeURIComponent(hostName)}`);
-          }}
-        />
-
-        <input
-          className="join-game"
-          form="join-game-form"
-          placeholder="Game ID"
-          required
-          pattern="[A-Z]{6}"
-          value={gameId}
-          onChange={(e) => {
-            const { value } = e.target;
-            const cleaned = value
-              .toUpperCase()
-              .replace(/[^A-Z]/g, '')
-              .substring(0, 6);
-            setGameId(cleaned);
-          }}
-        />
-        <button className="join-game" form="join-game-form">
-          Join game
-        </button>
-        <form
-          id="join-game-form"
-          onSubmit={(e) => {
-            e.preventDefault();
-            handleJoin();
           }}
         />
       </div>
