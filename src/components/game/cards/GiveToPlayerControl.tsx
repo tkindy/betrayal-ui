@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import { Player } from '../../../features/models';
+import { renderPlayerName } from '../../utils';
 
 interface GiveToPlayerControlProps {
   players?: Player[];
@@ -19,7 +20,7 @@ const GiveToPlayerControl: FunctionComponent<GiveToPlayerControlProps> = ({
       <option value="">Give card to...</option>
       {players.map((player) => (
         <option key={player.id} value={player.id}>
-          {player.characterName}
+          {renderPlayerName(player)}
         </option>
       ))}
     </select>

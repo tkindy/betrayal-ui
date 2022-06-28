@@ -18,6 +18,7 @@ import {
 } from '../../../features/selectors';
 import { useAppDispatch, useAppSelector } from '../../../hooks';
 import { BoundingBox, Dimensions } from '../../layout';
+import { renderPlayerName } from '../../utils';
 import { useWindowDimensions } from '../../windowDimensions';
 import CardDetails from '../cards/CardDetails';
 import DiscardControl from '../cards/DiscardControl';
@@ -46,7 +47,7 @@ const PlayerSelect: FunctionComponent<{}> = () => {
     >
       {players?.map((player) => (
         <option key={player.id} value={player.id}>
-          {`${player.characterName} (${player.name})`}
+          {renderPlayerName(player)}
         </option>
       ))}
     </select>
