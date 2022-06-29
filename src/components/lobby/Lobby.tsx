@@ -5,6 +5,7 @@ import { setName } from '../../features/lobby';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { AppDispatch } from '../../store';
 import { useSend } from '../hooks';
+import { NameInput } from '../NameInput';
 import { connectToWebSocket, Send } from '../webSocket';
 
 const buildWebsocketUrl = (lobbyId: string) => {
@@ -22,8 +23,7 @@ const NameForm: FC<{
     <div className="name-form">
       <h2>Join lobby</h2>
       <p>Enter your name</p>
-      <input
-        type="text"
+      <NameInput
         value={name}
         onChange={(e) => {
           setName(e.target.value);
