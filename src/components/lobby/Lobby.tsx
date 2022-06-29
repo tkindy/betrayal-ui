@@ -135,7 +135,7 @@ const Lobby: FC<{}> = () => {
     const nameParam = searchParams.get('name');
     if (nameParam) {
       nameToUse = nameToUse || nameParam;
-      setSearchParams({});
+      setSearchParams({}, { replace: true });
       isHost = true;
     }
 
