@@ -178,9 +178,14 @@ const Lobby: FC<{}> = () => {
   }, [lobbyId, name, dispatch, navigate, setSend]);
   useEffect(() => {
     if (gameStarted) {
-      navigate(`/game/${lobbyId}`);
+      let url = `/game/${lobbyId}`;
+      if (process.env.NODE_ENV === 'development') {
+        url += `?name=${encodeURIComponent(name!)}`;
+      }
+
+      navigate(url);
     }
-  }, [gameStarted, navigate, lobbyId]);
+  }, [gameStarted, navigate, lobbyId, name]);
 
   return (
     <div className="lobby-wrapper" style={{ padding: '10px' }}>

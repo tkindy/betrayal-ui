@@ -6,7 +6,7 @@ import { useWindowDimensions } from '../windowDimensions';
 import { moveBoard } from '../../features/board';
 import Agents from './players/Agents';
 import Sidebar from './sidebar/Sidebar';
-import { useNavigate, useParams } from 'react-router-dom';
+import { useNavigate, useParams, useSearchParams } from 'react-router-dom';
 import DrawnCard from './cards/DrawnCard';
 import CharacterBar from './character/CharacterBar';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -43,6 +43,7 @@ const Game: FC<{}> = () => {
   const { x, y } = useAppSelector((state) => state.board.topLeft);
   const [send, setSend] = useSend();
   const name = useAppSelector((state) => state.lobby.name);
+  const [searchParams] = useSearchParams();
 
   useEffect(() => {
     if (!isLobbyId(gameId)) {
@@ -57,12 +58,14 @@ const Game: FC<{}> = () => {
 
     if (process.env.NODE_ENV === 'production') {
       nameToUse = localStorage.getItem(gameId);
+    } else if (process.env.NODE_ENV === 'development') {
+      nameToUse = searchParams.get('name');
     }
 
     if (nameToUse) {
       dispatch(setName(gameId, nameToUse, false));
     }
-  }, [gameId, dispatch, navigate, name]);
+  }, [gameId, dispatch, navigate, name, searchParams]);
   useEffect(() => {
     if (!isLobbyId(gameId)) {
       navigate('/');
