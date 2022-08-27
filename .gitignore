@@ -10,6 +10,7 @@
 
 # production
 /build
+betrayal-ui.tar.gz
 
 # misc
 .DS_Store
