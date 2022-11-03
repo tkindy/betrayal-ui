@@ -60,7 +60,7 @@ const InLobby: FC<{ send?: Send }> = ({ send }) => {
   const players = useAppSelector((state) => state.lobby.players);
   const isHost = useAppSelector((state) => state.lobby.isHost);
   const numPlayers = players?.length || 0;
-  const wrongNumberOfPlayers = numPlayers < 3 || numPlayers > 6;
+  const wrongNumberOfPlayers = numPlayers > 6;
 
   return (
     <>
@@ -79,7 +79,7 @@ const InLobby: FC<{ send?: Send }> = ({ send }) => {
               className="start-game-error"
               style={{ color: 'red', fontStyle: 'italic' }}
             >
-              Must have between 3 and 6 players
+              Must have fewer than 6 players
             </p>
           )}
         </>
