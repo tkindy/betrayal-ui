@@ -1,3 +1,7 @@
+**This repo's history has been merged into the API's repo to create the [betrayal](https://github.com/tkindy/betrayal) monorepo.**
+
+-------
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
